@@ -23,6 +23,7 @@
         android:id="@+id/buttonVoca"
         android:layout_width="275dp"
         android:layout_height="60dp"
+        android:onClick="goToCahiers"
         android:text="Cahiers de vocabulaire"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
