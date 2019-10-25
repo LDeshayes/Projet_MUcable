@@ -7,5 +7,33 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" />
+        android:theme="@style/AppTheme">
+
+    <activity android:name=".Display.IntroMenuDisplay">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+
+    <activity android:name=".Display.GestionTagsDisplay">
+    </activity>
+
+    <activity android:name=".Display.ChoixTagsDisplay">
+    </activity>
+
+    <activity android:name=".Display.PartageDisplay">
+    </activity>
+
+    <activity android:name=".Display.ChoixLangueDisplay">
+    </activity>
+
+    <activity android:name=".Display.CahierDisplay">
+    </activity>
+
+    <activity android:name=".Display.GestionMotDisplay">
+    </activity>
+
+    </application>
+
 </manifest>
