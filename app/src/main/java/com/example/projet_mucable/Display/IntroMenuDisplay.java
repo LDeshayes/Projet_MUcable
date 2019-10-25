@@ -27,7 +27,7 @@ public class IntroMenuDisplay extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(IntroMenuDisplay.this, CahierDisplay.class));
+                startActivity(new Intent(IntroMenuDisplay.this, ChoixLangueDisplay.class));
             }
         });
 
