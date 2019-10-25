@@ -19,15 +19,10 @@ public class IntroMenuDisplay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intromenu_display);
 
-        Button btn = (Button) findViewById(R.id.buttonVoca);
+    }
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(IntroMenuDisplay.this, ChoixLangueDisplay.class));
-            }
-        });
-
+    public void goToCahiers(View view) {
+        startActivity(new Intent(IntroMenuDisplay.this, ChoixLangueDisplay.class));
     }
 
 
