@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Projet_MUcable</string>
+
+    <string-array name="language_array">
+        <item>Anglais</item>
+        <item>Allemand</item>
+        <item>Espagnol</item>
+    </string-array>
+
 </resources>
