@@ -14,13 +14,10 @@ import com.example.projet_mucable.R;
 
 public class IntroMenuDisplay extends AppCompatActivity {
 
-
-
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intromenu_display);
-
 
         Button btn = (Button) findViewById(R.id.buttonVoca);
 
