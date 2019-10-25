@@ -26,6 +26,16 @@ public class ChoixLangueDisplay extends Activity {
         setupSpinner();
     }
 
+    void setupSpinner() {
+
+        Spinner spinner = (Spinner) findViewById(R.id.language_spinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+    }
+
     public void ActivityToCahierDisplay(View view) {
 
         Spinner mySpinner = (Spinner) findViewById(R.id.language_spinner);
@@ -35,16 +45,6 @@ public class ChoixLangueDisplay extends Activity {
         i.putExtra( "LangueChoisie", language );
         startActivity( i );
         finish();
-
-    }
-
-    void setupSpinner() {
-
-        Spinner spinner = (Spinner) findViewById(R.id.language_spinner);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
 
     }
 }
