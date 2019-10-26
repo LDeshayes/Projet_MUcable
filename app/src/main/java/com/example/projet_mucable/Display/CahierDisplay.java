@@ -16,6 +16,7 @@ public class CahierDisplay extends Activity {
     ListView words_listview;
     String words_list[] = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String translations_list[] = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
+    String tags_list[] = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class CahierDisplay extends Activity {
 
     void setupListView() {
         words_listview = (ListView) findViewById(R.id.words_listview);
-        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list);
+        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
         words_listview.setAdapter(customAdapter);
     }
 

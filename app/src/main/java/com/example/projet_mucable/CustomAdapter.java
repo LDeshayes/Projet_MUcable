@@ -5,21 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.zip.Inflater;
 
 public class CustomAdapter extends BaseAdapter {
     Context context;
     String words_list[];
     String translations_list[];
+    String tags_list[];
     LayoutInflater inflter;
 
-    public CustomAdapter(Context applicationContext, String[] words_list, String[] translations_list) {
+    public CustomAdapter(Context applicationContext, String[] words_list, String[] translations_list, String[] tags_list) {
         this.context = context;
         this.words_list = words_list;
         this.translations_list = translations_list;
+        this.tags_list = tags_list;
         inflter = (LayoutInflater.from(applicationContext));
     }
 
@@ -41,10 +40,12 @@ public class CustomAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.word_listview, null);
-        TextView country = (TextView) view.findViewById(R.id.word);
-        TextView icon = (TextView) view.findViewById(R.id.translation);
-        country.setText(words_list[i]);
-        icon.setText(translations_list[i]);
+        TextView word = (TextView) view.findViewById(R.id.word);
+        TextView translation = (TextView) view.findViewById(R.id.translation);
+        TextView tags = (TextView) view.findViewById(R.id.tags);
+        word.setText("Word            : "+words_list[i]);
+        translation.setText("Translation : "+translations_list[i]);
+        tags.setText("Tags : "+tags_list[i]);
         return view;
     }
 

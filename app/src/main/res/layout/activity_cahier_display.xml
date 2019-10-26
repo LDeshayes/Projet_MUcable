@@ -9,7 +9,21 @@
         android:id="@+id/language"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+    <Button
+        android:id="@+id/button_modifyWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Modify"
+        android:layout_toLeftOf="@+id/button_addWord" />
+
+    <Button
+        android:id="@+id/button_addWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add +"
+        android:layout_alignParentRight="true" />
 
     <ListView
         android:id="@+id/words_listview"

@@ -4,17 +4,12 @@ package com.example.projet_mucable.Display;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.example.projet_mucable.Cahier;
 import com.example.projet_mucable.R;
-
-import static android.content.ContentValues.TAG;
 
 public class ChoixLangueDisplay extends Activity {
 
