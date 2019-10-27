@@ -75,7 +75,7 @@ public class ChoixLangueDisplay extends Activity {
             );
 
             final String Create_table_ANGLAIS =
-                    "CREATE TABLE t_ANGLAIS ("
+                    "CREATE TABLE t_Anglais ("
                             + "Id_Word INTEGER PRIMARY KEY AUTOINCREMENT,"
                             + "Word TEXT,"
                             + "Translation TEXT,"
@@ -85,7 +85,7 @@ public class ChoixLangueDisplay extends Activity {
                             + "Tag_4 TEXT);";
 
             final String Create_table_ALLEMAND =
-                    "CREATE TABLE t_ALLEMAND ("
+                    "CREATE TABLE t_Allemand ("
                             + "Id_Word INTEGER PRIMARY KEY AUTOINCREMENT,"
                             + "Word TEXT,"
                             + "Translation TEXT,"
@@ -95,7 +95,7 @@ public class ChoixLangueDisplay extends Activity {
                             + "Tag_4 TEXT);";
 
             final String Create_table_ESPAGNOL =
-                    "CREATE TABLE t_ESPAGNOL ("
+                    "CREATE TABLE t_Espagnol ("
                             + "Id_Word INTEGER PRIMARY KEY AUTOINCREMENT,"
                             + "Word TEXT,"
                             + "Translation TEXT,"
@@ -109,18 +109,18 @@ public class ChoixLangueDisplay extends Activity {
             CDB.execSQL(Create_table_ESPAGNOL);
 
             // FIRST LOAD OF DB
-            int incr;
+            int i;
             String Insert_Data;
-            for ( incr = 0; incr < data_anglais.length; incr++ ) {
-                Insert_Data = "INSERT INTO t_ANGLAIS VALUES (NULL,"+data_anglais[incr]+")";
+            for ( i = 0; i < data_anglais.length; i++ ) {
+                Insert_Data = "INSERT INTO t_Anglais VALUES (NULL,"+data_anglais[i]+")";
                 CDB.execSQL(Insert_Data);
             }
-            for ( incr = 0; incr < data_allemand.length; incr++ ) {
-                Insert_Data = "INSERT INTO t_ALLEMAND VALUES (NULL,"+data_allemand[incr]+")";
+            for ( i = 0; i < data_allemand.length; i++ ) {
+                Insert_Data = "INSERT INTO t_Allemand VALUES (NULL,"+data_allemand[i]+")";
                 CDB.execSQL(Insert_Data);
             }
-            for ( incr = 0; incr < data_espagnol.length; incr++ ) {
-                Insert_Data = "INSERT INTO t_ESPAGNOL VALUES (NULL,"+data_espagnol[incr]+")";
+            for ( i = 0; i < data_espagnol.length; i++ ) {
+                Insert_Data = "INSERT INTO t_Espagnol VALUES (NULL,"+data_espagnol[i]+")";
                 CDB.execSQL(Insert_Data);
             }
 

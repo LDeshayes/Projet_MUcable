@@ -5,6 +5,7 @@ package com.example.projet_mucable.Display;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -19,9 +20,9 @@ public class CahierDisplay extends Activity {
 
     String language;
     ListView words_listview;
-    String words_list[] = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
-    String translations_list[] = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
-    String tags_list[] = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
+    String[] words_list;// = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
+    String[] translations_list;// = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
+    String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     int key; // future key pour repérer le word à modifier
     SQLiteDatabase CDB;
 
@@ -33,7 +34,9 @@ public class CahierDisplay extends Activity {
         getLanguage();
 
         setupDB();
+
         setupElements();
+
     }
 
     void getLanguage() {
@@ -51,7 +54,32 @@ public class CahierDisplay extends Activity {
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
     }
 
+    // FUTURE : ADD FILTER HERE
     void loadDB() {
+
+        Cursor cursor = CDB.query(
+                "t_"+language,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        int rowCount = cursor.getCount();
+
+        words_list = new String[rowCount];
+        translations_list = new String[rowCount];
+        tags_list = new String[rowCount];
+
+        cursor.moveToFirst();
+        for ( int i = 0; i < rowCount; i++ ) {
+            words_list[i] = cursor.getString(1);
+            translations_list[i] = cursor.getString(2);
+            tags_list[i] = cursor.getString(3)+" - "+cursor.getString(4)+" - "+cursor.getString(5)+" - "+cursor.getString(6);
+            cursor.moveToNext();
+        }
 
     }
 
@@ -79,7 +107,6 @@ public class CahierDisplay extends Activity {
 
                 TextView textView = (TextView) v.findViewById(R.id.word);
                 key = Integer.parseInt( ( (String) textView.getText() ).split(". ")[0] ) - 1;
-                //Toast.makeText(CahierDisplay.this, "You pressed the item : "+key, Toast.LENGTH_SHORT).show();
 
             }
         });
