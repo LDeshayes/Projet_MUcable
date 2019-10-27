@@ -30,7 +30,6 @@ public class GestionTagsDisplay extends Activity {
         setContentView(R.layout.activity_gestiontags_display);
 
         setupElements();
-
     }
 
     void setupElements() {
@@ -38,7 +37,20 @@ public class GestionTagsDisplay extends Activity {
         setTagCount();
     }
 
-    void setChoiceTag() {}
+    void setChoiceTag() {
+
+        Button button_selection = findViewById(R.id.button_DelChoice);
+
+        Intent i = getIntent();
+        String choiceTag = i.getStringExtra("ChoiceTag");
+
+        if ( choiceTag == null ) {
+            button_selection.setText("Choix");
+        } else {
+            button_selection.setText(choiceTag);
+        }
+
+    }
 
     void setTagCount() {
 
@@ -57,7 +69,7 @@ public class GestionTagsDisplay extends Activity {
 
     }
 
-    public void clicAjouterTag(View view) {
+    public void clicAddTag(View view) {
 
         final EditText editText_AddTag = findViewById(R.id.editText_AddTag);
         final String newTag = editText_AddTag.getText().toString();
@@ -127,13 +139,13 @@ public class GestionTagsDisplay extends Activity {
 
     }
 
-    public void tagChoice(View view) {
+    public void clicChoiceTag(View view) {
         Intent i = new Intent ( this, ChoixTagsDisplay.class );
         startActivity( i );
         finish();
     }
 
-    public void tagDel(View view) {
+    public void clicDelTag(View view) {
 
         final Button button_selection = findViewById(R.id.button_DelChoice);
         final String delTag = (String) button_selection.getText();
