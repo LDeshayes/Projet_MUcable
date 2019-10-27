@@ -154,7 +154,7 @@ public class ChoixLangueDisplay extends Activity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor EDITOR = preferences.edit();
         EDITOR.putBoolean("FST_LAUNCH", false);
-        EDITOR.putString("TAG_LIST", "");
+        EDITOR.putString("TAG_LIST", "EMPTY_NULL");
         EDITOR.commit();
 
     }

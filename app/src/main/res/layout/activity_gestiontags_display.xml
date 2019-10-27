@@ -48,14 +48,51 @@
 
     <TextView
         android:id="@+id/textView_DelTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="184dp"
+        android:layout_height="25dp"
         android:layout_marginStart="100dp"
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="125dp"
         android:text="Supprimer un tag"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_AddTag" />
+
+    <Button
+        android:id="@+id/button_DelChoice"
+        android:layout_width="222dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:onClick="tagChoice"
+        android:text="Choix"
+        app:layout_constraintEnd_toStartOf="@+id/button_DelOk"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_DelTag" />
+
+    <Button
+        android:id="@+id/button_DelOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:onClick="tagDel"
+        android:text="Supprimer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_DelTag" />
+
+    <TextView
+        android:id="@+id/textView_TagCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
