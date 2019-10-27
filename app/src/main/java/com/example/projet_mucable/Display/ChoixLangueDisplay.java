@@ -138,4 +138,23 @@ public class ChoixLangueDisplay extends Activity {
 
     }
 
+    @SuppressLint("WrongConstant")
+    public void cleanDB(View view) {
+
+        SQLiteDatabase CDB = openOrCreateDatabase(
+                "CDB.db"
+                , SQLiteDatabase.CREATE_IF_NECESSARY
+                , null
+        );
+
+        CDB.execSQL("DROP TABLE IF EXISTS t_Anglais");
+        CDB.execSQL("DROP TABLE IF EXISTS t_Allemand");
+        CDB.execSQL("DROP TABLE IF EXISTS t_Espagnol");
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor DB_EXIST_EDIT = preferences.edit();
+        DB_EXIST_EDIT.putBoolean("FST_LAUNCH", false);
+        DB_EXIST_EDIT.commit();
+
+    }
 }
