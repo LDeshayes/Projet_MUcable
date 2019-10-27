@@ -26,4 +26,7 @@ public class IntroMenuDisplay extends AppCompatActivity {
     }
 
 
+    public void activityToGestionTagsDisplay(View view) {
+        startActivity(new Intent(IntroMenuDisplay.this, GestionTagsDisplay.class));
+    }
 }

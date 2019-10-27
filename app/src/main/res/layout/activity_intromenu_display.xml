@@ -59,6 +59,7 @@
         android:id="@+id/buttonTags"
         android:layout_width="182dp"
         android:layout_height="46dp"
+        android:onClick="activityToGestionTagsDisplay"
         android:text="Gérer les tags"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

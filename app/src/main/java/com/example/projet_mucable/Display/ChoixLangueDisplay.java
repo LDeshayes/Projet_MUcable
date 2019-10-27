@@ -46,7 +46,7 @@ public class ChoixLangueDisplay extends Activity {
 
     }
 
-    public void ActivityToCahierDisplay(View view) {
+    public void activityToCahierDisplay(View view) {
 
         Spinner mySpinner = (Spinner) findViewById(R.id.language_spinner);
         String language = mySpinner.getSelectedItem().toString();
@@ -152,9 +152,10 @@ public class ChoixLangueDisplay extends Activity {
         CDB.execSQL("DROP TABLE IF EXISTS t_Espagnol");
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor DB_EXIST_EDIT = preferences.edit();
-        DB_EXIST_EDIT.putBoolean("FST_LAUNCH", false);
-        DB_EXIST_EDIT.commit();
+        SharedPreferences.Editor EDITOR = preferences.edit();
+        EDITOR.putBoolean("FST_LAUNCH", false);
+        EDITOR.putString("TAG_LIST", "");
+        EDITOR.commit();
 
     }
 }
