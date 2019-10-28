@@ -200,6 +200,8 @@ public class GestionTagsDisplay extends Activity {
             Toast.makeText(getApplicationContext(), "Ce tag n'existe pas dans la liste !", Toast.LENGTH_SHORT).show();
         }
 
+        setTagCount();
+
     }
 
 }
