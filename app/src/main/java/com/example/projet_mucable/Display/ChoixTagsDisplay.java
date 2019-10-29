@@ -91,7 +91,9 @@ public class ChoixTagsDisplay extends Activity {
 
 
 
-
+        /*
+        CEST ICI QUE CA FAIT CACA DANS LA COLLE
+         */
         tags_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
