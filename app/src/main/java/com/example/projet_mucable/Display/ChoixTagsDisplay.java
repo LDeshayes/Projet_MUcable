@@ -11,11 +11,13 @@ import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.projet_mucable.CustomAdapter;
 import com.example.projet_mucable.R;
@@ -27,12 +29,16 @@ public class ChoixTagsDisplay extends Activity {
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     int key; // future key pour repérer le word à modifier
 
+    String tagReturn ="testTag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choixtags_display);
         setupListView();
+
+
+
 
     }
 
@@ -44,10 +50,8 @@ public class ChoixTagsDisplay extends Activity {
      */
     public void onBackPressed() {
 
-        String tag ="testTag";
-
         Intent i = new Intent ( this, GestionTagsDisplay.class );
-        i.putExtra( "ChoiceTag", tag );
+        i.putExtra( "ChoiceTag", tagReturn );
         startActivity( i );
         finish();
     }
@@ -79,23 +83,25 @@ public class ChoixTagsDisplay extends Activity {
         // création de l'objet SimpleCursorAdapter...
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.tag_listview, matrixCursor, from, to, 0);
 
+
         // ...qui va remplir l'objet ListView
-        ListView tags_listview = (ListView) findViewById(R.id.tags_listview);
+        final ListView tags_listview = (ListView) findViewById(R.id.tags_listview);
         tags_listview.setAdapter(adapter);
 
 
 
 
-        /*tags_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+        tags_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int pos, long id) {
-
-                TextView textView = (TextView) v.findViewById(R.id.word);
-                key = Integer.parseInt( ( (String) textView.getText() ).split(". ")[0] ) - 1;
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(),"TEST!",Toast.LENGTH_SHORT).show();
+                /*Object o = tags_listview.getItemAtPosition(position);
+                String str=(String)o;
+                tagReturn = "yolo";*/
+                Toast.makeText(getApplicationContext(),"TEST",Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
 
 
 
