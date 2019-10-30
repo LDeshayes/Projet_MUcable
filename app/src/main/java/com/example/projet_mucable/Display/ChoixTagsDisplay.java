@@ -29,17 +29,13 @@ public class ChoixTagsDisplay extends Activity {
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     int key; // future key pour repérer le word à modifier
 
-    String tagReturn ="testTag";
+    String tagReturn ="CHOIX";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choixtags_display);
         setupListView();
-
-
-
-
     }
 
 
@@ -61,7 +57,7 @@ public class ChoixTagsDisplay extends Activity {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
-        String[] tag_list = tags.split(";");
+        final String[] tag_list = tags.split(";");
 
         // Définition des colonnes
         // NB : SimpleCursorAdapter a besoin obligatoirement d'un ID nommé "_id"
@@ -92,16 +88,13 @@ public class ChoixTagsDisplay extends Activity {
 
 
         /*
-        CEST ICI QUE CA FAIT CACA DANS LA COLLE
+        CEST MAIS BON FAUT RENDRE LE TAG PLUS FONCE QUAND ON A CLIQUE DESSUS
          */
         tags_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(),"TEST!",Toast.LENGTH_SHORT).show();
-                /*Object o = tags_listview.getItemAtPosition(position);
-                String str=(String)o;
-                tagReturn = "yolo";*/
-                Toast.makeText(getApplicationContext(),"TEST",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),tag_list[position],Toast.LENGTH_SHORT).show();
+                tagReturn = tag_list[position];
             }
         });
 

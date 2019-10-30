@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:weightSum="1"> <!-- nombre de colonnes -->
 
-    <Button
+    <TextView
         android:id="@+id/textViewCol1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

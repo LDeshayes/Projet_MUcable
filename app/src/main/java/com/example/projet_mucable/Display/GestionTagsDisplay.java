@@ -183,9 +183,15 @@ public class GestionTagsDisplay extends Activity {
             int pos = new ArrayList<String>(Arrays.asList(tag_list)).indexOf(delTag);
 
             String new_TAGLIST = "";
+            int i;
 
-            for ( int i = 0; ( i < tag_list.length ) && ( i != pos ) ; i++ ) {
-                new_TAGLIST = new_TAGLIST + ";" + tag_list[i];
+            for (i = 0; ( i < tag_list.length ) /*&& ( i != pos )*/ ; i++ ) {
+
+                if(i != pos){
+                    new_TAGLIST = new_TAGLIST + ";" + tag_list[i];
+                }
+
+
             }
 
             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
