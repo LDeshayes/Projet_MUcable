@@ -10,8 +10,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.projet_mucable.CustomAdapter;
 import com.example.projet_mucable.R;
@@ -20,10 +22,11 @@ public class CahierDisplay extends Activity {
 
     String language;
     ListView words_listview;
+    int[] key_list;
     String[] words_list;// = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] translations_list;// = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
-    int key; // future key pour repérer le word à modifier
+    int key = -1; // future key pour repérer le word à modifier
     SQLiteDatabase CDB;
 
     @Override
@@ -69,17 +72,35 @@ public class CahierDisplay extends Activity {
 
         int rowCount = cursor.getCount();
 
+        key_list = new int[rowCount];
         words_list = new String[rowCount];
         translations_list = new String[rowCount];
         tags_list = new String[rowCount];
 
+        String[] tempTag;
+
         cursor.moveToFirst();
         for ( int i = 0; i < rowCount; i++ ) {
+            key_list[i] = cursor.getInt(0);
             words_list[i] = cursor.getString(1);
             translations_list[i] = cursor.getString(2);
-            tags_list[i] = cursor.getString(3)+" - "+cursor.getString(4)+" - "+cursor.getString(5)+" - "+cursor.getString(6);
+            tags_list[i] = printNAN ( cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6) );
+            //tags_list[i] = cursor.getString(3)+" - "+cursor.getString(4)+" - "+cursor.getString(5)+" - "+cursor.getString(6);
             cursor.moveToNext();
         }
+
+    }
+
+    String printNAN ( String tag1, String tag2, String tag3, String tag4 ) {
+
+        String[] tabTag = ( tag1+tag2+tag3+tag4 ).split("NAN");
+        String tempTag = "";
+
+        for ( int i = 0; ( i < tabTag.length ) && !( tabTag[i].equals("NAN") ); i++ ) {
+            tempTag = tempTag + " - " + tabTag[i];
+        }
+
+        return ( tempTag.substring(3) );
 
     }
 
@@ -104,12 +125,32 @@ public class CahierDisplay extends Activity {
 
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int pos, long id) {
-
-                TextView textView = (TextView) v.findViewById(R.id.word);
-                key = Integer.parseInt( ( (String) textView.getText() ).split(". ")[0] ) - 1;
-
+                Button buttonModify = findViewById(R.id.button_modifyWord);
+                buttonModify.setText(words_list[pos]);
+                key = pos;
             }
         });
+    }
+
+    public void onClicModify(View view) {
+        if ( key == -1 ) {
+            Toast.makeText(getApplicationContext(),"Veuillez sélectionner une entrée à modifier !",Toast.LENGTH_SHORT).show();
+        } else {
+            launchGestionMots("Modify");
+        }
+
+    }
+
+    public void onClicAdd(View view) {
+        launchGestionMots("Add");
+    }
+
+    void launchGestionMots ( String mode ) {
+        Intent i = new Intent ( this, GestionMotDisplay.class );
+        i.putExtra( "MODE", mode );
+        i.putExtra( "LangueChoisie", language );
+        startActivity( i );
+        finish();
     }
 
 }
