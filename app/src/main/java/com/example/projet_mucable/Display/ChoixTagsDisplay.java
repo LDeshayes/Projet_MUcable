@@ -29,7 +29,7 @@ public class ChoixTagsDisplay extends Activity {
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     int key; // future key pour repérer le word à modifier
 
-    String tagReturn ="CHOIX";
+    String tagReturn ="Choix";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
