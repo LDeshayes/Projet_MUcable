@@ -43,7 +43,7 @@ public class CustomAdapter extends BaseAdapter {
         TextView word = (TextView) view.findViewById(R.id.word);
         TextView translation = (TextView) view.findViewById(R.id.translation);
         TextView tags = (TextView) view.findViewById(R.id.tags);
-        word.setText((i+1)+". Word            : "+words_list[i]);
+        word.setText("Word            : "+words_list[i]);
         translation.setText("Translation : "+translations_list[i]);
         tags.setText("Tags : "+tags_list[i]);
         return view;
