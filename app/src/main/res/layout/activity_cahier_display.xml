@@ -34,6 +34,6 @@
         android:layout_height="wrap_content"
         android:divider="@color/material_blue_grey_800"
         android:dividerHeight="1dp"
-        android:layout_below="@id/language" />
+        android:layout_below="@id/button_modifyWord" />
 
 </RelativeLayout>
