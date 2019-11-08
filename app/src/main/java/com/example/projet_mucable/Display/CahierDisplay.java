@@ -101,7 +101,11 @@ public class CahierDisplay extends Activity {
             tempTag = tempTag + " - " + tabTag[i];
         }
 
-        return ( tempTag.substring(3) );
+        if ( tempTag.length() == 0 ) {
+            return ( tempTag );
+        } else {
+            return ( tempTag.substring(3) );
+        }
 
     }
 
