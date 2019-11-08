@@ -34,7 +34,6 @@ public class GestionTagsDisplay extends Activity {
 
     void setupElements() {
         setChoiceTag();
-        setTagCount();
     }
 
     void setChoiceTag() {
@@ -48,23 +47,6 @@ public class GestionTagsDisplay extends Activity {
             button_selection.setText("Choix");
         } else {
             button_selection.setText(choiceTag);
-        }
-
-    }
-
-    void setTagCount() {
-
-        TextView textView_TagCount = findViewById(R.id.textView_TagCount);
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
-
-        String[] tag_list = tags.split(";");
-
-        if ( ( tag_list.length == 1 ) && ( tag_list[0].equals("EMPTY_NULL") ) ) {
-            textView_TagCount.setText("Nombre de tags : 0");
-        } else {
-            textView_TagCount.setText("Nombre de tags : " + tag_list.length);
         }
 
     }
@@ -135,8 +117,6 @@ public class GestionTagsDisplay extends Activity {
 
         }
 
-        setTagCount();
-
     }
 
     public void clicChoiceTag(View view) {
@@ -180,18 +160,16 @@ public class GestionTagsDisplay extends Activity {
 
         if (Arrays.asList(tag_list).contains(delTag)) {
 
+            // Suppression du tag de la liste des tags en mémoire
             int pos = new ArrayList<String>(Arrays.asList(tag_list)).indexOf(delTag);
 
             String new_TAGLIST = "";
             int i;
 
             for (i = 0; ( i < tag_list.length ) /*&& ( i != pos )*/ ; i++ ) {
-
                 if(i != pos){
                     new_TAGLIST = new_TAGLIST + ";" + tag_list[i];
                 }
-
-
             }
 
             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
@@ -202,11 +180,12 @@ public class GestionTagsDisplay extends Activity {
             }
             NEW_TAGLIST.commit();
 
+            // Suppression des occurrences du tag dans la DB
+            // TODO
+
         } else {
             Toast.makeText(getApplicationContext(), "Ce tag n'existe pas dans la liste !", Toast.LENGTH_SHORT).show();
         }
-
-        setTagCount();
 
     }
 
