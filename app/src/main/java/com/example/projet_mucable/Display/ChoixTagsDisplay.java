@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.projet_mucable.CustomAdapter;
+import com.example.projet_mucable.GestionMot;
 import com.example.projet_mucable.R;
 
 public class ChoixTagsDisplay extends Activity {
@@ -40,11 +41,19 @@ public class ChoixTagsDisplay extends Activity {
      * action when back button is pressed
      */
     public void onBackPressed() {
-        launchGestionTags();
+        sendTagReturn();
     }
 
-    public void launchGestionTags () {
-        Intent i = new Intent ( this, GestionTagsDisplay.class );
+    public void sendTagReturn () {
+        Intent i;
+        String origin = getIntent().getStringExtra("Origin");
+        if ( origin.equals("GestionTagsDisplay") ) {
+            i = new Intent ( this, GestionTagsDisplay.class );
+        } else if ( origin.equals("CahierDisplay") ) {
+            i = new Intent ( this, GestionMotDisplay.class );
+        } else {
+            i = new Intent ( this, IntroMenuDisplay.class );
+        }
         i.putExtra( "ChoiceTag", tagReturn );
         startActivity( i );
         finish();
@@ -91,7 +100,7 @@ public class ChoixTagsDisplay extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if ( tagReturn.equals(tag_list[position])) {
-                        launchGestionTags();
+                        sendTagReturn();
                     } else {
                         if ( !tagReturn.equals("Choix") ) {
                             tag_view.setBackgroundColor(0xFAFAFA);
