@@ -46,12 +46,13 @@ public class ChoixTagsDisplay extends Activity {
 
     public void sendTagReturn () {
         Intent i;
-        String origin = getIntent().getStringExtra("Origin");
+        Intent pred = getIntent();
+        String origin = pred.getStringExtra("Origin");
         if ( origin.equals("GestionTagsDisplay") ) {
             i = new Intent ( this, GestionTagsDisplay.class );
-        } else if ( origin.equals("CahierDisplay") ) {
+        } else if ( origin.equals("GestionMotsDisplay") ) {
             i = new Intent ( this, GestionMotDisplay.class );
-            i.putExtra("key", getIntent().getStringExtra("key") );
+            i.putExtra("key", pred.getStringExtra("key") );
         } else {
             i = new Intent ( this, IntroMenuDisplay.class );
         }

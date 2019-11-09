@@ -101,7 +101,11 @@ public class CahierDisplay extends Activity {
             tempTag = tempTag + " - " + tabTag[i];
         }
 
-        return ( tempTag.substring(3) );
+        if ( tempTag.length() == 0 ) {
+            return ( tempTag );
+        } else {
+            return ( tempTag.substring(3) );
+        }
 
     }
 
@@ -151,7 +155,7 @@ public class CahierDisplay extends Activity {
     }
 
     void launchGestionMots ( String mode, Intent i ) {
-        i.putExtra( "MODE", mode );
+        i.putExtra( "mode", mode );
         i.putExtra( "LangueChoisie", language );
         startActivity( i );
         finish();

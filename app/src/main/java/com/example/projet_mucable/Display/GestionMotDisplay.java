@@ -12,6 +12,7 @@ public class GestionMotDisplay extends Activity {
 
     String language;
     String mode;
+    int key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,10 @@ public class GestionMotDisplay extends Activity {
     void getIntentValues() {
         Intent i = getIntent();
         language = i.getStringExtra("LangueChoisie");
-        mode = i.getStringExtra("MODE");
+        mode = i.getStringExtra("mode");
+        if ( mode.equals("Modify") ) {
+            key = i.getIntExtra("key", -1);
+        }
     }
 
     @Override

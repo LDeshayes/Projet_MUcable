@@ -2,11 +2,13 @@ package com.example.projet_mucable.Display;
 
 // Ajout et suppression des tags, 4.4 cdc
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -58,19 +60,6 @@ public class GestionTagsDisplay extends Activity {
 
         if ( newTag.length() != 0 ) {
 
-            /*new AlertDialog.Builder(getApplicationContext())
-                    //.setTitle("Delete entry")
-                    .setMessage("Êtes vous sur(e) de vouloir ajouter ce tag "+newTag+" ?")
-
-                    .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            saveTag( newTag );
-                        }
-                    })
-
-                    .setNegativeButton("Non", null)
-                    .show();*/
-
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Êtes vous sur(e) de vouloir ajouter ce tag "+newTag+" ?")
                     .setCancelable(true)
@@ -121,6 +110,7 @@ public class GestionTagsDisplay extends Activity {
 
     public void clicChoiceTag(View view) {
         Intent i = new Intent ( this, ChoixTagsDisplay.class );
+        i.putExtra("Origin", "GestionTagsDisplay");
         startActivity( i );
         finish();
     }
@@ -151,6 +141,7 @@ public class GestionTagsDisplay extends Activity {
 
     }
 
+    @SuppressLint("WrongConstant")
     void delTag( String delTag ) {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -164,7 +155,7 @@ public class GestionTagsDisplay extends Activity {
             int pos = new ArrayList<String>(Arrays.asList(tag_list)).indexOf(delTag);
 
             String new_TAGLIST = "";
-            int i;
+            int i, j;
 
             for (i = 0; ( i < tag_list.length ) /*&& ( i != pos )*/ ; i++ ) {
                 if(i != pos){
@@ -181,7 +172,13 @@ public class GestionTagsDisplay extends Activity {
             NEW_TAGLIST.commit();
 
             // Suppression des occurrences du tag dans la DB
-            // TODO
+            SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+            String[] language_array = getResources().getStringArray(R.array.language_array);;
+            for ( i = 0; i < language_array.length; i++ ) {
+                for ( j = 1; j < 5; j++ ) {
+                    CDB.execSQL("UPDATE t_"+language_array[i]+" SET Tag_"+j+"='NAN' WHERE Tag_"+j+"='"+delTag+"' ");
+                }
+            }
 
         } else {
             Toast.makeText(getApplicationContext(), "Ce tag n'existe pas dans la liste !", Toast.LENGTH_SHORT).show();
