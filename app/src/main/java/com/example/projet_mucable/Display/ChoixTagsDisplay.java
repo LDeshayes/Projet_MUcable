@@ -51,6 +51,7 @@ public class ChoixTagsDisplay extends Activity {
             i = new Intent ( this, GestionTagsDisplay.class );
         } else if ( origin.equals("CahierDisplay") ) {
             i = new Intent ( this, GestionMotDisplay.class );
+            i.putExtra("key", getIntent().getStringExtra("key") );
         } else {
             i = new Intent ( this, IntroMenuDisplay.class );
         }
