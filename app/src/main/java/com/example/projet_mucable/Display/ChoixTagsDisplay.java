@@ -28,11 +28,13 @@ public class ChoixTagsDisplay extends Activity {
 
     View tag_view;
     String tagReturn = "Choix";
+    String[] wordInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choixtags_display);
+
         setupListView();
     }
 
@@ -45,18 +47,36 @@ public class ChoixTagsDisplay extends Activity {
     }
 
     public void sendTagReturn () {
+
         Intent i;
         Intent pred = getIntent();
         String origin = pred.getStringExtra("Origin");
+
+        String[] wordInfo = pred.getStringExtra("informations").split(";");
+        int tagChanged_number = pred.getIntExtra("tag_number", -1);
+        String newWordInfo = wordInfo[0]+";"+wordInfo[1];
+        for ( int ind = 0; ind < 4; ind ++ ) {
+            if ( ind == tagChanged_number ) {
+                newWordInfo = newWordInfo+";"+tagReturn;
+            } else {
+                newWordInfo = newWordInfo+";"+wordInfo[ind];
+            }
+        }
+
         if ( origin.equals("GestionTagsDisplay") ) {
             i = new Intent ( this, GestionTagsDisplay.class );
+            i.putExtra( "ChoiceTag", tagReturn );
         } else if ( origin.equals("GestionMotsDisplay") ) {
+            // TODO
+            // Setup a way to manipulate intents to remember tags for add/modify words
             i = new Intent ( this, GestionMotDisplay.class );
-            i.putExtra("key", pred.getStringExtra("key") );
+            i.putExtra("mode", "Modify");
+            i.putExtra("Origin", "ChoixTagsDisplay");
+            i.putExtra("key", pred.getStringExtra("key"));
+            i.putExtra("informations", newWordInfo);
         } else {
             i = new Intent ( this, IntroMenuDisplay.class );
         }
-        i.putExtra( "ChoiceTag", tagReturn );
         startActivity( i );
         finish();
     }

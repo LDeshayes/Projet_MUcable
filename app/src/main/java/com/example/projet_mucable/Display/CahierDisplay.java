@@ -79,8 +79,6 @@ public class CahierDisplay extends Activity {
         translations_list = new String[rowCount];
         tags_list = new String[rowCount];
 
-        String[] tempTag;
-
         cursor.moveToFirst();
         for ( int i = 0; i < rowCount; i++ ) {
             key_list[i] = cursor.getInt(0);
@@ -145,7 +143,9 @@ public class CahierDisplay extends Activity {
         } else {
             Intent i = new Intent ( this, GestionMotDisplay.class );
             i.putExtra("key",key);
+            i.putExtra("Origin", "CahierDisplay");
             launchGestionMots("Modify", i);
+            finish();
         }
 
     }
