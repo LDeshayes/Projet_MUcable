@@ -18,7 +18,10 @@ import com.example.projet_mucable.R;
 
 public class GestionMotDisplay extends Activity {
 
-    String language;
+    // TODO
+    // Rework
+
+    /*String language;
     String mode;
     int key;
     String[] tempInfo;
@@ -26,19 +29,19 @@ public class GestionMotDisplay extends Activity {
     String[] newInfo;
     String newInfoString;
 
-    SQLiteDatabase CDB;
+    SQLiteDatabase CDB;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestionmot_display);
 
-        getDB();
+        /*getDB();
         getIntentValues();
-        setupDisplayValues();
+        setupDisplayValues();*/
     }
 
-    @SuppressLint("WrongConstant")
+    /*@SuppressLint("WrongConstant")
     void getDB() {
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
     }
@@ -348,6 +351,6 @@ public class GestionMotDisplay extends Activity {
 
         startActivity( i );
         finish();
-    }
+    }*/
 
 }

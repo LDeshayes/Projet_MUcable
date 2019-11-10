@@ -55,7 +55,10 @@ public class ChoixTagsDisplay extends Activity {
         if ( origin.equals("GestionTagsDisplay") ) {
             i = new Intent ( this, GestionTagsDisplay.class );
             i.putExtra( "ChoiceTag", tagReturn );
-        } else if ( origin.equals("GestionMotDisplay") ) {
+        }
+        // TODO
+        // Rework
+        /* else if ( origin.equals("GestionMotDisplay") ) {
             String[] wordInfo = pred.getStringExtra("informations").split(";");
             int tagChanged_number = pred.getIntExtra("tag_number", -1);
             String newWordInfo = wordInfo[0]+";"+wordInfo[1];
@@ -74,7 +77,7 @@ public class ChoixTagsDisplay extends Activity {
             i.putExtra("key", pred.getStringExtra("key"));
             i.putExtra("informations", newWordInfo);
             i.putExtra("hints", pred.getStringExtra("hints"));
-        } else {
+        }*/ else {
             i = new Intent ( this, IntroMenuDisplay.class );
         }
         startActivity( i );
