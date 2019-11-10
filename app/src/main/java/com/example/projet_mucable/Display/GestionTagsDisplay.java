@@ -45,7 +45,7 @@ public class GestionTagsDisplay extends Activity {
         Intent i = getIntent();
         String choiceTag = i.getStringExtra("ChoiceTag");
 
-        if ( choiceTag == null ) {
+        if ( choiceTag.equals("NAN") ) {
             button_selection.setText("Choix");
         } else {
             button_selection.setText(choiceTag);
@@ -157,7 +157,7 @@ public class GestionTagsDisplay extends Activity {
             String new_TAGLIST = "";
             int i, j;
 
-            for (i = 0; ( i < tag_list.length ) /*&& ( i != pos )*/ ; i++ ) {
+            for (i = 0; i < tag_list.length; i++ ) {
                 if(i != pos){
                     new_TAGLIST = new_TAGLIST + ";" + tag_list[i];
                 }

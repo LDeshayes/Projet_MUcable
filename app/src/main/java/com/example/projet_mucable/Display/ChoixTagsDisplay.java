@@ -27,7 +27,7 @@ import com.example.projet_mucable.R;
 public class ChoixTagsDisplay extends Activity {
 
     View tag_view;
-    String tagReturn = "Choix";
+    String tagReturn = "NAN";
     String[] wordInfo;
 
     @Override
@@ -52,26 +52,28 @@ public class ChoixTagsDisplay extends Activity {
         Intent pred = getIntent();
         String origin = pred.getStringExtra("Origin");
 
-        String[] wordInfo = pred.getStringExtra("informations").split(";");
-        int tagChanged_number = pred.getIntExtra("tag_number", -1);
-        String newWordInfo = wordInfo[0]+";"+wordInfo[1];
-        for ( int ind = 0; ind < 4; ind ++ ) {
-            if ( ind == tagChanged_number ) {
-                newWordInfo = newWordInfo+";"+tagReturn;
-            } else {
-                newWordInfo = newWordInfo+";"+wordInfo[ind];
-            }
-        }
-
         if ( origin.equals("GestionTagsDisplay") ) {
             i = new Intent ( this, GestionTagsDisplay.class );
             i.putExtra( "ChoiceTag", tagReturn );
-        } else if ( origin.equals("GestionMotsDisplay") ) {
+        } else if ( origin.equals("GestionMotDisplay") ) {
+            String[] wordInfo = pred.getStringExtra("informations").split(";");
+            int tagChanged_number = pred.getIntExtra("tag_number", -1);
+            String newWordInfo = wordInfo[0]+";"+wordInfo[1];
+            for ( int ind = 0; ind < 4; ind ++ ) {
+                if ( ind == tagChanged_number ) {
+                    newWordInfo = newWordInfo+";"+tagReturn;
+                } else {
+                    newWordInfo = newWordInfo+";"+wordInfo[ind+2];
+                }
+            }
+
             i = new Intent ( this, GestionMotDisplay.class );
-            i.putExtra("mode", "Modify");
+            i.putExtra("LangueChoisie", pred.getStringExtra("LangueChoisie") );
+            i.putExtra("mode", pred.getStringExtra("mode") );
             i.putExtra("Origin", "ChoixTagsDisplay");
             i.putExtra("key", pred.getStringExtra("key"));
             i.putExtra("informations", newWordInfo);
+            i.putExtra("hints", pred.getStringExtra("hints"));
         } else {
             i = new Intent ( this, IntroMenuDisplay.class );
         }
@@ -122,7 +124,7 @@ public class ChoixTagsDisplay extends Activity {
                     if ( tagReturn.equals(tag_list[position])) {
                         sendTagReturn();
                     } else {
-                        if ( !tagReturn.equals("Choix") ) {
+                        if ( !tagReturn.equals("NAN") ) {
                             tag_view.setBackgroundColor(0xFAFAFA);
                         }
                         tag_view = view;

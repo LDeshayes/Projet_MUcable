@@ -95,8 +95,10 @@ public class CahierDisplay extends Activity {
         String[] tabTag = { tag1, tag2, tag3, tag4 };
         String tempTag = "";
 
-        for ( int i = 0; ( i < tabTag.length ) && !( tabTag[i].equals("NAN") ); i++ ) {
-            tempTag = tempTag + " - " + tabTag[i];
+        for ( int i = 0; i < tabTag.length; i++ ) {
+            if ( !( tabTag[i].equals("NAN") ) ) {
+                tempTag = tempTag + " - " + tabTag[i];
+            }
         }
 
         if ( tempTag.length() == 0 ) {
@@ -143,7 +145,6 @@ public class CahierDisplay extends Activity {
         } else {
             Intent i = new Intent ( this, GestionMotDisplay.class );
             i.putExtra("key",key);
-            i.putExtra("Origin", "CahierDisplay");
             launchGestionMots("Modify", i);
             finish();
         }
@@ -157,6 +158,7 @@ public class CahierDisplay extends Activity {
     void launchGestionMots ( String mode, Intent i ) {
         i.putExtra( "mode", mode );
         i.putExtra( "LangueChoisie", language );
+        i.putExtra("Origin", "CahierDisplay");
         startActivity( i );
         finish();
     }

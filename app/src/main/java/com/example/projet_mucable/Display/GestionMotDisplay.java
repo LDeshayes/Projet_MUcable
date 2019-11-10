@@ -22,7 +22,9 @@ public class GestionMotDisplay extends Activity {
     String mode;
     int key;
     String[] tempInfo;
+    String[] tempHint;
     String[] newInfo;
+    String newInfoString;
 
     SQLiteDatabase CDB;
 
@@ -45,21 +47,97 @@ public class GestionMotDisplay extends Activity {
         Intent i = getIntent();
         language = i.getStringExtra("LangueChoisie");
         mode = i.getStringExtra("mode");
+        String Origin = i.getStringExtra("Origin");
         if ( mode.equals("Add") ) {
-            tempInfo = "Mot;Traduction; ; ; ; ".split(";");
-        } else if ( mode.equals("Modify") ) {
-            key = i.getIntExtra("key", -1);
-            String Origin = i.getStringExtra("Origin");
             if ( Origin.equals("CahierDisplay") ) {
-                getKeyRow();
+                tempInfo = "Mot;Traduction; ; ; ; ".split(";");
+                tempHint = new String[]{ "Mot", "Traduction" };
             } else if ( Origin.equals("ChoixTagsDisplay") ) {
                 tempInfo = i.getStringExtra("informations").split(";");
+                tempHint = i.getStringExtra("hints").split(";");
+            }
+        } else if ( mode.equals("Modify") ) {
+            key = i.getIntExtra("key", -1);
+            if ( Origin.equals("CahierDisplay") ) {
+                getKeyRow();
+                tempHint = new String[]{ tempInfo[0], tempInfo[1] };
+            } else if ( Origin.equals("ChoixTagsDisplay") ) {
+                tempInfo = i.getStringExtra("informations").split(";");
+                tempHint = i.getStringExtra("hints").split(";");
             }
         }
     }
 
-    void getKeyRow() {
+    void setupDisplayValues() {
+        TextView tempTextView;
+        EditText tempEditText;
+        Button tempButton;
 
+        tempTextView = findViewById(R.id.textView_mode);
+        tempTextView.setText(mode);
+
+        String Origin = getIntent().getStringExtra("Origin");
+        if ( Origin.equals("CahierDisplay") ) {
+            tempEditText = findViewById(R.id.editText_word);
+            tempEditText.setHint(tempHint[0]);
+
+            tempEditText = findViewById(R.id.editText_translation);
+            tempEditText.setHint(tempHint[1]);
+        } else if ( Origin.equals("ChoixTagsDisplay") ) {
+            tempEditText = findViewById(R.id.editText_word);
+            tempEditText.setHint(tempHint[0]);
+            if ( !tempInfo[0].equals(tempHint[0]) ) {
+                tempEditText.setText(tempInfo[0]);
+            } else {
+                tempEditText.setText("");
+            }
+
+            tempEditText = findViewById(R.id.editText_translation);
+            tempEditText.setHint(tempHint[1]);
+            if ( !tempInfo[1].equals(tempHint[1]) ) {
+                tempEditText.setText(tempInfo[1]);
+            } else {
+                tempEditText.setText("");
+            }
+        }
+
+        tempButton = findViewById(R.id.button_Tag_1);
+        if ( tempInfo[2].equals("NAN") ) {
+            tempButton.setText(" ");
+        } else {
+            tempButton.setText(tempInfo[2]);
+        }
+
+        tempButton = findViewById(R.id.button_Tag_2);
+        if ( tempInfo[3].equals("NAN") ) {
+            tempButton.setText(" ");
+        } else {
+            tempButton.setText(tempInfo[3]);
+        }
+
+        tempButton = findViewById(R.id.button_Tag_3);
+        if ( tempInfo[4].equals("NAN") ) {
+            tempButton.setText(" ");
+        } else {
+            tempButton.setText(tempInfo[4]);
+        }
+
+        tempButton = findViewById(R.id.button_Tag_4);
+        if ( tempInfo[5].equals("NAN") ) {
+            tempButton.setText(" ");
+        } else {
+            tempButton.setText(tempInfo[5]);
+        }
+
+        tempButton = findViewById(R.id.button_delete);
+        if ( mode.equals("Modify") ) {
+            tempButton.setVisibility(View.VISIBLE);
+        } else if ( mode.equals("Add") ) {
+            tempButton.setVisibility(View.GONE);
+        }
+    }
+
+    void getKeyRow() {
         if ( mode.equals("Add") ) {
             tempInfo = "Mot;Traduction; ; ; ; ".split(";");
         } else if ( mode.equals("Modify") ) {
@@ -108,7 +186,6 @@ public class GestionMotDisplay extends Activity {
             tempNewInfo = tempNewInfo + ";" + tempButton.getText().toString();
         }
 
-
         tempButton = findViewById(R.id.button_Tag_2);
         tempValue = tempButton.getText().toString();
         if ( tempValue.equals(" ") ) {
@@ -133,41 +210,8 @@ public class GestionMotDisplay extends Activity {
             tempNewInfo = tempNewInfo + ";" + tempButton.getText().toString();
         }
 
+        newInfoString = tempNewInfo;
         newInfo = tempNewInfo.split(";");
-    }
-
-    void setupDisplayValues() {
-        TextView tempTextView;
-        EditText tempEditText;
-        Button tempButton;
-
-        tempTextView = findViewById(R.id.textView_mode);
-        tempTextView.setText(mode);
-
-        tempEditText = findViewById(R.id.editText_word);
-        tempEditText.setHint(tempInfo[0]);
-
-        tempEditText = findViewById(R.id.editText_translation);
-        tempEditText.setHint(tempInfo[1]);
-
-        tempButton = findViewById(R.id.button_Tag_1);
-        tempButton.setText(tempInfo[2]);
-
-        tempButton = findViewById(R.id.button_Tag_2);
-        tempButton.setText(tempInfo[3]);
-
-        tempButton = findViewById(R.id.button_Tag_3);
-        tempButton.setText(tempInfo[4]);
-
-        tempButton = findViewById(R.id.button_Tag_4);
-        tempButton.setText(tempInfo[5]);
-
-        tempButton = findViewById(R.id.button_delete);
-        if ( mode.equals("Modify") ) {
-            tempButton.setVisibility(View.VISIBLE);
-        } else if ( mode.equals("Add") ) {
-            tempButton.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -193,16 +237,32 @@ public class GestionMotDisplay extends Activity {
         tempEditText.setHint(tempInfo[1]);
 
         tempButton = findViewById(R.id.button_Tag_1);
-        tempButton.setText(tempInfo[2]);
+        if ( tempInfo[2].equals("NAN") ) {
+            tempButton.setText(" ");
+        } else {
+            tempButton.setText(tempInfo[2]);
+        }
 
         tempButton = findViewById(R.id.button_Tag_2);
-        tempButton.setText(tempInfo[3]);
+        if ( tempInfo[3].equals("NAN") ) {
+            tempButton.setText(" ");
+        } else {
+            tempButton.setText(tempInfo[3]);
+        }
 
         tempButton = findViewById(R.id.button_Tag_3);
-        tempButton.setText(tempInfo[4]);
+        if ( tempInfo[4].equals("NAN") ) {
+            tempButton.setText(" ");
+        } else {
+            tempButton.setText(tempInfo[4]);
+        }
 
         tempButton = findViewById(R.id.button_Tag_4);
-        tempButton.setText(tempInfo[5]);
+        if ( tempInfo[5].equals("NAN") ) {
+            tempButton.setText(" ");
+        } else {
+            tempButton.setText(tempInfo[5]);
+        }
     }
 
     public void onClicClear(View view) {
@@ -210,21 +270,39 @@ public class GestionMotDisplay extends Activity {
     }
 
     public void onClicValidation(View view) {
-        String statement = "";
+        String statement;
 
         getNewValues();
-        if ( mode.equals("Modify") ) {
-            statement = "UPDATE t_"+language+" SET Word='"+newInfo[0]+"', Translation='"+newInfo[1]+"', Tag_1='"+newInfo[2]+"', Tag_2='"+newInfo[3]+"', Tag_3='"+newInfo[4]+"', Tag_4='"+newInfo[5]+"' WHERE Id_Word="+key;
-            CDB.execSQL(statement);
-            clear();
-        } else if ( mode.equals("Add") ) {
-            statement = "INSERT INTO t_"+language+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ('"+newInfo[0]+"', '"+newInfo[1]+"', '"+newInfo[2]+"', '"+newInfo[3]+"', '"+newInfo[4]+"', '"+newInfo[5]+"')";
-            CDB.execSQL(statement);
 
-            Intent i = new Intent ( this, CahierDisplay.class );
-            i.putExtra( "LangueChoisie", language );
-            startActivity( i );
-            finish();
+        if ( mode.equals("Modify") ) {
+            statement = "DELETE FROM t_"+language+" WHERE Id_Word="+key;
+            CDB.execSQL(statement);
+            statement = "INSERT INTO t_"+language+" (Id_Word, Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ("+key+", '"+newInfo[0]+"', '"+newInfo[1]+"', '"+newInfo[2]+"', '"+newInfo[3]+"', '"+newInfo[4]+"', '"+newInfo[5]+"')";
+            //statement = "UPDATE t_"+language+" SET Word='"+newInfo[0]+"', Translation='"+newInfo[1]+"', Tag_1='"+newInfo[2]+"', Tag_2='"+newInfo[3]+"', Tag_3='"+newInfo[4]+"', Tag_4='"+newInfo[5]+"' WHERE Id_Word="+key;
+            CDB.execSQL(statement);
+            //clear();
+        } else if ( mode.equals("Add") ) {
+
+            String word;
+            String translation;
+            EditText tempEditText;
+
+            tempEditText = findViewById(R.id.editText_word);
+            word = tempEditText.getText().toString();
+            tempEditText = findViewById(R.id.editText_translation);
+            translation = tempEditText.getText().toString();
+
+            if ( ( word.length() == 0 ) || ( translation.length() == 0 ) ) {
+                Toast.makeText(getApplicationContext(), "L'ajout demande au moins le mot et sa traduction !", Toast.LENGTH_SHORT).show();
+            } else {
+                statement = "INSERT INTO t_"+language+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ('"+newInfo[0]+"', '"+newInfo[1]+"', '"+newInfo[2]+"', '"+newInfo[3]+"', '"+newInfo[4]+"', '"+newInfo[5]+"')";
+                CDB.execSQL(statement);
+
+                Intent i = new Intent ( this, CahierDisplay.class );
+                i.putExtra( "LangueChoisie", language );
+                startActivity( i );
+                finish();
+            }
         }
     }
 
@@ -240,7 +318,36 @@ public class GestionMotDisplay extends Activity {
         }
     }
 
-    // TODO
-    // Gestion clictagbutton
+    public void onClicTag1(View view) {
+        onClicTag(0);
+    }
+
+    public void onClicTag2(View view) {
+        onClicTag(1);
+    }
+
+    public void onClicTag3(View view) {
+        onClicTag(2);
+    }
+
+    public void onClicTag4(View view) {
+        onClicTag(3);
+    }
+
+    void onClicTag( int tag_number ) {
+        getNewValues();
+
+        Intent i = new Intent ( this, ChoixTagsDisplay.class );
+        i.putExtra("LangueChoisie", language);
+        i.putExtra("mode", mode);
+        i.putExtra("key", key);
+        i.putExtra("informations", newInfoString);
+        i.putExtra("Origin", "GestionMotDisplay");
+        i.putExtra("tag_number", tag_number);
+        i.putExtra("hints", tempHint[0]+";"+tempHint[1]);
+
+        startActivity( i );
+        finish();
+    }
 
 }
