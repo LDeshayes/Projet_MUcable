@@ -67,8 +67,6 @@ public class ChoixTagsDisplay extends Activity {
             i = new Intent ( this, GestionTagsDisplay.class );
             i.putExtra( "ChoiceTag", tagReturn );
         } else if ( origin.equals("GestionMotsDisplay") ) {
-            // TODO
-            // Setup a way to manipulate intents to remember tags for add/modify words
             i = new Intent ( this, GestionMotDisplay.class );
             i.putExtra("mode", "Modify");
             i.putExtra("Origin", "ChoixTagsDisplay");

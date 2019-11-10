@@ -46,7 +46,7 @@ public class GestionMotDisplay extends Activity {
         language = i.getStringExtra("LangueChoisie");
         mode = i.getStringExtra("mode");
         if ( mode.equals("Add") ) {
-            tempInfo = "Mot;Traduction;;;;".split(";");
+            tempInfo = "Mot;Traduction; ; ; ; ".split(";");
         } else if ( mode.equals("Modify") ) {
             key = i.getIntExtra("key", -1);
             String Origin = i.getStringExtra("Origin");
@@ -61,7 +61,7 @@ public class GestionMotDisplay extends Activity {
     void getKeyRow() {
 
         if ( mode.equals("Add") ) {
-            tempInfo = "Mot;Traduction;;;;".split(";");
+            tempInfo = "Mot;Traduction; ; ; ; ".split(";");
         } else if ( mode.equals("Modify") ) {
             Cursor cursor = CDB.query(
                     "t_"+language,
@@ -102,7 +102,7 @@ public class GestionMotDisplay extends Activity {
 
         tempButton = findViewById(R.id.button_Tag_1);
         tempValue = tempButton.getText().toString();
-        if ( tempValue.equals("") ) {
+        if ( tempValue.equals(" ") ) {
             tempNewInfo = tempNewInfo + ";NAN";
         } else {
             tempNewInfo = tempNewInfo + ";" + tempButton.getText().toString();
@@ -111,7 +111,7 @@ public class GestionMotDisplay extends Activity {
 
         tempButton = findViewById(R.id.button_Tag_2);
         tempValue = tempButton.getText().toString();
-        if ( tempValue.equals("") ) {
+        if ( tempValue.equals(" ") ) {
             tempNewInfo = tempNewInfo + ";NAN";
         } else {
             tempNewInfo = tempNewInfo + ";" + tempButton.getText().toString();
@@ -119,7 +119,7 @@ public class GestionMotDisplay extends Activity {
 
         tempButton = findViewById(R.id.button_Tag_3);
         tempValue = tempButton.getText().toString();
-        if ( tempValue.equals("") ) {
+        if ( tempValue.equals(" ") ) {
             tempNewInfo = tempNewInfo + ";NAN";
         } else {
             tempNewInfo = tempNewInfo + ";" + tempButton.getText().toString();
@@ -127,7 +127,7 @@ public class GestionMotDisplay extends Activity {
 
         tempButton = findViewById(R.id.button_Tag_4);
         tempValue = tempButton.getText().toString();
-        if ( tempValue.equals("") ) {
+        if ( tempValue.equals(" ") ) {
             tempNewInfo = tempNewInfo + ";NAN";
         } else {
             tempNewInfo = tempNewInfo + ";" + tempButton.getText().toString();
@@ -161,6 +161,13 @@ public class GestionMotDisplay extends Activity {
 
         tempButton = findViewById(R.id.button_Tag_4);
         tempButton.setText(tempInfo[5]);
+
+        tempButton = findViewById(R.id.button_delete);
+        if ( mode.equals("Modify") ) {
+            tempButton.setVisibility(View.VISIBLE);
+        } else if ( mode.equals("Add") ) {
+            tempButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -203,16 +210,34 @@ public class GestionMotDisplay extends Activity {
     }
 
     public void onClicValidation(View view) {
-        String update = "";
+        String statement = "";
 
         getNewValues();
         if ( mode.equals("Modify") ) {
-            update = "UPDATE t_"+language+" SET Word='"+newInfo[0]+"', Translation='"+newInfo[1]+"', Tag_1='"+newInfo[2]+"', Tag_2='"+newInfo[3]+"', Tag_3='"+newInfo[4]+"', Tag_4='"+newInfo[5]+"' WHERE Id_Word="+key;
+            statement = "UPDATE t_"+language+" SET Word='"+newInfo[0]+"', Translation='"+newInfo[1]+"', Tag_1='"+newInfo[2]+"', Tag_2='"+newInfo[3]+"', Tag_3='"+newInfo[4]+"', Tag_4='"+newInfo[5]+"' WHERE Id_Word="+key;
+            CDB.execSQL(statement);
+            clear();
         } else if ( mode.equals("Add") ) {
-            update = "INSERT INTO t_"+language+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ('"+newInfo[0]+"', '"+newInfo[1]+"', '"+newInfo[2]+"', '"+newInfo[3]+"', '"+newInfo[4]+"', '"+newInfo[5]+"')";
+            statement = "INSERT INTO t_"+language+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ('"+newInfo[0]+"', '"+newInfo[1]+"', '"+newInfo[2]+"', '"+newInfo[3]+"', '"+newInfo[4]+"', '"+newInfo[5]+"')";
+            CDB.execSQL(statement);
+
+            Intent i = new Intent ( this, CahierDisplay.class );
+            i.putExtra( "LangueChoisie", language );
+            startActivity( i );
+            finish();
         }
-        CDB.execSQL(update);
-        clear();
+    }
+
+    public void onClicDelete(View view) {
+        if ( mode.equals("Modify") ) {
+            String delete = "DELETE FROM t_"+language+" WHERE Id_Word="+key;
+            CDB.execSQL(delete);
+
+            Intent i = new Intent ( this, CahierDisplay.class );
+            i.putExtra( "LangueChoisie", language );
+            startActivity( i );
+            finish();
+        }
     }
 
     // TODO

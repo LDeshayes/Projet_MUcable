@@ -92,7 +92,7 @@ public class CahierDisplay extends Activity {
 
     String printNAN ( String tag1, String tag2, String tag3, String tag4 ) {
 
-        String[] tabTag = ( tag1+tag2+tag3+tag4 ).split("NAN");
+        String[] tabTag = { tag1, tag2, tag3, tag4 };
         String tempTag = "";
 
         for ( int i = 0; ( i < tabTag.length ) && !( tabTag[i].equals("NAN") ); i++ ) {
