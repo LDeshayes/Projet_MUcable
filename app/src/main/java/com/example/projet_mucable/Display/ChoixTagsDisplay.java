@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -20,16 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.projet_mucable.CustomAdapter;
+import com.example.projet_mucable.GestionMot;
 import com.example.projet_mucable.R;
 
 public class ChoixTagsDisplay extends Activity {
 
-
-    ListView tags_listview;
-    String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
-    int key; // future key pour repérer le word à modifier
-
-    String tagReturn ="Choix";
+    View tag_view;
+    String tagReturn = "Choix";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +36,30 @@ public class ChoixTagsDisplay extends Activity {
         setupListView();
     }
 
-
-
     @Override
     /**
      * action when back button is pressed
      */
     public void onBackPressed() {
+        sendTagReturn();
+    }
 
-        Intent i = new Intent ( this, GestionTagsDisplay.class );
+    public void sendTagReturn () {
+        Intent i;
+        Intent pred = getIntent();
+        String origin = pred.getStringExtra("Origin");
+        if ( origin.equals("GestionTagsDisplay") ) {
+            i = new Intent ( this, GestionTagsDisplay.class );
+        } else if ( origin.equals("GestionMotsDisplay") ) {
+            i = new Intent ( this, GestionMotDisplay.class );
+            i.putExtra("key", pred.getStringExtra("key") );
+        } else {
+            i = new Intent ( this, IntroMenuDisplay.class );
+        }
         i.putExtra( "ChoiceTag", tagReturn );
         startActivity( i );
         finish();
     }
-
 
     void setupListView() {
 
@@ -59,46 +67,54 @@ public class ChoixTagsDisplay extends Activity {
         String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
         final String[] tag_list = tags.split(";");
 
-        // Définition des colonnes
-        // NB : SimpleCursorAdapter a besoin obligatoirement d'un ID nommé "_id"
-        String[] columns = new String[] { "_id", "col1" };
+        if ( !tag_list[0].equals("EMPTY_NULL") ) {
 
-        // Définition des données du tableau
-        MatrixCursor matrixCursor= new MatrixCursor(columns);
+            // Définition des colonnes
+            // NB : SimpleCursorAdapter a besoin obligatoirement d'un ID nommé "_id"
+            String[] columns = new String[] { "_id", "col1" };
 
-        for ( int i = 0; ( i < tag_list.length ) ; i++ ) {
-           matrixCursor.addRow(new Object[] { 1,tag_list[i]});
-        }
+            // Définition des données du tableau
+            MatrixCursor matrixCursor= new MatrixCursor(columns);
 
-        // on prendra les données des colonnes 1 et 2...
-        String[] from = new String[] {"col1"};
-
-        // ...pour les placer dans les TextView définis dans "tag_listview.xml"
-        int[] to = new int[] { R.id.textViewCol1};
-
-        // création de l'objet SimpleCursorAdapter...
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.tag_listview, matrixCursor, from, to, 0);
-
-
-        // ...qui va remplir l'objet ListView
-        final ListView tags_listview = (ListView) findViewById(R.id.tags_listview);
-        tags_listview.setAdapter(adapter);
-
-
-
-
-        /*
-        CEST MAIS BON FAUT RENDRE LE TAG PLUS FONCE QUAND ON A CLIQUE DESSUS
-         */
-        tags_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(),tag_list[position],Toast.LENGTH_SHORT).show();
-                tagReturn = tag_list[position];
+            for ( int i = 0; ( i < tag_list.length ) ; i++ ) {
+                matrixCursor.addRow(new Object[] { 1,tag_list[i]});
             }
-        });
+
+            // on prendra les données des colonnes 1 et 2...
+            String[] from = new String[] {"col1"};
+
+            // ...pour les placer dans les TextView définis dans "tag_listview.xml"
+            int[] to = new int[] { R.id.textViewCol1};
+
+            // création de l'objet SimpleCursorAdapter...
+            SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.tag_listview, matrixCursor, from, to, 0);
 
 
+            // ...qui va remplir l'objet ListView
+            final ListView tags_listview = (ListView) findViewById(R.id.tags_listview);
+            tags_listview.setAdapter(adapter);
+
+
+            /*
+            CEST BON MAIS FAUT RENDRE LE TAG PLUS FONCE QUAND ON A CLIQUE DESSUS
+            */
+            tags_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if ( tagReturn.equals(tag_list[position])) {
+                        sendTagReturn();
+                    } else {
+                        if ( !tagReturn.equals("Choix") ) {
+                            tag_view.setBackgroundColor(0xFAFAFA);
+                        }
+                        tag_view = view;
+                        tag_view.setBackgroundColor(Color.LTGRAY);
+                        tagReturn = tag_list[position];
+                    }
+                }
+            });
+
+        }
 
     }
 
