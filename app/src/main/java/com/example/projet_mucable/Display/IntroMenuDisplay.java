@@ -25,6 +25,9 @@ public class IntroMenuDisplay extends AppCompatActivity {
         startActivity(new Intent(IntroMenuDisplay.this, ChoixLangueDisplay.class));
     }
 
+    public void goToRevision(View view) {
+        startActivity(new Intent(IntroMenuDisplay.this, RevisionDisplay.class));
+    }
 
     public void activityToGestionTagsDisplay(View view) {
         startActivity(new Intent(IntroMenuDisplay.this, GestionTagsDisplay.class));

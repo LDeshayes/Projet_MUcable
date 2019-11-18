@@ -107,7 +107,11 @@ public class LoadingScreenDisplay extends Activity {
             DB_EXIST_EDIT.putBoolean("FST_LAUNCH", false);
             DB_EXIST_EDIT.commit();
 
+            Log.i("ChoixLangueDisplay", "DB HAS BEEN CREATED");
+
         }
+
+        Log.i("ChoixLangueDisplay", "DB HAS BEEN TESTED");
 
     }
 

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Display.RevisionDisplay">
+
+    <Spinner
+        android:id="@+id/spinnerLDep"
+        android:layout_width="249dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerLEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.805"
+        android:entries="@array/language_array"
+        android:prompt="@string/language_prompt"/>
+
+    <Spinner
+        android:id="@+id/spinnerLEnd"
+        android:layout_width="249dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="236dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:entries="@array/language_array"
+        android:prompt="@string/language_prompt"/>
+
+    <Button
+        android:id="@+id/buttonNBM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="NB MOTS"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonTagsSelec" />
+
+    <Button
+        android:id="@+id/buttonCoeur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:onClick="goToParCoeur"
+        android:text="Coeur"
+        app:layout_constraintEnd_toStartOf="@+id/buttonNBM"
+        app:layout_constraintTop_toBottomOf="@+id/buttonNBM" />
+
+    <Button
+        android:id="@+id/buttonChoice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:onClick="goToParChoix"
+        android:text="CHOIX"
+        app:layout_constraintStart_toEndOf="@+id/buttonNBM"
+        app:layout_constraintTop_toBottomOf="@+id/buttonNBM" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Langue de départ"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerLDep"
+        app:layout_constraintStart_toStartOf="@+id/spinnerLDep" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Langue d'arrivée"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerLEnd"
+        app:layout_constraintStart_toStartOf="@+id/spinnerLEnd" />
+
+    <Button
+        android:id="@+id/buttonTagsSelec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:onClick="clicChoiceTag"
+        android:text="TAGS"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerLEnd" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

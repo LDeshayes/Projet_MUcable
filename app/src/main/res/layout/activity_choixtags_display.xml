@@ -9,21 +9,20 @@
 
     <TextView
         android:id="@+id/textView_SelecTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="35dp"
-        android:text="Sélectionner un tag :"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="184dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="50dp"
+        android:text="Selectionner un tag"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/tags_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_height="wrap_content">
     </ListView>
 
 </LinearLayout>

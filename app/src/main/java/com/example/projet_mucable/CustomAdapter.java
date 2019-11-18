@@ -41,8 +41,10 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.word_listview, null);
         TextView word = (TextView) view.findViewById(R.id.word);
+        TextView translation = (TextView) view.findViewById(R.id.translation);
         TextView tags = (TextView) view.findViewById(R.id.tags);
-        word.setText(words_list[i]+" -> "+translations_list[i]);
+        word.setText("Word            : "+words_list[i]);
+        translation.setText("Translation : "+translations_list[i]);
         tags.setText("Tags : "+tags_list[i]);
         return view;
     }

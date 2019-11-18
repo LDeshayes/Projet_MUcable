@@ -119,7 +119,7 @@ public class ChoixTagsDisplay extends Activity {
 
 
             /*
-            CEST MAIS BON FAUT RENDRE LE TAG PLUS FONCE QUAND ON A CLIQUE DESSUS
+            CEST BON MAIS FAUT RENDRE LE TAG PLUS FONCE QUAND ON A CLIQUE DESSUS
             */
             tags_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
