@@ -16,12 +16,12 @@ public class LoadingScreenDisplay extends Activity {
     String data_anglais[];
     String data_allemand[];
     String data_espagnol[];
-    String tag_list = "Nombre";
+    String tag_list = "Nombre;Chiffre";
 
     {
-        data_anglais = new String[]{"'One', 'Un', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Two', 'Deux', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Three', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
-        data_allemand = new String[]{"'Ein', 'Un', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Zwei', 'Deux', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Drei', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
-        data_espagnol = new String[]{"'Una', 'Un', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Dos', 'Deux', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Tres', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
+        data_anglais = new String[]{"'One', 'Un', 'Nombre', 'Chiffre', 'NAN', 'NAN'", "'Two', 'Deux', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Three', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
+        data_allemand = new String[]{"'Ein', 'Un', 'Nombre', 'Chiffre', 'NAN', 'NAN'", "'Zwei', 'Deux', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Drei', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
+        data_espagnol = new String[]{"'Una', 'Un', 'Nombre', 'Chiffre', 'NAN', 'NAN'", "'Dos', 'Deux', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Tres', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
     }
 
     @Override
@@ -41,8 +41,8 @@ public class LoadingScreenDisplay extends Activity {
     void createAndLoadDB() {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean exist = preferences.getBoolean("FST_LAUNCH", false);
-        if (!exist) {
+        boolean fst_launch = preferences.getBoolean("FST_LAUNCH", true);
+        if (fst_launch) {
 
             // CREATION OF DB
             SQLiteDatabase CDB = openOrCreateDatabase(
@@ -104,7 +104,7 @@ public class LoadingScreenDisplay extends Activity {
             // CLOSE THE DB BETWEEN ACTIVITIES ?
 
             SharedPreferences.Editor DB_EXIST_EDIT = preferences.edit();
-            DB_EXIST_EDIT.putBoolean("FST_LAUNCH", true);
+            DB_EXIST_EDIT.putBoolean("FST_LAUNCH", false);
             DB_EXIST_EDIT.commit();
 
             Log.i("ChoixLangueDisplay", "DB HAS BEEN CREATED");

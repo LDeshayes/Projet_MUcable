@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +28,7 @@ public class CahierDisplay extends Activity {
     String[] translations_list;// = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     int key = -1; // future key pour repérer le word à modifier
+    View key_view;
     SQLiteDatabase CDB;
 
     @Override
@@ -77,15 +79,12 @@ public class CahierDisplay extends Activity {
         translations_list = new String[rowCount];
         tags_list = new String[rowCount];
 
-        String[] tempTag;
-
         cursor.moveToFirst();
         for ( int i = 0; i < rowCount; i++ ) {
             key_list[i] = cursor.getInt(0);
             words_list[i] = cursor.getString(1);
             translations_list[i] = cursor.getString(2);
             tags_list[i] = printNAN ( cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6) );
-            //tags_list[i] = cursor.getString(3)+" - "+cursor.getString(4)+" - "+cursor.getString(5)+" - "+cursor.getString(6);
             cursor.moveToNext();
         }
 
@@ -93,14 +92,20 @@ public class CahierDisplay extends Activity {
 
     String printNAN ( String tag1, String tag2, String tag3, String tag4 ) {
 
-        String[] tabTag = ( tag1+tag2+tag3+tag4 ).split("NAN");
+        String[] tabTag = { tag1, tag2, tag3, tag4 };
         String tempTag = "";
 
-        for ( int i = 0; ( i < tabTag.length ) && !( tabTag[i].equals("NAN") ); i++ ) {
-            tempTag = tempTag + " - " + tabTag[i];
+        for ( int i = 0; i < tabTag.length; i++ ) {
+            if ( !( tabTag[i].equals("NAN") ) ) {
+                tempTag = tempTag + " - " + tabTag[i];
+            }
         }
 
-        return ( tempTag.substring(3) );
+        if ( tempTag.length() == 0 ) {
+            return ( tempTag );
+        } else {
+            return ( tempTag.substring(3) );
+        }
 
     }
 
@@ -111,7 +116,7 @@ public class CahierDisplay extends Activity {
 
     void setupLanguage() {
         TextView textView = (TextView) findViewById(R.id.language);
-        textView.setText(language);
+        textView.setText(language+" ");
     }
 
     void setupListView() {
@@ -122,12 +127,14 @@ public class CahierDisplay extends Activity {
         words_listview = (ListView)findViewById(R.id.words_listview);
 
         words_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int pos, long id) {
-                Button buttonModify = findViewById(R.id.button_modifyWord);
-                buttonModify.setText(words_list[pos]);
-                key = pos;
+                if ( key != -1 ) {
+                    key_view.setBackgroundColor(0xFAFAFA);
+                }
+                key_view = v;
+                key_view.setBackgroundColor(Color.LTGRAY);
+                key = key_list[pos];
             }
         });
     }
@@ -136,19 +143,22 @@ public class CahierDisplay extends Activity {
         if ( key == -1 ) {
             Toast.makeText(getApplicationContext(),"Veuillez sélectionner une entrée à modifier !",Toast.LENGTH_SHORT).show();
         } else {
-            launchGestionMots("Modify");
+            Intent i = new Intent ( this, GestionMotDisplay.class );
+            i.putExtra("key",key);
+            launchGestionMots("Modify", i);
+            finish();
         }
 
     }
 
     public void onClicAdd(View view) {
-        launchGestionMots("Add");
+        launchGestionMots("Add", new Intent ( this, GestionMotDisplay.class ));
     }
 
-    void launchGestionMots ( String mode ) {
-        Intent i = new Intent ( this, GestionMotDisplay.class );
-        i.putExtra( "MODE", mode );
+    void launchGestionMots ( String mode, Intent i ) {
+        i.putExtra( "mode", mode );
         i.putExtra( "LangueChoisie", language );
+        i.putExtra("Origin", "CahierDisplay");
         startActivity( i );
         finish();
     }
