@@ -7,4 +7,6 @@
         <item>Espagnol</item>
     </string-array>
 
+    <string name="language_prompt">Choose a language</string>
+
 </resources>
