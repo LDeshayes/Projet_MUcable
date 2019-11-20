@@ -69,5 +69,9 @@ public class ChoixLangueDisplay extends Activity {
         EDITOR.putString("TAG_LIST", "EMPTY_NULL");
         EDITOR.commit();
 
+        Intent i = new Intent ( this, LoadingScreenDisplay.class );
+        startActivity( i );
+        finish();
+
     }
 }
