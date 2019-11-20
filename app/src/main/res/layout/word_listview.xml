@@ -11,12 +11,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
-        android:id="@+id/translation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-    <TextView
         android:id="@+id/tags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
