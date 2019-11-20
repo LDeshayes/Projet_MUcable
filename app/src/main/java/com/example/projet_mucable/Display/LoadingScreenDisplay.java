@@ -19,9 +19,9 @@ public class LoadingScreenDisplay extends Activity {
     String tag_list = "Nombre;Chiffre";
 
     {
-        data_anglais = new String[]{"'One', 'Un', 'Nombre', 'Chiffre', 'NAN', 'NAN'", "'Two', 'Deux', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Three', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
-        data_allemand = new String[]{"'Ein', 'Un', 'Nombre', 'Chiffre', 'NAN', 'NAN'", "'Zwei', 'Deux', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Drei', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
-        data_espagnol = new String[]{"'Una', 'Un', 'Nombre', 'Chiffre', 'NAN', 'NAN'", "'Dos', 'Deux', 'Nombre', 'NAN', 'NAN', 'NAN'", "'Tres', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
+        data_anglais = new String[]{"'One', 'Un', 'Nombre', 'Chiffre', 'NAN', 'NAN'", "'Two', 'Deux', 'NAN', 'Chiffre', 'NAN', 'NAN'", "'Three', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
+        data_allemand = new String[]{"'Ein', 'Un', 'Nombre', 'Chiffre', 'NAN', 'NAN'", "'Zwei', 'Deux', 'NAN', 'Chiffre', 'NAN', 'NAN'", "'Drei', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
+        data_espagnol = new String[]{"'Una', 'Un', 'Nombre', 'Chiffre', 'NAN', 'NAN'", "'Dos', 'Deux', 'NAN', 'Chiffre', 'NAN', 'NAN'", "'Tres', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
     }
 
     @Override
