@@ -2,9 +2,11 @@ package com.example.projet_mucable.Display;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.projet_mucable.R;
 
@@ -17,7 +19,14 @@ public class RevisionDisplay extends AppCompatActivity {
     }
 
     public void goToParCoeur(View view) {
-        startActivity(new Intent(RevisionDisplay.this, ParCoeurActivity.class));
+
+        Intent i = new Intent ( this, ParCoeurActivity.class );
+
+        TextView t = (TextView) findViewById(R.id.editNBM);
+        int nb_m = Integer.parseInt(t.getText().toString());
+        i.putExtra("Nb_mots", nb_m);
+
+        startActivity( i );
     }
 
     public void goToParChoix(View view) {
@@ -26,7 +35,7 @@ public class RevisionDisplay extends AppCompatActivity {
 
     public void clicChoiceTag(View view) {
         Intent i = new Intent ( this, ChoixTagsDisplay.class );
-        i.putExtra("Origin", "GestionTagsDisplay");
+        i.putExtra("Origin", "RevisionDisplay");
         startActivity( i );
         finish();
     }

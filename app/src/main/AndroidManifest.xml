@@ -21,6 +21,16 @@
     <activity android:name=".Display.IntroMenuDisplay">
     </activity>
 
+    <activity android:name=".Display.RevisionDisplay">
+    </activity>
+
+    <activity android:name=".Display.ParCoeurActivity">
+    </activity>
+
+
+    <activity android:name=".Display.ParChoixActivity">
+    </activity>
+
     <activity android:name=".Display.GestionTagsDisplay">
     </activity>
 

@@ -30,12 +30,12 @@
         android:entries="@array/language_array"
         android:prompt="@string/language_prompt"/>
 
-    <Button
-        android:id="@+id/buttonNBM"
+    <EditText
+        android:id="@+id/editNBM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="NB MOTS"
+        android:hint="NB MOTS"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,8 +48,8 @@
         android:layout_marginTop="50dp"
         android:onClick="goToParCoeur"
         android:text="Coeur"
-        app:layout_constraintEnd_toStartOf="@+id/buttonNBM"
-        app:layout_constraintTop_toBottomOf="@+id/buttonNBM" />
+        app:layout_constraintEnd_toStartOf="@+id/editNBM"
+        app:layout_constraintTop_toBottomOf="@+id/editNBM" />
 
     <Button
         android:id="@+id/buttonChoice"
@@ -58,8 +58,8 @@
         android:layout_marginTop="50dp"
         android:onClick="goToParChoix"
         android:text="CHOIX"
-        app:layout_constraintStart_toEndOf="@+id/buttonNBM"
-        app:layout_constraintTop_toBottomOf="@+id/buttonNBM" />
+        app:layout_constraintStart_toEndOf="@+id/editNBM"
+        app:layout_constraintTop_toBottomOf="@+id/editNBM" />
 
     <TextView
         android:id="@+id/textView"
