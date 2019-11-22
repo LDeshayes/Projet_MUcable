@@ -45,7 +45,7 @@ public class GestionTagsDisplay extends Activity {
         Intent i = getIntent();
         String choiceTag = i.getStringExtra("ChoiceTag");
 
-        if ( choiceTag.equals("NAN") ) {
+        if ( choiceTag == null || choiceTag.equals("NAN") ) {
             button_selection.setText("Choix");
         } else {
             button_selection.setText(choiceTag);

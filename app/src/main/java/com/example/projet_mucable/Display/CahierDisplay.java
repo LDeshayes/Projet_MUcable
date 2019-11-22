@@ -146,7 +146,6 @@ public class CahierDisplay extends Activity {
             Intent i = new Intent ( this, GestionMotDisplay.class );
             i.putExtra("key",key);
             launchGestionMots("Modify", i);
-            finish();
         }
 
     }
@@ -158,7 +157,6 @@ public class CahierDisplay extends Activity {
     void launchGestionMots ( String mode, Intent i ) {
         i.putExtra( "mode", mode );
         i.putExtra( "LangueChoisie", language );
-        i.putExtra("Origin", "CahierDisplay");
         startActivity( i );
         finish();
     }
