@@ -56,8 +56,8 @@ public class ChoixTagsDisplay extends Activity {
             i = new Intent ( this, GestionTagsDisplay.class );
             i.putExtra( "ChoiceTag", tagReturn );
         }
-        // TODO
-        // Rework
+
+        // TODO Rework it with an onRestart
         /* else if ( origin.equals("GestionMotDisplay") ) {
             String[] wordInfo = pred.getStringExtra("informations").split(";");
             int tagChanged_number = pred.getIntExtra("tag_number", -1);

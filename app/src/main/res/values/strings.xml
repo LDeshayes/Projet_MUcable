@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Projet_MUcable</string>
-    <string name="language_prompt">language_prompt</string>
 
     <string-array name="language_array">
         <item>Anglais</item>
