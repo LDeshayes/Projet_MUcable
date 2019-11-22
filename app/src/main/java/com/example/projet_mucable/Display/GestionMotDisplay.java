@@ -18,30 +18,25 @@ import com.example.projet_mucable.R;
 
 public class GestionMotDisplay extends Activity {
 
-    // TODO
-    // Rework
-
-    /*String language;
+    String language;
     String mode;
     int key;
-    String[] tempInfo;
-    String[] tempHint;
-    String[] newInfo;
-    String newInfoString;
+    String[] information_values;
+    String[] new_information_values;
 
-    SQLiteDatabase CDB;*/
+    SQLiteDatabase CDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestionmot_display);
 
-        /*getDB();
+        getDB();
         getIntentValues();
-        setupDisplayValues();*/
+        setupDisplayValues();
     }
 
-    /*@SuppressLint("WrongConstant")
+    @SuppressLint("WrongConstant")
     void getDB() {
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
     }
@@ -50,24 +45,11 @@ public class GestionMotDisplay extends Activity {
         Intent i = getIntent();
         language = i.getStringExtra("LangueChoisie");
         mode = i.getStringExtra("mode");
-        String Origin = i.getStringExtra("Origin");
         if ( mode.equals("Add") ) {
-            if ( Origin.equals("CahierDisplay") ) {
-                tempInfo = "Mot;Traduction; ; ; ; ".split(";");
-                tempHint = new String[]{ "Mot", "Traduction" };
-            } else if ( Origin.equals("ChoixTagsDisplay") ) {
-                tempInfo = i.getStringExtra("informations").split(";");
-                tempHint = i.getStringExtra("hints").split(";");
-            }
+            information_values = "Mot;Traduction;NAN;NAN;NAN;NAN".split(";");
         } else if ( mode.equals("Modify") ) {
             key = i.getIntExtra("key", -1);
-            if ( Origin.equals("CahierDisplay") ) {
-                getKeyRow();
-                tempHint = new String[]{ tempInfo[0], tempInfo[1] };
-            } else if ( Origin.equals("ChoixTagsDisplay") ) {
-                tempInfo = i.getStringExtra("informations").split(";");
-                tempHint = i.getStringExtra("hints").split(";");
-            }
+            getKeyRow();
         }
     }
 
@@ -79,57 +61,38 @@ public class GestionMotDisplay extends Activity {
         tempTextView = findViewById(R.id.textView_mode);
         tempTextView.setText(mode);
 
-        String Origin = getIntent().getStringExtra("Origin");
-        if ( Origin.equals("CahierDisplay") ) {
-            tempEditText = findViewById(R.id.editText_word);
-            tempEditText.setHint(tempHint[0]);
+        tempEditText = findViewById(R.id.editText_word);
+        tempEditText.setHint(information_values[0]);
 
-            tempEditText = findViewById(R.id.editText_translation);
-            tempEditText.setHint(tempHint[1]);
-        } else if ( Origin.equals("ChoixTagsDisplay") ) {
-            tempEditText = findViewById(R.id.editText_word);
-            tempEditText.setHint(tempHint[0]);
-            if ( !tempInfo[0].equals(tempHint[0]) ) {
-                tempEditText.setText(tempInfo[0]);
-            } else {
-                tempEditText.setText("");
-            }
-
-            tempEditText = findViewById(R.id.editText_translation);
-            tempEditText.setHint(tempHint[1]);
-            if ( !tempInfo[1].equals(tempHint[1]) ) {
-                tempEditText.setText(tempInfo[1]);
-            } else {
-                tempEditText.setText("");
-            }
-        }
+        tempEditText = findViewById(R.id.editText_translation);
+        tempEditText.setHint(information_values[1]);
 
         tempButton = findViewById(R.id.button_Tag_1);
-        if ( tempInfo[2].equals("NAN") ) {
+        if ( information_values[2].equals("NAN") ) {
             tempButton.setText(" ");
         } else {
-            tempButton.setText(tempInfo[2]);
+            tempButton.setText(information_values[2]);
         }
 
         tempButton = findViewById(R.id.button_Tag_2);
-        if ( tempInfo[3].equals("NAN") ) {
+        if ( information_values[3].equals("NAN") ) {
             tempButton.setText(" ");
         } else {
-            tempButton.setText(tempInfo[3]);
+            tempButton.setText(information_values[3]);
         }
 
         tempButton = findViewById(R.id.button_Tag_3);
-        if ( tempInfo[4].equals("NAN") ) {
+        if ( information_values[4].equals("NAN") ) {
             tempButton.setText(" ");
         } else {
-            tempButton.setText(tempInfo[4]);
+            tempButton.setText(information_values[4]);
         }
 
         tempButton = findViewById(R.id.button_Tag_4);
-        if ( tempInfo[5].equals("NAN") ) {
+        if ( information_values[5].equals("NAN") ) {
             tempButton.setText(" ");
         } else {
-            tempButton.setText(tempInfo[5]);
+            tempButton.setText(information_values[5]);
         }
 
         tempButton = findViewById(R.id.button_delete);
@@ -141,80 +104,19 @@ public class GestionMotDisplay extends Activity {
     }
 
     void getKeyRow() {
-        if ( mode.equals("Add") ) {
-            tempInfo = "Mot;Traduction; ; ; ; ".split(";");
-        } else if ( mode.equals("Modify") ) {
+        if (mode.equals("Modify")) {
             Cursor cursor = CDB.query(
-                    "t_"+language,
+                    "t_" + language,
                     new String[]{"Word", "Translation", "Tag_1", "Tag_2", "Tag_3", "Tag_4"},
-                    "Id_Word="+key,
+                    "Id_Word=" + key,
                     null,
                     null,
                     null,
                     null
             );
             cursor.moveToFirst();
-            tempInfo = (cursor.getString(0)+";"+cursor.getString(1)+";"+cursor.getString(2)+";"+cursor.getString(3)+";"+cursor.getString(4)+";"+cursor.getString(5)).split(";");
+            information_values = (cursor.getString(0) + ";" + cursor.getString(1) + ";" + cursor.getString(2) + ";" + cursor.getString(3) + ";" + cursor.getString(4) + ";" + cursor.getString(5)).split(";");
         }
-    }
-
-    void getNewValues() {
-        String tempNewInfo;
-        String tempValue;
-
-        EditText tempEditText;
-        Button tempButton;
-
-        tempEditText = findViewById(R.id.editText_word);
-        tempValue = tempEditText.getText().toString();
-        if ( tempValue.length() == 0 ) {
-            tempNewInfo = tempInfo[0];
-        } else {
-            tempNewInfo = tempValue;
-        }
-
-        tempEditText = findViewById(R.id.editText_translation);
-        tempValue = tempEditText.getText().toString();
-        if ( tempValue.length() == 0 ) {
-            tempNewInfo = tempNewInfo + ";" + tempInfo[1];
-        } else {
-            tempNewInfo = tempNewInfo + ";" + tempValue;
-        }
-
-        tempButton = findViewById(R.id.button_Tag_1);
-        tempValue = tempButton.getText().toString();
-        if ( tempValue.equals(" ") ) {
-            tempNewInfo = tempNewInfo + ";NAN";
-        } else {
-            tempNewInfo = tempNewInfo + ";" + tempButton.getText().toString();
-        }
-
-        tempButton = findViewById(R.id.button_Tag_2);
-        tempValue = tempButton.getText().toString();
-        if ( tempValue.equals(" ") ) {
-            tempNewInfo = tempNewInfo + ";NAN";
-        } else {
-            tempNewInfo = tempNewInfo + ";" + tempButton.getText().toString();
-        }
-
-        tempButton = findViewById(R.id.button_Tag_3);
-        tempValue = tempButton.getText().toString();
-        if ( tempValue.equals(" ") ) {
-            tempNewInfo = tempNewInfo + ";NAN";
-        } else {
-            tempNewInfo = tempNewInfo + ";" + tempButton.getText().toString();
-        }
-
-        tempButton = findViewById(R.id.button_Tag_4);
-        tempValue = tempButton.getText().toString();
-        if ( tempValue.equals(" ") ) {
-            tempNewInfo = tempNewInfo + ";NAN";
-        } else {
-            tempNewInfo = tempNewInfo + ";" + tempButton.getText().toString();
-        }
-
-        newInfoString = tempNewInfo;
-        newInfo = tempNewInfo.split(";");
     }
 
     @Override
@@ -226,66 +128,125 @@ public class GestionMotDisplay extends Activity {
     }
 
     void clear() {
-        getKeyRow();
-
         EditText tempEditText;
         Button tempButton;
 
         tempEditText = findViewById(R.id.editText_word);
         tempEditText.setText("");
-        tempEditText.setHint(tempInfo[0]);
+        tempEditText.setHint(information_values[0]);
 
         tempEditText = findViewById(R.id.editText_translation);
         tempEditText.setText("");
-        tempEditText.setHint(tempInfo[1]);
+        tempEditText.setHint(information_values[1]);
 
         tempButton = findViewById(R.id.button_Tag_1);
-        if ( tempInfo[2].equals("NAN") ) {
+        if ( information_values[2].equals("NAN") ) {
             tempButton.setText(" ");
         } else {
-            tempButton.setText(tempInfo[2]);
+            tempButton.setText(information_values[2]);
         }
 
         tempButton = findViewById(R.id.button_Tag_2);
-        if ( tempInfo[3].equals("NAN") ) {
+        if ( information_values[3].equals("NAN") ) {
             tempButton.setText(" ");
         } else {
-            tempButton.setText(tempInfo[3]);
+            tempButton.setText(information_values[3]);
         }
 
         tempButton = findViewById(R.id.button_Tag_3);
-        if ( tempInfo[4].equals("NAN") ) {
+        if ( information_values[4].equals("NAN") ) {
             tempButton.setText(" ");
         } else {
-            tempButton.setText(tempInfo[4]);
+            tempButton.setText(information_values[4]);
         }
 
         tempButton = findViewById(R.id.button_Tag_4);
-        if ( tempInfo[5].equals("NAN") ) {
+        if ( information_values[5].equals("NAN") ) {
             tempButton.setText(" ");
         } else {
-            tempButton.setText(tempInfo[5]);
+            tempButton.setText(information_values[5]);
         }
+    }
+
+    public void getNewValues() {
+        EditText tempEditText;
+        Button tempButton;
+
+        String tempNewInfo;
+        String tempStr;
+
+        tempEditText = findViewById(R.id.editText_word);
+        tempStr = tempEditText.getText().toString();
+        if ( tempStr.equals("") ) {
+            tempNewInfo = information_values[0];
+        } else {
+            tempNewInfo = tempStr;
+        }
+
+        tempEditText = findViewById(R.id.editText_translation);
+        tempStr = tempEditText.getText().toString();
+        if ( tempStr.equals("") ) {
+            tempNewInfo = tempNewInfo + ";" + information_values[1];
+        } else {
+            tempNewInfo = tempNewInfo + ";" + tempStr;
+        }
+
+        tempButton = findViewById(R.id.button_Tag_1);
+        tempStr = tempButton.getText().toString();
+        if ( tempStr.equals(" ") ) {
+            tempNewInfo = tempNewInfo + ";NAN";
+        } else {
+            tempNewInfo = tempNewInfo + ";" + tempStr;
+        }
+
+        tempButton = findViewById(R.id.button_Tag_2);
+        tempStr = tempButton.getText().toString();
+        if ( tempStr.equals(" ") ) {
+            tempNewInfo = tempNewInfo + ";NAN";
+        } else {
+            tempNewInfo = tempNewInfo + ";" + tempStr;
+        }
+
+        tempButton = findViewById(R.id.button_Tag_3);
+        tempStr = tempButton.getText().toString();
+        if ( tempStr.equals(" ") ) {
+            tempNewInfo = tempNewInfo + ";NAN";
+        } else {
+            tempNewInfo = tempNewInfo + ";" + tempStr;
+        }
+
+        tempButton = findViewById(R.id.button_Tag_4);
+        tempStr = tempButton.getText().toString();
+        if ( tempStr.equals(" ") ) {
+            tempNewInfo = tempNewInfo + ";NAN";
+        } else {
+            tempNewInfo = tempNewInfo + ";" + tempStr;
+        }
+
+        new_information_values = tempNewInfo.split(";");
     }
 
     public void onClicClear(View view) {
         clear();
     }
 
+    public void deleteKey() {
+        String delete = "DELETE FROM t_"+language+" WHERE Id_Word="+key;
+        CDB.execSQL(delete);
+    }
+
     public void onClicValidation(View view) {
-        String statement;
+        String insert;
 
         getNewValues();
 
         if ( mode.equals("Modify") ) {
-            statement = "DELETE FROM t_"+language+" WHERE Id_Word="+key;
-            CDB.execSQL(statement);
-            statement = "INSERT INTO t_"+language+" (Id_Word, Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ("+key+", '"+newInfo[0]+"', '"+newInfo[1]+"', '"+newInfo[2]+"', '"+newInfo[3]+"', '"+newInfo[4]+"', '"+newInfo[5]+"')";
-            //statement = "UPDATE t_"+language+" SET Word='"+newInfo[0]+"', Translation='"+newInfo[1]+"', Tag_1='"+newInfo[2]+"', Tag_2='"+newInfo[3]+"', Tag_3='"+newInfo[4]+"', Tag_4='"+newInfo[5]+"' WHERE Id_Word="+key;
-            CDB.execSQL(statement);
-            //clear();
+            deleteKey();
+            insert = "INSERT INTO t_"+language+" (Id_Word, Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ("+key+", '"+new_information_values[0]+"', '"+new_information_values[1]+"', '"+new_information_values[2]+"', '"+new_information_values[3]+"', '"+new_information_values[4]+"', '"+new_information_values[5]+"')";
+            CDB.execSQL(insert);
+            information_values = (new_information_values[0]+";"+new_information_values[1]+";"+new_information_values[2]+";"+new_information_values[3]+";"+new_information_values[4]+";"+new_information_values[5]).split(";");
+            clear();
         } else if ( mode.equals("Add") ) {
-
             String word;
             String translation;
             EditText tempEditText;
@@ -298,8 +259,8 @@ public class GestionMotDisplay extends Activity {
             if ( ( word.length() == 0 ) || ( translation.length() == 0 ) ) {
                 Toast.makeText(getApplicationContext(), "L'ajout demande au moins le mot et sa traduction !", Toast.LENGTH_SHORT).show();
             } else {
-                statement = "INSERT INTO t_"+language+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ('"+newInfo[0]+"', '"+newInfo[1]+"', '"+newInfo[2]+"', '"+newInfo[3]+"', '"+newInfo[4]+"', '"+newInfo[5]+"')";
-                CDB.execSQL(statement);
+                insert = "INSERT INTO t_"+language+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ('"+new_information_values[0]+"', '"+new_information_values[1]+"', '"+new_information_values[2]+"', '"+new_information_values[3]+"', '"+new_information_values[4]+"', '"+new_information_values[5]+"')";
+                CDB.execSQL(insert);
 
                 Intent i = new Intent ( this, CahierDisplay.class );
                 i.putExtra( "LangueChoisie", language );
@@ -311,8 +272,7 @@ public class GestionMotDisplay extends Activity {
 
     public void onClicDelete(View view) {
         if ( mode.equals("Modify") ) {
-            String delete = "DELETE FROM t_"+language+" WHERE Id_Word="+key;
-            CDB.execSQL(delete);
+            deleteKey();
 
             Intent i = new Intent ( this, CahierDisplay.class );
             i.putExtra( "LangueChoisie", language );
@@ -338,7 +298,10 @@ public class GestionMotDisplay extends Activity {
     }
 
     void onClicTag( int tag_number ) {
-        getNewValues();
+        Toast.makeText(getApplicationContext(),"Il n'est pas encore possible d'ajouter ou de modifier des tags!", Toast.LENGTH_LONG).show();
+
+        // TODO Reword it with an onRestart
+        /*getNewValues();
 
         Intent i = new Intent ( this, ChoixTagsDisplay.class );
         i.putExtra("LangueChoisie", language);
@@ -350,7 +313,7 @@ public class GestionMotDisplay extends Activity {
         i.putExtra("hints", tempHint[0]+";"+tempHint[1]);
 
         startActivity( i );
-        finish();
-    }*/
+        finish();*/
+    }
 
 }
