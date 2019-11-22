@@ -23,7 +23,11 @@ public class RevisionDisplay extends AppCompatActivity {
         Intent i = new Intent ( this, ParCoeurActivity.class );
 
         TextView t = (TextView) findViewById(R.id.editNBM);
-        int nb_m = Integer.parseInt(t.getText().toString());
+        String nb_m_s = t.getText().toString();
+        if(nb_m_s.length()<1){
+            nb_m_s="5";
+        }
+        int nb_m = Integer.parseInt(nb_m_s);
         i.putExtra("Nb_mots", nb_m);
 
         startActivity( i );
