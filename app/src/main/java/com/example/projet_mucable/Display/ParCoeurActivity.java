@@ -21,13 +21,14 @@ public class ParCoeurActivity extends AppCompatActivity {
 
 
     String language;
-    ListView words_listview;
+    Boolean sens;
+    //ListView words_listview;
     int[] key_list;
     String[] words_list;// = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] translations_list;// = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     int key = -1; // future key pour repérer le word à modifier
-    View key_view;
+    //View key_view;
     SQLiteDatabase CDB;
 
     String word = "Car";
@@ -48,8 +49,16 @@ public class ParCoeurActivity extends AppCompatActivity {
         Intent this_i = getIntent();
         word_number = this_i.getIntExtra("Word_number", 0);
         nb_left = this_i.getIntExtra("Nb_mots", 5);
-        word = words_list[word_number];
-        word_translation = translations_list[word_number];
+
+        sens = this_i.getBooleanExtra("Sens", true);
+        if(sens){
+            word = words_list[word_number];
+            word_translation = translations_list[word_number];
+        }
+        else{
+            word_translation = words_list[word_number];
+            word = translations_list[word_number];
+        }
 
         TextView t = (TextView) findViewById(R.id.textViewQuestion);
         t.setText(word);
@@ -64,7 +73,7 @@ public class ParCoeurActivity extends AppCompatActivity {
     void getLanguage() {
         Intent i = getIntent();
         language = "Anglais";
-        //language = i.getStringExtra("LangueChoisie");
+        language = i.getStringExtra("Langue");
     }
 
     @SuppressLint("WrongConstant")
@@ -139,9 +148,10 @@ public class ParCoeurActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(),"nb :"+nb_left,Toast.LENGTH_LONG).show();
 
             Intent i = new Intent ( this, ParCoeurActivity.class );
-            //i.putExtra("Word", words_list[random]);
             i.putExtra("Word_number", random);
             i.putExtra("Nb_mots", nb_left-1);
+            i.putExtra("Sens", sens);
+            i.putExtra("Langue", language);
 
             if(nb_left>0){
                 startActivity( i );
