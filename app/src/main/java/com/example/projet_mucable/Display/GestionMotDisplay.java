@@ -6,9 +6,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +19,8 @@ import android.widget.Toast;
 
 import com.example.projet_mucable.R;
 
+import java.lang.reflect.Field;
+
 public class GestionMotDisplay extends Activity {
 
     String language;
@@ -24,6 +28,7 @@ public class GestionMotDisplay extends Activity {
     int key;
     String[] information_values;
     String[] new_information_values;
+    int tag_changed;
 
     SQLiteDatabase CDB;
 
@@ -60,7 +65,11 @@ public class GestionMotDisplay extends Activity {
         Button tempButton;
 
         tempTextView = findViewById(R.id.textView_mode);
-        tempTextView.setText(mode);
+        if ( mode.equals("Modify") ) {
+            tempTextView.setText("Modifier mot");
+        } else {
+            tempTextView.setText("Ajouter mot");
+        }
 
         tempEditText = findViewById(R.id.editText_word);
         tempEditText.setHint(information_values[0]);
@@ -247,6 +256,12 @@ public class GestionMotDisplay extends Activity {
             CDB.execSQL(insert);
             information_values = (new_information_values[0]+";"+new_information_values[1]+";"+new_information_values[2]+";"+new_information_values[3]+";"+new_information_values[4]+";"+new_information_values[5]).split(";");
             clear();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Modifications réussies !")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok", null);
+            AlertDialog alert = builder.create();
+            alert.show();
         } else if ( mode.equals("Add") ) {
             String word;
             String translation;
@@ -288,43 +303,82 @@ public class GestionMotDisplay extends Activity {
     }
 
     public void onClicTag1(View view) {
-        onClicTag(0);
-    }
-
-    public void onClicTag2(View view) {
         onClicTag(1);
     }
 
-    public void onClicTag3(View view) {
+    public void onClicTag2(View view) {
         onClicTag(2);
     }
 
-    public void onClicTag4(View view) {
+    public void onClicTag3(View view) {
         onClicTag(3);
     }
 
-    void onClicTag( int tag_number ) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Il n'est pas encore possible d'ajouter ou de modifier des tags!")
-                .setCancelable(true)
-                .setPositiveButton("Ok", null);
-        AlertDialog alert = builder.create();
-        alert.show();
+    public void onClicTag4(View view) {
+        onClicTag(4);
+    }
 
-        // TODO Reword it with an onRestart
-        /*getNewValues();
+    void onClicTag( int tag_number ) {
+
+        tag_changed = tag_number;
 
         Intent i = new Intent ( this, ChoixTagsDisplay.class );
-        i.putExtra("LangueChoisie", language);
-        i.putExtra("mode", mode);
-        i.putExtra("key", key);
-        i.putExtra("informations", newInfoString);
-        i.putExtra("Origin", "GestionMotDisplay");
-        i.putExtra("tag_number", tag_number);
-        i.putExtra("hints", tempHint[0]+";"+tempHint[1]);
-
         startActivity( i );
-        finish();*/
+    }
+
+    public void onRestart() {
+        super.onRestart();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String tag = preferences.getString("TAG_CHOSEN", "EMPTY_NULL");
+
+        Button button_Tag_1 = findViewById(R.id.button_Tag_1);
+        String tag_1 = button_Tag_1.getText().toString();
+        Button button_Tag_2 = findViewById(R.id.button_Tag_2);
+        String tag_2 = button_Tag_2.getText().toString();
+        Button button_Tag_3 = findViewById(R.id.button_Tag_3);
+        String tag_3 = button_Tag_3.getText().toString();
+        Button button_Tag_4 = findViewById(R.id.button_Tag_4);
+        String tag_4 = button_Tag_4.getText().toString();
+
+        if ( tag.equals(tag_1) || tag.equals(tag_2) || tag.equals(tag_3) || tag.equals(tag_4) ) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Ce tag est déjà sélectionné pour ce mot !")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok", null);
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else {
+            if ( tag_changed == 1 ) {
+                button_Tag_1.setText(tag);
+            } else if ( tag_changed == 2 ) {
+                button_Tag_2.setText(tag);
+            } else if ( tag_changed == 3 ) {
+                button_Tag_3.setText(tag);
+            } else if ( tag_changed == 4 ) {
+                button_Tag_4.setText(tag);
+            }
+        }
+    }
+
+    public void onClicTagClear1(View view) {
+        Button button_Tag = findViewById(R.id.button_Tag_1);
+        button_Tag.setText(" ");
+    }
+
+    public void onClicTagClear2(View view) {
+        Button button_Tag = findViewById(R.id.button_Tag_2);
+        button_Tag.setText(" ");
+    }
+
+    public void onClicTagClear3(View view) {
+        Button button_Tag = findViewById(R.id.button_Tag_3);
+        button_Tag.setText(" ");
+    }
+
+    public void onClicTagClear4(View view) {
+        Button button_Tag = findViewById(R.id.button_Tag_4);
+        button_Tag.setText(" ");
     }
 
 }

@@ -16,7 +16,7 @@
         android:id="@+id/button_modifyWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Modify"
+        android:text="Modifier"
         android:onClick="onClicModify"
         android:layout_toLeftOf="@+id/button_addWord" />
 
@@ -24,7 +24,7 @@
         android:id="@+id/button_addWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add +"
+        android:text="Ajouter"
         android:onClick="onClicAdd"
         android:layout_alignParentRight="true" />
 
