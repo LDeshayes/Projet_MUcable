@@ -45,6 +45,8 @@ public class RevisionDisplay extends AppCompatActivity {
         spinnerLD.setAdapter(arrayAdapter);
         spinnerLF.setAdapter(arrayAdapter);
 
+        spinnerLF.setSelection(1);
+
         // Definition des comportements des spinners
         spinnerLD.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -55,6 +57,11 @@ public class RevisionDisplay extends AppCompatActivity {
                     //Toast.makeText(parent.getContext(), "Selected: " + itemName, Toast.LENGTH_LONG).show();
                     spinnerLF.setSelection(0);
                     quel_sens = true;
+                }
+                if(position==0 && spinnerLF.getSelectedItem()=="Francais"){
+                    spinnerLF.setSelection(1);
+                    langue = "Anglais";
+                    quel_sens = false;
                 }
             }
             @Override
@@ -70,6 +77,12 @@ public class RevisionDisplay extends AppCompatActivity {
                     langue = parent.getItemAtPosition(position).toString();
                     //Toast.makeText(parent.getContext(), "Selected: " + itemName, Toast.LENGTH_LONG).show();
                     spinnerLD.setSelection(0);
+                    quel_sens = false;
+                }
+                if(position==0 && spinnerLD.getSelectedItem()=="Francais"){
+                    spinnerLD.setSelection(1);
+                    langue = "Anglais";
+                    quel_sens = true;
                 }
             }
             @Override
