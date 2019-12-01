@@ -4,6 +4,7 @@ package com.example.projet_mucable.Display;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -141,7 +142,12 @@ public class CahierDisplay extends Activity {
 
     public void onClicModify(View view) {
         if ( key == -1 ) {
-            Toast.makeText(getApplicationContext(),"Veuillez sélectionner une entrée à modifier !",Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Veuillez sélectionner une entrée à modifier !")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok", null);
+            AlertDialog alert = builder.create();
+            alert.show();
         } else {
             Intent i = new Intent ( this, GestionMotDisplay.class );
             i.putExtra("key",key);

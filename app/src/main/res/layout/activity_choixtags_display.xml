@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:paddingLeft="6dp"
+    android:paddingRight="6dp">
 
     <TextView
-        android:id="@+id/textView_SelecTag"
-        android:layout_width="184dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="50dp"
-        android:text="Selectionner un tag"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/tag_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Liste de tags"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+    <Button
+        android:id="@+id/button_choiceTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choisir un tag"
+        android:onClick="onClickChoiceTag"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true" />
 
     <ListView
         android:id="@+id/tags_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tag_title"
+        android:layout_above="@+id/button_choiceTag"
+        android:divider="@color/material_blue_grey_800"
+        android:dividerHeight="1dp" />
 
-</LinearLayout>
+</RelativeLayout>
