@@ -35,6 +35,7 @@ public class ParCoeurActivity extends AppCompatActivity {
     String word_translation;
     int word_number;
     int nb_left;
+    int taille_bd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class ParCoeurActivity extends AppCompatActivity {
 
         getLanguage();
         setupDB();
+
+        taille_bd = words_list.length;
 
         word_number = new Random().nextInt(words_list.length);
 
@@ -135,30 +138,23 @@ public class ParCoeurActivity extends AppCompatActivity {
     public void goToParCoeur(View view) {
 
         TextView t = (TextView) findViewById(R.id.editTextReponse);
-        String rep = t.getText().toString();
+        String repo = t.getText().toString();
 
-        if(!(rep.equals(word_translation))){
-            Toast.makeText(getApplicationContext(), "Mauvaise réponse !",Toast.LENGTH_LONG).show();
-        }
-        else{
+        //if(!(rep.equals(word_translation))){
 
-            Toast.makeText(getApplicationContext(),"Bonne réponse !",Toast.LENGTH_LONG).show();
 
-            final int random = new Random().nextInt(words_list.length);
-            //Toast.makeText(getApplicationContext(),"nb :"+nb_left,Toast.LENGTH_LONG).show();
+        Intent i = new Intent ( this, RevisionCheckDisplay.class );
+        i.putExtra("Taille_bd", taille_bd);
+        i.putExtra("Nb_mots", nb_left);
+        i.putExtra("Sens", sens);
+        i.putExtra("Langue", language);
 
-            Intent i = new Intent ( this, ParCoeurActivity.class );
-            i.putExtra("Word_number", random);
-            i.putExtra("Nb_mots", nb_left-1);
-            i.putExtra("Sens", sens);
-            i.putExtra("Langue", language);
+        i.putExtra("Question", word);
+        i.putExtra("ReponseUser", repo);
+        i.putExtra("Reponse", word_translation);
+        startActivity( i );
+        finish();
 
-            if(nb_left>0){
-                startActivity( i );
-            }
-            finish();
-
-        }
 
     }
 }

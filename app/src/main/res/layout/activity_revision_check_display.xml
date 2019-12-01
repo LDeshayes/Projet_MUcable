@@ -7,7 +7,7 @@
     tools:context=".Display.RevisionCheckDisplay">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewVF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="V/F"
@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.050000012" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textViewMotP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mot / périphrase"
@@ -30,26 +30,27 @@
         app:layout_constraintVertical_bias="0.25" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textViewRU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Réponse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMotP"
         app:layout_constraintVertical_bias="0.100000024" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginBottom="80dp"
+        android:onClick="goToParCoeur"
         android:text="SUIVANT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listViewMessages"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ListView
         android:id="@+id/listViewMessages"
@@ -58,6 +59,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRU"
         app:layout_constraintVertical_bias="0.25" />
 </androidx.constraintlayout.widget.ConstraintLayout>
