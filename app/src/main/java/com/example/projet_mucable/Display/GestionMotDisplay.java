@@ -4,6 +4,7 @@ package com.example.projet_mucable.Display;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -257,7 +258,12 @@ public class GestionMotDisplay extends Activity {
             translation = tempEditText.getText().toString();
 
             if ( ( word.length() == 0 ) || ( translation.length() == 0 ) ) {
-                Toast.makeText(getApplicationContext(), "L'ajout demande au moins le mot et sa traduction !", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("L'ajout demande au moins le mot et sa traduction !")
+                        .setCancelable(true)
+                        .setPositiveButton("Ok", null);
+                AlertDialog alert = builder.create();
+                alert.show();
             } else {
                 insert = "INSERT INTO t_"+language+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ('"+new_information_values[0]+"', '"+new_information_values[1]+"', '"+new_information_values[2]+"', '"+new_information_values[3]+"', '"+new_information_values[4]+"', '"+new_information_values[5]+"')";
                 CDB.execSQL(insert);
@@ -298,7 +304,12 @@ public class GestionMotDisplay extends Activity {
     }
 
     void onClicTag( int tag_number ) {
-        Toast.makeText(getApplicationContext(),"Il n'est pas encore possible d'ajouter ou de modifier des tags!", Toast.LENGTH_LONG).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Il n'est pas encore possible d'ajouter ou de modifier des tags!")
+                .setCancelable(true)
+                .setPositiveButton("Ok", null);
+        AlertDialog alert = builder.create();
+        alert.show();
 
         // TODO Reword it with an onRestart
         /*getNewValues();

@@ -116,7 +116,12 @@ public class ChoixTagsDisplay extends Activity {
 
         } else {
 
-            Toast.makeText(getApplicationContext(), "Vous n'avez choisit aucun tag !", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Vous n'avez choisit aucun tag !")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok", null);
+            AlertDialog alert = builder.create();
+            alert.show();
 
         }
 

@@ -146,7 +146,12 @@ public class GestionTagsDisplay extends Activity {
 
         } else {
 
-            Toast.makeText(getApplicationContext(), "Le champ pour un nouveau tag est vide !", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Le champ pour un nouveau tag est vide !")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok", null);
+            AlertDialog alert = builder.create();
+            alert.show();
 
         }
 
@@ -192,7 +197,14 @@ public class GestionTagsDisplay extends Activity {
             }
 
         } else {
-            Toast.makeText(getApplicationContext(), "Ce tag n'existe pas dans la liste !", Toast.LENGTH_SHORT).show();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Ce tag n'existe pas dans la liste !")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok", null);
+            AlertDialog alert = builder.create();
+            alert.show();
+
         }
 
     }
@@ -200,7 +212,14 @@ public class GestionTagsDisplay extends Activity {
     public void onClickDelTag(View view) {
 
         if ( tagChosen.equals("NAN") ) {
-            Toast.makeText(getApplicationContext(), "Choisissez un tag à supprimer !", Toast.LENGTH_SHORT).show();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Choisissez un tag à supprimer !")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok", null);
+            AlertDialog alert = builder.create();
+            alert.show();
+
         } else {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
