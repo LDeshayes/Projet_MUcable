@@ -60,7 +60,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
 
         Intent i = new Intent ( this, ParCoeurActivity.class );
         i.putExtra("Word_number", random);
-        i.putExtra("Nb_mots", nb_left-1);
+        i.putExtra("Nb_mots", nb_left);
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
 

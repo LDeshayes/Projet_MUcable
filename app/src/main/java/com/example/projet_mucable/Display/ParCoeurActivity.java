@@ -145,7 +145,7 @@ public class ParCoeurActivity extends AppCompatActivity {
 
         Intent i = new Intent ( this, RevisionCheckDisplay.class );
         i.putExtra("Taille_bd", taille_bd);
-        i.putExtra("Nb_mots", nb_left);
+        i.putExtra("Nb_mots", nb_left-1);
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
 
