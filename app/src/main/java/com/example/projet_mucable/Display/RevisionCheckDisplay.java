@@ -51,7 +51,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         tRU.setText("Votre réponse : "+reponseUser);
 
 
-        Toast.makeText(getApplicationContext(),"TEST: "+nb_left+" !",Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),"TEST: "+nb_left+" !",Toast.LENGTH_LONG).show();
     }
 
     public void goToParCoeur(View view) {
@@ -60,7 +60,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
 
         Intent i = new Intent ( this, ParCoeurActivity.class );
         i.putExtra("Word_number", random);
-        i.putExtra("Nb_mots", nb_left-1);
+        i.putExtra("Nb_mots", nb_left);
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
 

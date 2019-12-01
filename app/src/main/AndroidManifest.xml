@@ -52,6 +52,12 @@
     <activity android:name=".Display.GestionMotDisplay">
     </activity>
 
+
+    <activity android:name=".Display.RevisionCheckDisplay">
+    </activity>
+
+    <activity android:name=".Display.ResultatRevisionDisplay" />
     </application>
+
 
 </manifest>
