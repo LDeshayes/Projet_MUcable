@@ -4,51 +4,31 @@
 
     <application
         android:allowBackup="true"
+        android:configChanges="locale"
         android:icon="@mipmap/ic_launcher"
         android:label="Cahiers de vocabulaire"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:configChanges="locale">
+        android:theme="@style/AppTheme">
+        <activity android:name=".Display.RevisionCheckDisplay"></activity>
+        <activity android:name=".Display.ResultatRevisionDisplay" />
+        <activity android:name=".Display.LoadingScreenDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-    <activity android:name=".Display.LoadingScreenDisplay">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-
-    <activity android:name=".Display.IntroMenuDisplay">
-    </activity>
-
-    <activity android:name=".Display.RevisionDisplay">
-    </activity>
-
-    <activity android:name=".Display.ParCoeurActivity">
-    </activity>
-
-
-    <activity android:name=".Display.ParChoixActivity">
-    </activity>
-
-    <activity android:name=".Display.GestionTagsDisplay">
-    </activity>
-
-    <activity android:name=".Display.ChoixTagsDisplay">
-    </activity>
-
-    <activity android:name=".Display.PartageDisplay">
-    </activity>
-
-    <activity android:name=".Display.ChoixLangueDisplay">
-    </activity>
-
-    <activity android:name=".Display.CahierDisplay">
-    </activity>
-
-    <activity android:name=".Display.GestionMotDisplay">
-    </activity>
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Display.IntroMenuDisplay" />
+        <activity android:name=".Display.RevisionDisplay" />
+        <activity android:name=".Display.ParCoeurActivity" />
+        <activity android:name=".Display.ParChoixActivity" />
+        <activity android:name=".Display.GestionTagsDisplay" />
+        <activity android:name=".Display.ChoixTagsDisplay" />
+        <activity android:name=".Display.PartageDisplay" />
+        <activity android:name=".Display.ChoixLangueDisplay" />
+        <activity android:name=".Display.CahierDisplay" />
+        <activity android:name=".Display.GestionMotDisplay" />
     </application>
 
 </manifest>
