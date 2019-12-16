@@ -1,15 +1,24 @@
 package com.example.projet_mucable.Display;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.projet_mucable.CustomAdapter;
+import com.example.projet_mucable.StringEqualityPercentCheckLevenshteinDistance;
 import com.example.projet_mucable.R;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Random;
+
+
 
 public class RevisionCheckDisplay extends AppCompatActivity {
 
@@ -21,6 +30,9 @@ public class RevisionCheckDisplay extends AppCompatActivity {
     String question;
     String reponseUser;
     String reponse;
+
+    ArrayList list_msgs = new ArrayList();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +53,47 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         TextView tMP = (TextView) findViewById(R.id.textViewMotP);
         TextView tRU = (TextView) findViewById(R.id.textViewRU);
 
-        if((reponse.equals(reponseUser))){
+        tMP.setText("Le mot à traduire : "+question);
+        tRU.setText("Votre traduction  : "+reponseUser);
+
+        // Vérifie les réponses
+        if(reponse.equals(reponseUser)){
             tVF.setText("Bonne réponse !");
+            list_msgs.add("Parfait");
         }
         else{
             tVF.setText("Mauvaise réponse !");
-        }
-        tMP.setText("Mot à traduire : "+question);
-        tRU.setText("Votre réponse : "+reponseUser);
 
+            // Check taille réponse
+            if(reponse.length() != reponseUser.length()){
+
+                if(reponse.length() > reponseUser.length()){
+                    list_msgs.add("Réponse trop courte");
+                }
+                else{
+                    list_msgs.add("Réponse trop longue");
+                }
+            }
+            // Check majuscules
+            if(reponse.toLowerCase().equals(reponseUser.toLowerCase())){
+                list_msgs.add("Majuscules ?");
+            }
+
+            StringEqualityPercentCheckLevenshteinDistance howClose = new StringEqualityPercentCheckLevenshteinDistance();
+            double percen = howClose.similarity(reponseUser, reponse)*100;
+            //percen = new Double(new DecimalFormat(".##").format(percen));
+
+            list_msgs.add("Votre réponse est à "+new DecimalFormat("##").format(percen)+"% correcte");
+
+        }
+
+
+
+
+
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list_msgs);
+        ListView listView = (ListView) findViewById(R.id.listViewMessages);
+        listView.setAdapter(itemsAdapter);
 
         //Toast.makeText(getApplicationContext(),"TEST: "+nb_left+" !",Toast.LENGTH_LONG).show();
     }
