@@ -109,7 +109,20 @@ public class RevisionDisplay extends AppCompatActivity {
     }
 
     public void goToParChoix(View view) {
-        startActivity(new Intent(RevisionDisplay.this, ParChoixActivity.class));
+
+        Intent i = new Intent ( this, ParChoixActivity.class );
+
+        TextView t = (TextView) findViewById(R.id.editNBM);
+        String nb_m_s = t.getText().toString();
+        if(nb_m_s.length()<1){
+            nb_m_s="5";
+        }
+        int nb_m = Integer.parseInt(nb_m_s);
+        i.putExtra("Nb_mots", nb_m);
+        i.putExtra("Langue", langue);
+        i.putExtra("Sens", quel_sens);
+
+        startActivity( i );
     }
 
     public void clicChoiceTag(View view) {

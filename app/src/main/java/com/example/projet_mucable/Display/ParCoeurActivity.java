@@ -140,14 +140,13 @@ public class ParCoeurActivity extends AppCompatActivity {
         TextView t = (TextView) findViewById(R.id.editTextReponse);
         String repo = t.getText().toString();
 
-        //if(!(rep.equals(word_translation))){
-
 
         Intent i = new Intent ( this, RevisionCheckDisplay.class );
         i.putExtra("Taille_bd", taille_bd);
         i.putExtra("Nb_mots", nb_left-1);
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
+        i.putExtra("Type", true);
 
         i.putExtra("Question", word);
         i.putExtra("ReponseUser", repo);

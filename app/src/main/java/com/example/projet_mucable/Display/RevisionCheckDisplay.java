@@ -26,6 +26,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
     Boolean sens;
     int nb_left;
     int taille_bd;
+    boolean type;
 
     String question;
     String reponseUser;
@@ -44,6 +45,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         taille_bd = this_i.getIntExtra("Taille_bd", 5);
         language = this_i.getStringExtra("Langue");
         sens = this_i.getBooleanExtra("Sens", true);
+        type = this_i.getBooleanExtra("Sens", false);
 
         question = this_i.getStringExtra("Question");
         reponseUser = this_i.getStringExtra("ReponseUser");
@@ -64,26 +66,29 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         else{
             tVF.setText("Mauvaise réponse !");
 
-            // Check taille réponse
-            if(reponse.length() != reponseUser.length()){
+            if(type){
 
-                if(reponse.length() > reponseUser.length()){
-                    list_msgs.add("Réponse trop courte");
+                // Check taille réponse
+                if(reponse.length() != reponseUser.length()){
+
+                    if(reponse.length() > reponseUser.length()){
+                        list_msgs.add("Réponse trop courte");
+                    }
+                    else{
+                        list_msgs.add("Réponse trop longue");
+                    }
                 }
-                else{
-                    list_msgs.add("Réponse trop longue");
+                // Check majuscules
+                if(reponse.toLowerCase().equals(reponseUser.toLowerCase())){
+                    list_msgs.add("Majuscules ?");
                 }
-            }
-            // Check majuscules
-            if(reponse.toLowerCase().equals(reponseUser.toLowerCase())){
-                list_msgs.add("Majuscules ?");
-            }
 
-            StringEqualityPercentCheckLevenshteinDistance howClose = new StringEqualityPercentCheckLevenshteinDistance();
-            double percen = howClose.similarity(reponseUser, reponse)*100;
-            //percen = new Double(new DecimalFormat(".##").format(percen));
+                StringEqualityPercentCheckLevenshteinDistance howClose = new StringEqualityPercentCheckLevenshteinDistance();
+                double percen = howClose.similarity(reponseUser, reponse)*100;
+                //percen = new Double(new DecimalFormat(".##").format(percen));
 
-            list_msgs.add("Votre réponse est à "+new DecimalFormat("##").format(percen)+"% correcte");
+                list_msgs.add("Votre réponse est à "+new DecimalFormat("##").format(percen)+"% correcte");
+            }
 
         }
 
@@ -98,15 +103,24 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         //Toast.makeText(getApplicationContext(),"TEST: "+nb_left+" !",Toast.LENGTH_LONG).show();
     }
 
-    public void goToParCoeur(View view) {
+    public void goToNext(View view) {
 
         final int random = new Random().nextInt(taille_bd);
+        Intent i;
 
-        Intent i = new Intent ( this, ParCoeurActivity.class );
+        if(type){
+            i = new Intent ( this, ParCoeurActivity.class );
+
+        }
+        else{
+            i = new Intent ( this, ParChoixActivity.class );
+        }
+
         i.putExtra("Word_number", random);
         i.putExtra("Nb_mots", nb_left);
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
+
 
         if(nb_left>0){
             startActivity( i );
