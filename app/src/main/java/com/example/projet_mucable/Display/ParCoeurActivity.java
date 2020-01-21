@@ -3,7 +3,6 @@ package com.example.projet_mucable.Display;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,8 +12,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.R;
 
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class ParCoeurActivity extends AppCompatActivity {
@@ -30,6 +33,8 @@ public class ParCoeurActivity extends AppCompatActivity {
     int key = -1; // future key pour repérer le word à modifier
     //View key_view;
     SQLiteDatabase CDB;
+
+    DicoSeri monDico = new DicoSeri();
 
     String word = "Car";
     String word_translation;
@@ -52,6 +57,8 @@ public class ParCoeurActivity extends AppCompatActivity {
         Intent this_i = getIntent();
         word_number = this_i.getIntExtra("Word_number", 0);
         nb_left = this_i.getIntExtra("Nb_mots", 5);
+        monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
+
 
         sens = this_i.getBooleanExtra("Sens", true);
         if(sens){
@@ -65,6 +72,8 @@ public class ParCoeurActivity extends AppCompatActivity {
 
         TextView t = (TextView) findViewById(R.id.textViewQuestion);
         t.setText(word);
+
+
 
     }
 
@@ -148,9 +157,12 @@ public class ParCoeurActivity extends AppCompatActivity {
         i.putExtra("Langue", language);
         i.putExtra("Type", true);
 
+        i.putExtra("Dico", monDico);
+
         i.putExtra("Question", word);
         i.putExtra("ReponseUser", repo);
         i.putExtra("Reponse", word_translation);
+
         startActivity( i );
         finish();
 

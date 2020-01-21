@@ -11,8 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.R;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class ParChoixActivity extends AppCompatActivity {
@@ -30,6 +33,9 @@ public class ParChoixActivity extends AppCompatActivity {
     int key = -1; // future key pour repérer le word à modifier
     //View key_view;
     SQLiteDatabase CDB;
+
+    DicoSeri monDico = new DicoSeri();
+
 
     String word = "Car";
     String a1, a2, a3, a4;
@@ -53,6 +59,10 @@ public class ParChoixActivity extends AppCompatActivity {
         Intent this_i = getIntent();
         word_number = this_i.getIntExtra("Word_number", 0);
         nb_left = this_i.getIntExtra("Nb_mots", 5);
+        monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
+
+        //dico.put("test1","test2");
+
 
         int[] iAnswers = {0, 0, 0, 0};
         while (iAnswers[0]==iAnswers[1] || iAnswers[0]==iAnswers[2] || iAnswers[0]==iAnswers[3] || iAnswers[1]==iAnswers[2] || iAnswers[1]==iAnswers[3] || iAnswers[2]==iAnswers[3]){
@@ -221,9 +231,12 @@ public class ParChoixActivity extends AppCompatActivity {
         i.putExtra("Langue", language);
         i.putExtra("Type", false);
 
+        i.putExtra("Dico", monDico);
+
         i.putExtra("Question", word);
         i.putExtra("ReponseUser", repo);
         i.putExtra("Reponse", word_translation);
+
         startActivity( i );
         finish();
 

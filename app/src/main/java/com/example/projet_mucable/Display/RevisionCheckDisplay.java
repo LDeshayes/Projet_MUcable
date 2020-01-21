@@ -1,12 +1,15 @@
 package com.example.projet_mucable.Display;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projet_mucable.CustomAdapter;
+import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.StringEqualityPercentCheckLevenshteinDistance;
 import com.example.projet_mucable.R;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -33,8 +36,10 @@ public class RevisionCheckDisplay extends AppCompatActivity {
     String reponse;
 
     ArrayList list_msgs = new ArrayList();
+    DicoSeri monDico = new DicoSeri();
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +50,15 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         taille_bd = this_i.getIntExtra("Taille_bd", 5);
         language = this_i.getStringExtra("Langue");
         sens = this_i.getBooleanExtra("Sens", true);
-        type = this_i.getBooleanExtra("Sens", false);
+        type = this_i.getBooleanExtra("Type", false);
+        monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
+
 
         question = this_i.getStringExtra("Question");
         reponseUser = this_i.getStringExtra("ReponseUser");
         reponse = this_i.getStringExtra("Reponse");
+
+        monDico.put("Test1","Test2");
 
         TextView tVF = (TextView) findViewById(R.id.textViewVF);
         TextView tMP = (TextView) findViewById(R.id.textViewMotP);
@@ -92,9 +101,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
 
         }
 
-
-
-
+        monDico.put(question, String.join(", ", list_msgs));
 
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list_msgs);
         ListView listView = (ListView) findViewById(R.id.listViewMessages);
@@ -120,7 +127,9 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         i.putExtra("Nb_mots", nb_left);
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
+        i.putExtra("Type", type);
 
+        i.putExtra("Dico", monDico);
 
         if(nb_left>0){
             startActivity( i );
