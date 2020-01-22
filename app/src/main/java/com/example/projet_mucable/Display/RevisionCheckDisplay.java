@@ -101,7 +101,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
 
         }
 
-        monDico.put(question, String.join(", ", list_msgs));
+        //monDico.put(question, String.join(", ", list_msgs));
 
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list_msgs);
         ListView listView = (ListView) findViewById(R.id.listViewMessages);
@@ -132,6 +132,13 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         i.putExtra("Dico", monDico);
 
         if(nb_left>0){
+            startActivity( i );
+        }
+        else{
+            i = new Intent ( this, ResultatRevisionDisplay.class );
+            i.putExtra("Dico", monDico);
+            i.putExtra("Sens", sens);
+            i.putExtra("Langue", language);
             startActivity( i );
         }
         finish();

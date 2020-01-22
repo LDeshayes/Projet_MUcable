@@ -105,6 +105,7 @@ public class RevisionDisplay extends AppCompatActivity {
         i.putExtra("Langue", langue);
         i.putExtra("Sens", quel_sens);
         i.putExtra("Type", true);
+        i.putExtra("Not_First", false);
 
         startActivity( i );
     }
@@ -123,6 +124,7 @@ public class RevisionDisplay extends AppCompatActivity {
         i.putExtra("Langue", langue);
         i.putExtra("Sens", quel_sens);
         i.putExtra("Type", false);
+        i.putExtra("Not_First", false);
 
         startActivity( i );
     }
