@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class ResultatRevisionDisplay extends AppCompatActivity {
 
@@ -35,11 +37,9 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         TextView tLangue = (TextView) findViewById(R.id.textViewLangue);
         tLangue.setText("Révision en "+language);
 
-
-        list_msgs.add("t1");
-        list_msgs.add("t2");
-        list_msgs.add("t3");
-        list_msgs.add("t4");
+        for(String key : ((HashMap<String,String>)monDico.getMap()).keySet()){
+            list_msgs.add(/*key+"\n- "+*/monDico.get(key));
+        }
 
 
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list_msgs);

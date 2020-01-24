@@ -58,7 +58,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         reponseUser = this_i.getStringExtra("ReponseUser");
         reponse = this_i.getStringExtra("Reponse");
 
-        monDico.put("Test1","Test2");
+
 
         TextView tVF = (TextView) findViewById(R.id.textViewVF);
         TextView tMP = (TextView) findViewById(R.id.textViewMotP);
@@ -71,9 +71,11 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         if(reponse.equals(reponseUser)){
             tVF.setText("Bonne réponse !");
             list_msgs.add("Parfait");
+            monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
         }
         else{
             tVF.setText("Mauvaise réponse !");
+            monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Mauvaise réponse");
 
             if(type){
 

@@ -55,7 +55,7 @@ public class ParCoeurActivity extends AppCompatActivity {
         word_number = new Random().nextInt(words_list.length);
 
         Intent this_i = getIntent();
-        word_number = this_i.getIntExtra("Word_number", 0);
+        word_number = this_i.getIntExtra("Word_number", new Random().nextInt(words_list.length));
         nb_left = this_i.getIntExtra("Nb_mots", 5);
         if(this_i.getBooleanExtra("Not_First", true)){
             monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
