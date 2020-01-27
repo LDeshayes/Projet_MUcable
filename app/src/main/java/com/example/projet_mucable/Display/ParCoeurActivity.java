@@ -30,6 +30,8 @@ public class ParCoeurActivity extends AppCompatActivity {
     String[] words_list;// = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] translations_list;// = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
+    String tagsFilter = "'Chiffre'";
+
     int key = -1; // future key pour repérer le word à modifier
     //View key_view;
     SQLiteDatabase CDB;
@@ -41,6 +43,7 @@ public class ParCoeurActivity extends AppCompatActivity {
     int word_number;
     int nb_left;
     int taille_bd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class ParCoeurActivity extends AppCompatActivity {
         word_number = new Random().nextInt(words_list.length);
 
         Intent this_i = getIntent();
+        tagsFilter = this_i.getStringExtra("TagsFilter");
         word_number = this_i.getIntExtra("Word_number", new Random().nextInt(words_list.length));
         nb_left = this_i.getIntExtra("Nb_mots", 5);
         if(this_i.getBooleanExtra("Not_First", true)){
@@ -102,7 +106,7 @@ public class ParCoeurActivity extends AppCompatActivity {
         Cursor cursor = CDB.query(
                 "t_"+language,
                 null,
-                null,
+                "Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")",
                 null,
                 null,
                 null,

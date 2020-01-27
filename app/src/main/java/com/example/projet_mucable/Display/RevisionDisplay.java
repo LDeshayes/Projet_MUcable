@@ -106,6 +106,7 @@ public class RevisionDisplay extends AppCompatActivity {
         i.putExtra("Sens", quel_sens);
         i.putExtra("Type", true);
         i.putExtra("Not_First", false);
+        i.putExtra("TagsFilter", "'Chiffre'");
 
         startActivity( i );
     }
@@ -125,6 +126,7 @@ public class RevisionDisplay extends AppCompatActivity {
         i.putExtra("Sens", quel_sens);
         i.putExtra("Type", false);
         i.putExtra("Not_First", false);
+        i.putExtra("TagsFilter", "'Chiffre'");
 
         startActivity( i );
     }
