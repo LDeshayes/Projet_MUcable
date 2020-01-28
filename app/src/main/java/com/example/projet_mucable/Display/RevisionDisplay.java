@@ -101,6 +101,7 @@ public class RevisionDisplay extends AppCompatActivity {
             nb_m_s="5";
         }
         int nb_m = Integer.parseInt(nb_m_s);
+
         i.putExtra("Nb_mots", nb_m);
         i.putExtra("Langue", langue);
         i.putExtra("Sens", quel_sens);
@@ -121,6 +122,7 @@ public class RevisionDisplay extends AppCompatActivity {
             nb_m_s="5";
         }
         int nb_m = Integer.parseInt(nb_m_s);
+
         i.putExtra("Nb_mots", nb_m);
         i.putExtra("Langue", langue);
         i.putExtra("Sens", quel_sens);

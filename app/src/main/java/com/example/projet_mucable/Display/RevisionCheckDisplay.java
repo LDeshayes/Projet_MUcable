@@ -23,12 +23,15 @@ import java.util.Random;
 
 
 
+
+
 public class RevisionCheckDisplay extends AppCompatActivity {
 
     String language;
     Boolean sens;
     int nb_left;
     int taille_bd;
+    int word_num;
     boolean type;
 
     String question;
@@ -37,6 +40,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
 
     ArrayList list_msgs = new ArrayList();
     DicoSeri monDico = new DicoSeri();
+    Integer[] indTab;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -53,7 +57,11 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         type = this_i.getBooleanExtra("Type", false);
         monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
 
-
+        indTab = new Integer[nb_left];
+        ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
+        indTab = intList.toArray(new Integer[0]);
+        word_num = intList.get(nb_left);
+        
         question = this_i.getStringExtra("Question");
         reponseUser = this_i.getStringExtra("ReponseUser");
         reponse = this_i.getStringExtra("Reponse");
@@ -125,13 +133,17 @@ public class RevisionCheckDisplay extends AppCompatActivity {
             i = new Intent ( this, ParChoixActivity.class );
         }
 
-        i.putExtra("Word_number", random);
+        i.putExtra("Word_number", word_num);
         i.putExtra("Nb_mots", nb_left);
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
         i.putExtra("Type", type);
 
         i.putExtra("Dico", monDico);
+
+        ArrayList<Integer> intList = new ArrayList<Integer>(50);
+        for (int k : indTab) intList.add(k);
+        i.putIntegerArrayListExtra("IndTab",intList);
 
         if(nb_left>0){
             startActivity( i );
