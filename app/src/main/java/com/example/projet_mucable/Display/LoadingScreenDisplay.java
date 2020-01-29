@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class LoadingScreenDisplay extends Activity {
         createAndLoadDB();
         saveTags();
         updateDB();
+        getScreenSize();
 
         Intent intent = new Intent(this, IntroMenuDisplay.class);
         startActivity(intent);
@@ -212,6 +214,16 @@ public class LoadingScreenDisplay extends Activity {
             DB_NEED_UPD.commit();
 
         }
+
+    }
+
+    void getScreenSize() {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor screenSize = preferences.edit();
+        screenSize.putInt("height", Resources.getSystem().getDisplayMetrics().heightPixels);
+        screenSize.putInt("width", Resources.getSystem().getDisplayMetrics().widthPixels);
+        screenSize.commit();
 
     }
 
