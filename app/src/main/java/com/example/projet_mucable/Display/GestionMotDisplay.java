@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.projet_mucable.R;
 
 import java.lang.reflect.Field;
@@ -187,6 +188,9 @@ public class GestionMotDisplay extends Activity {
 
         tempEditText = findViewById(R.id.editText_word);
         tempStr = tempEditText.getText().toString();
+        if ( !language.equals("Allemand") ) {
+            tempStr = tempStr.toLowerCase();
+        }
         if ( tempStr.equals("") ) {
             tempNewInfo = information_values[0];
         } else {
@@ -194,7 +198,7 @@ public class GestionMotDisplay extends Activity {
         }
 
         tempEditText = findViewById(R.id.editText_translation);
-        tempStr = tempEditText.getText().toString();
+        tempStr = tempEditText.getText().toString().toLowerCase();
         if ( tempStr.equals("") ) {
             tempNewInfo = tempNewInfo + ";" + information_values[1];
         } else {
@@ -233,6 +237,7 @@ public class GestionMotDisplay extends Activity {
             tempNewInfo = tempNewInfo + ";" + tempStr;
         }
 
+        tempNewInfo = tempNewInfo.replace("'","''");
         new_information_values = tempNewInfo.split(";");
     }
 
