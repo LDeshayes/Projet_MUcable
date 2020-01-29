@@ -15,8 +15,12 @@ import android.widget.Toast;
 import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -30,6 +34,8 @@ public class ParCoeurActivity extends AppCompatActivity {
     String[] words_list;// = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] translations_list;// = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
+    String tagsFilter = "'Chiffre', 'Nombre'";
+
     int key = -1; // future key pour repérer le word à modifier
     //View key_view;
     SQLiteDatabase CDB;
@@ -41,6 +47,8 @@ public class ParCoeurActivity extends AppCompatActivity {
     int word_number;
     int nb_left;
     int taille_bd;
+    Integer[] indTab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +59,62 @@ public class ParCoeurActivity extends AppCompatActivity {
         setupDB();
 
         taille_bd = words_list.length;
-
         word_number = new Random().nextInt(words_list.length);
 
         Intent this_i = getIntent();
+        tagsFilter = this_i.getStringExtra("TagsFilter");
         word_number = this_i.getIntExtra("Word_number", new Random().nextInt(words_list.length));
         nb_left = this_i.getIntExtra("Nb_mots", 5);
+
+        indTab = new Integer[nb_left];
+
+
         if(this_i.getBooleanExtra("Not_First", true)){
             monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
+            ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
+            indTab = intList.toArray(new Integer[0]);
+        }
+        else{
+
+            boolean testEq;
+
+            if(taille_bd>nb_left){
+
+                for(int i=0; i<nb_left; i++){
+                    indTab[i] = 0;
+                }
+
+                // Boucle sur nb_left
+                for(int i=0; i<nb_left; i++){
+                    testEq = false;
+                    while (!testEq) {
+                        int rdm = (new Random()).nextInt(words_list.length);
+                        testEq = true;
+                        for(int j=0; j<nb_left; j++) {
+                            if (indTab[j]==rdm) {
+                                testEq = false;
+                            }
+                        }
+                    }
+                }
+            }
+            else{
+
+                for(int i=0; i<nb_left; i++){
+                    if(i<taille_bd){
+                        indTab[i] = i;
+                    }
+                    else {
+                        indTab[i] = i%taille_bd;
+                    }
+                }
+
+                List<Integer> intList = Arrays.asList(indTab);
+                Collections.shuffle(intList);
+                intList.toArray(indTab);
+
+            }
+
         }
 
 
@@ -102,7 +158,7 @@ public class ParCoeurActivity extends AppCompatActivity {
         Cursor cursor = CDB.query(
                 "t_"+language,
                 null,
-                null,
+                "Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")",
                 null,
                 null,
                 null,
@@ -165,6 +221,11 @@ public class ParCoeurActivity extends AppCompatActivity {
         i.putExtra("Question", word);
         i.putExtra("ReponseUser", repo);
         i.putExtra("Reponse", word_translation);
+
+
+        ArrayList<Integer> intList = new ArrayList<Integer>(50);
+        for (int k : indTab) intList.add(k);
+        i.putIntegerArrayListExtra("IndTab",intList);
 
         startActivity( i );
         finish();

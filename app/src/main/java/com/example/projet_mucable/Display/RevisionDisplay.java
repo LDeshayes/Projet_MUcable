@@ -101,11 +101,13 @@ public class RevisionDisplay extends AppCompatActivity {
             nb_m_s="5";
         }
         int nb_m = Integer.parseInt(nb_m_s);
+
         i.putExtra("Nb_mots", nb_m);
         i.putExtra("Langue", langue);
         i.putExtra("Sens", quel_sens);
         i.putExtra("Type", true);
         i.putExtra("Not_First", false);
+        i.putExtra("TagsFilter", "'Chiffre'");
 
         startActivity( i );
     }
@@ -120,11 +122,13 @@ public class RevisionDisplay extends AppCompatActivity {
             nb_m_s="5";
         }
         int nb_m = Integer.parseInt(nb_m_s);
+
         i.putExtra("Nb_mots", nb_m);
         i.putExtra("Langue", langue);
         i.putExtra("Sens", quel_sens);
         i.putExtra("Type", false);
         i.putExtra("Not_First", false);
+        i.putExtra("TagsFilter", "'Chiffre'");
 
         startActivity( i );
     }
