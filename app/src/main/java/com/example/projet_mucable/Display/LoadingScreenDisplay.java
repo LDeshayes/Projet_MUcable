@@ -221,8 +221,8 @@ public class LoadingScreenDisplay extends Activity {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor screenSize = preferences.edit();
-        screenSize.putInt("height", Resources.getSystem().getDisplayMetrics().heightPixels);
-        screenSize.putInt("width", Resources.getSystem().getDisplayMetrics().widthPixels);
+        screenSize.putInt("screenHeight", Resources.getSystem().getDisplayMetrics().heightPixels);
+        screenSize.putInt("screenWidth", Resources.getSystem().getDisplayMetrics().widthPixels);
         screenSize.commit();
 
     }
