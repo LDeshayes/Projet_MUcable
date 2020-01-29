@@ -135,6 +135,8 @@ public class RevisionDisplay extends AppCompatActivity {
 
     public void clicChoiceTag(View view) {
         Intent i = new Intent ( this, ChoixTagsDisplay.class );
+        i.putExtra("Origin", "RevisionDisplay");
         startActivity( i );
+        finish();
     }
 }
