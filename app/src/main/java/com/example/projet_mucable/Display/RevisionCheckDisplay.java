@@ -61,7 +61,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
         indTab = intList.toArray(new Integer[0]);
         word_num = intList.get(nb_left);
-        
+
         question = this_i.getStringExtra("Question");
         reponseUser = this_i.getStringExtra("ReponseUser");
         reponse = this_i.getStringExtra("Reponse");

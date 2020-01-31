@@ -36,8 +36,6 @@ public class ParCoeurActivity extends AppCompatActivity {
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String tagsFilter = "'Chiffre', 'Nombre'";
 
-    int key = -1; // future key pour repérer le word à modifier
-    //View key_view;
     SQLiteDatabase CDB;
 
     DicoSeri monDico = new DicoSeri();
@@ -221,7 +219,6 @@ public class ParCoeurActivity extends AppCompatActivity {
         i.putExtra("Question", word);
         i.putExtra("ReponseUser", repo);
         i.putExtra("Reponse", word_translation);
-
 
         ArrayList<Integer> intList = new ArrayList<Integer>(50);
         for (int k : indTab) intList.add(k);

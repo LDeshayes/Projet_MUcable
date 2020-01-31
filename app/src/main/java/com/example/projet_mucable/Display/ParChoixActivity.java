@@ -14,7 +14,11 @@ import android.widget.TextView;
 import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -30,12 +34,11 @@ public class ParChoixActivity extends AppCompatActivity {
     String[] words_list;// = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] translations_list;// = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
-    int key = -1; // future key pour repérer le word à modifier
-    //View key_view;
+    String tagsFilter = "'Chiffre', 'Nombre'";
+
     SQLiteDatabase CDB;
 
     DicoSeri monDico = new DicoSeri();
-
 
     String word = "Car";
     String a1, a2, a3, a4;
@@ -43,6 +46,7 @@ public class ParChoixActivity extends AppCompatActivity {
     int word_number;
     int nb_left;
     int taille_bd;
+    Integer[] indTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,23 +57,74 @@ public class ParChoixActivity extends AppCompatActivity {
         setupDB();
 
         taille_bd = words_list.length;
-
         word_number = (new Random()).nextInt(words_list.length);
 
         Intent this_i = getIntent();
-        word_number = this_i.getIntExtra("Word_number", 0);
+        tagsFilter = this_i.getStringExtra("TagsFilter");
+        word_number = this_i.getIntExtra("Word_number", new Random().nextInt(words_list.length));
         nb_left = this_i.getIntExtra("Nb_mots", 5);
-        monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
 
-        //dico.put("test1","test2");
+        indTab = new Integer[nb_left];
 
 
-        int[] iAnswers = {0, 0, 0, 0};
+        if(this_i.getBooleanExtra("Not_First", true)){
+            monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
+            ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
+            indTab = intList.toArray(new Integer[0]);
+        }
+        else{
+
+            boolean testEq;
+
+            if(taille_bd>nb_left){
+
+                for(int i=0; i<nb_left; i++){
+                    indTab[i] = 0;
+                }
+
+                // Boucle sur nb_left
+                for(int i=0; i<nb_left; i++){
+                    testEq = false;
+                    while (!testEq) {
+                        int rdm = (new Random()).nextInt(words_list.length);
+                        testEq = true;
+                        for(int j=0; j<nb_left; j++) {
+                            if (indTab[j]==rdm) {
+                                testEq = false;
+                            }
+                        }
+                    }
+                }
+            }
+            else{
+
+                for(int i=0; i<nb_left; i++){
+                    if(i<taille_bd){
+                        indTab[i] = i;
+                    }
+                    else {
+                        indTab[i] = i%taille_bd;
+                    }
+                }
+
+                List<Integer> intList = Arrays.asList(indTab);
+                Collections.shuffle(intList);
+                intList.toArray(indTab);
+
+            }
+
+        }
+
+        Integer[] iAnswers = {word_number, 0, 0, 0};
         while (iAnswers[0]==iAnswers[1] || iAnswers[0]==iAnswers[2] || iAnswers[0]==iAnswers[3] || iAnswers[1]==iAnswers[2] || iAnswers[1]==iAnswers[3] || iAnswers[2]==iAnswers[3]){
-            for(int i=0; i<4; i++){
+            for(int i=1; i<4; i++){
                 iAnswers[i] = (new Random()).nextInt(words_list.length);
             }
         }
+
+        List<Integer> listAnswers = Arrays.asList(iAnswers);
+        Collections.shuffle(listAnswers);
+        listAnswers.toArray(iAnswers);
 
         sens = this_i.getBooleanExtra("Sens", true);
         if(sens){
@@ -236,6 +291,10 @@ public class ParChoixActivity extends AppCompatActivity {
         i.putExtra("Question", word);
         i.putExtra("ReponseUser", repo);
         i.putExtra("Reponse", word_translation);
+
+        ArrayList<Integer> intList = new ArrayList<Integer>(50);
+        for (int k : indTab) intList.add(k);
+        i.putIntegerArrayListExtra("IndTab",intList);
 
         startActivity( i );
         finish();
