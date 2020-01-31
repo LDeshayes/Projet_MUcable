@@ -10,9 +10,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,14 +24,15 @@ import android.widget.Toast;
 import com.example.projet_mucable.CustomAdapter;
 import com.example.projet_mucable.R;
 
+import java.util.List;
+
 public class CahierDisplay extends Activity {
 
     String language;
     ListView words_listview;
-    int[] key_list;
-    String[] words_list;// = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
-    String[] translations_list;// = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
-    String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
+    int[] key_list_final, key_list;
+    String[] words_list, translations_list, tags_list;
+    int rowCount;
     int key = -1; // future key pour repérer le word à modifier
     View key_view;
     SQLiteDatabase CDB;
@@ -42,6 +47,8 @@ public class CahierDisplay extends Activity {
         setupDB();
 
         setupElements();
+
+        setupSearchBar();
 
     }
 
@@ -73,8 +80,9 @@ public class CahierDisplay extends Activity {
                 null
         );
 
-        int rowCount = cursor.getCount();
+        rowCount = cursor.getCount();
 
+        key_list_final = new int[rowCount];
         key_list = new int[rowCount];
         words_list = new String[rowCount];
         translations_list = new String[rowCount];
@@ -82,6 +90,7 @@ public class CahierDisplay extends Activity {
 
         cursor.moveToFirst();
         for ( int i = 0; i < rowCount; i++ ) {
+            key_list_final[i] = cursor.getInt(0);
             key_list[i] = cursor.getInt(0);
             words_list[i] = cursor.getString(1);
             translations_list[i] = cursor.getString(2);
@@ -125,7 +134,7 @@ public class CahierDisplay extends Activity {
         CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
         words_listview.setAdapter(customAdapter);
 
-        words_listview = (ListView)findViewById(R.id.words_listview);
+        words_listview = (ListView) findViewById(R.id.words_listview);
 
         words_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -165,6 +174,76 @@ public class CahierDisplay extends Activity {
         i.putExtra( "LangueChoisie", language );
         startActivity( i );
         finish();
+    }
+
+    public void setupSearchBar() {
+
+        EditText editText_search = findViewById(R.id.editText_search);
+
+        editText_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                String search = s.toString().toLowerCase();
+
+                if (search.length() != 0) {
+
+                    key = -1;
+
+                    int counter = 0;
+                    int[] searchOK = new int[rowCount];
+                    String[] tempTags;
+
+                    for (int i = 0; i < rowCount; i++) {
+                        searchOK[i] = -1;
+                        if (words_list[i].toLowerCase().contains(search) || translations_list[i].toLowerCase().contains(search)) {
+                            counter++;
+                            searchOK[i] = 1;
+                        }
+                        tempTags = tags_list[i].split(" - ");
+                        for (int j = 0; ( j < tempTags.length ) && ( searchOK[i] != 1 ); j++) {
+                            if (tempTags[j].toLowerCase().contains(search)) {
+                                counter++;
+                                searchOK[i] = 1;
+                            }
+                        }
+                    }
+
+                    key_list = new int[counter];
+                    String[] words_list_temp = new String[counter];
+                    String[] translations_list_temp = new String[counter];
+                    String[] tags_list_temp = new String[counter];
+
+                    int incr = 0;
+                    for (int i = 0; i < rowCount; i++) {
+                        if (searchOK[i] == 1) {
+                            key_list[incr] = key_list_final[i];
+                            words_list_temp[incr] = words_list[i];
+                            translations_list_temp[incr] = translations_list[i];
+                            tags_list_temp[incr] = tags_list[i];
+                            incr++;
+                        }
+                    }
+
+                    CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words_list_temp, translations_list_temp, tags_list_temp);
+                    words_listview.setAdapter(customAdapter);
+
+                } else {
+
+                    CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
+                    words_listview.setAdapter(customAdapter);
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+
     }
 
 }

@@ -46,7 +46,9 @@
     <activity android:name=".Display.ChoixLangueDisplay">
     </activity>
 
-    <activity android:name=".Display.CahierDisplay">
+    <activity
+        android:name=".Display.CahierDisplay"
+        android:windowSoftInputMode="stateHidden">
     </activity>
 
     <activity android:name=".Display.GestionMotDisplay">

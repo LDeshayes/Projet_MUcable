@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -31,6 +33,8 @@ public class LoadingScreenDisplay extends Activity {
 
         createAndLoadDB();
         saveTags();
+        updateDB();
+        getScreenSize();
 
         Intent intent = new Intent(this, IntroMenuDisplay.class);
         startActivity(intent);
@@ -107,11 +111,7 @@ public class LoadingScreenDisplay extends Activity {
             DB_EXIST_EDIT.putBoolean("FST_LAUNCH", false);
             DB_EXIST_EDIT.commit();
 
-            Log.i("ChoixLangueDisplay", "DB HAS BEEN CREATED");
-
         }
-
-        Log.i("ChoixLangueDisplay", "DB HAS BEEN TESTED");
 
     }
 
@@ -121,6 +121,109 @@ public class LoadingScreenDisplay extends Activity {
         SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
         NEW_TAGLIST.putString("TAG_LIST", tag_list);
         NEW_TAGLIST.commit();
+
+    }
+
+    @SuppressLint("WrongConstant")
+    void updateDB() {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean need_upd_01 = preferences.getBoolean("NEED_UPD_01", true);
+        if ( need_upd_01 ) {
+
+            int rowCount, i;
+            String delete, insert, lowered;
+            Cursor cursor;
+            SQLiteDatabase CDB = openOrCreateDatabase(
+                    "CDB.db"
+                    , SQLiteDatabase.CREATE_IF_NECESSARY
+                    , null
+            );
+
+            // UPD Anglais
+            cursor = CDB.query(
+                    "t_Anglais",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            rowCount = cursor.getCount();
+            cursor.moveToFirst();
+
+            for ( i = 0; i < rowCount; i++ ) {
+                delete = "DELETE FROM t_Anglais WHERE Id_Word="+cursor.getInt(0);
+                CDB.execSQL(delete);
+
+                lowered = cursor.getInt(0)+", '"+cursor.getString(1).toLowerCase()+"', '"+cursor.getString(2).toLowerCase()+"', '"+cursor.getString(3)+"', '"+cursor.getString(4)+"', '"+cursor.getString(5)+"', '"+cursor.getString(6);
+                insert = "INSERT INTO t_Anglais (Id_Word, Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ("+lowered+"')";
+                CDB.execSQL(insert);
+                cursor.moveToNext();
+            }
+
+            // UPD Espagnol
+            cursor = CDB.query(
+                    "t_Espagnol",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            rowCount = cursor.getCount();
+            cursor.moveToFirst();
+
+            for ( i = 0; i < rowCount; i++ ) {
+                delete = "DELETE FROM t_Espagnol WHERE Id_Word="+cursor.getInt(0);
+                CDB.execSQL(delete);
+
+                lowered = cursor.getInt(0)+", '"+cursor.getString(1).toLowerCase()+"', '"+cursor.getString(2).toLowerCase()+"', '"+cursor.getString(3)+"', '"+cursor.getString(4)+"', '"+cursor.getString(5)+"', '"+cursor.getString(6);
+                insert = "INSERT INTO t_Espagnol (Id_Word, Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ("+lowered+"')";
+                CDB.execSQL(insert);
+                cursor.moveToNext();
+            }
+
+            // UPD Allemand
+            cursor = CDB.query(
+                    "t_Allemand",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            rowCount = cursor.getCount();
+            cursor.moveToFirst();
+
+            for ( i = 0; i < rowCount; i++ ) {
+                delete = "DELETE FROM t_Allemand WHERE Id_Word="+cursor.getInt(0);
+                CDB.execSQL(delete);
+
+                lowered = cursor.getInt(0)+", '"+cursor.getString(1)+"', '"+cursor.getString(2).toLowerCase()+"', '"+cursor.getString(3)+"', '"+cursor.getString(4)+"', '"+cursor.getString(5)+"', '"+cursor.getString(6);
+                insert = "INSERT INTO t_Allemand (Id_Word, Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ("+lowered+"')";
+                CDB.execSQL(insert);
+                cursor.moveToNext();
+            }
+
+            SharedPreferences.Editor DB_NEED_UPD = preferences.edit();
+            DB_NEED_UPD.putBoolean("NEED_UPD_01", false);
+            DB_NEED_UPD.commit();
+
+        }
+
+    }
+
+    void getScreenSize() {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor screenSize = preferences.edit();
+        screenSize.putInt("screenHeight", Resources.getSystem().getDisplayMetrics().heightPixels);
+        screenSize.putInt("screenWidth", Resources.getSystem().getDisplayMetrics().widthPixels);
+        screenSize.commit();
 
     }
 
