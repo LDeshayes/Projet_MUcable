@@ -67,6 +67,7 @@ public class ChoixLangueDisplay extends Activity {
         SharedPreferences.Editor EDITOR = preferences.edit();
         EDITOR.putBoolean("FST_LAUNCH", true);
         EDITOR.putString("TAG_LIST", "EMPTY_NULL");
+        EDITOR.putBoolean("NEED_UPD_01", true);
         EDITOR.commit();
 
         Intent i = new Intent ( this, LoadingScreenDisplay.class );

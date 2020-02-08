@@ -83,10 +83,10 @@ public class GestionTagsDisplay extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if ( !tagChosen.equals("NAN") ) {
-                        tag_view.setBackgroundColor(0xFAFAFA);
+                        tag_view.setBackgroundResource(0);
                     }
                     tag_view = view;
-                    tag_view.setBackgroundColor(Color.LTGRAY);
+                    tag_view.setBackgroundResource(R.drawable.border);
                     tagChosen = tag_list[position];
                 }
             });

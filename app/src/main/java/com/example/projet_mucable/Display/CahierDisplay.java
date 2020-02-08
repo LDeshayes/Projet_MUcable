@@ -140,10 +140,10 @@ public class CahierDisplay extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int pos, long id) {
                 if ( key != -1 ) {
-                    key_view.setBackgroundColor(0xFAFAFA);
+                    key_view.setBackgroundResource(0);
                 }
                 key_view = v;
-                key_view.setBackgroundColor(Color.LTGRAY);
+                key_view.setBackgroundResource(R.drawable.border);
                 key = key_list[pos];
             }
         });
