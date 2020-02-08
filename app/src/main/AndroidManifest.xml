@@ -20,7 +20,9 @@
         </intent-filter>
     </activity>
 
-    <activity android:name=".Display.IntroMenuDisplay">
+    <activity
+        android:name=".Display.IntroMenuDisplay"
+        android:theme="@style/IntroMenuTheme">
     </activity>
 
     <activity android:name=".Display.RevisionDisplay">
@@ -53,7 +55,6 @@
 
     <activity android:name=".Display.GestionMotDisplay">
     </activity>
-
 
     <activity android:name=".Display.RevisionCheckDisplay">
     </activity>

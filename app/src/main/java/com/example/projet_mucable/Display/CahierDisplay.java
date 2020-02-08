@@ -21,12 +21,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.projet_mucable.CustomAdapter;
 import com.example.projet_mucable.R;
 
 import java.util.List;
 
-public class CahierDisplay extends Activity {
+public class CahierDisplay extends AppCompatActivity {
 
     String language;
     ListView words_listview;

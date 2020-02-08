@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.projet_mucable.R;
 
-public class LoadingScreenDisplay extends Activity {
+public class LoadingScreenDisplay extends AppCompatActivity {
 
     String data_anglais[];
     String data_allemand[];

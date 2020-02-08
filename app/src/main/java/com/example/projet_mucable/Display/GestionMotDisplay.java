@@ -18,11 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.projet_mucable.R;
 
 import java.lang.reflect.Field;
 
-public class GestionMotDisplay extends Activity {
+public class GestionMotDisplay extends AppCompatActivity {
 
     String language;
     String mode;

@@ -22,6 +22,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.projet_mucable.CustomAdapter;
 import com.example.projet_mucable.R;
 
@@ -30,7 +32,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ChoixTagsDisplay extends Activity {
+public class ChoixTagsDisplay extends AppCompatActivity {
 
     View tag_view;
     String tagChosen = "NAN";

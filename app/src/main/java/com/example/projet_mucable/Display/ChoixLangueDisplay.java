@@ -14,9 +14,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.projet_mucable.R;
 
-public class ChoixLangueDisplay extends Activity {
+public class ChoixLangueDisplay extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
