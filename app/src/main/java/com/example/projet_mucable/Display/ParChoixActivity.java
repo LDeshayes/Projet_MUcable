@@ -157,6 +157,8 @@ public class ParChoixActivity extends AppCompatActivity {
         final Button tq2 =  findViewById(R.id.buttonQ2);
         final Button tq3 =  findViewById(R.id.buttonQ3);
         final Button tq4 =  findViewById(R.id.buttonQ4);
+        final Button bVal =  findViewById(R.id.buttonValider);
+        bVal.setEnabled(false);
 
         tq1.setText(a1);
         tq1.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +168,7 @@ public class ParChoixActivity extends AppCompatActivity {
                 tq2.setEnabled(true);
                 tq3.setEnabled(true);
                 tq4.setEnabled(true);
+                bVal.setEnabled(true);
             }
         });
 
@@ -177,6 +180,7 @@ public class ParChoixActivity extends AppCompatActivity {
                 tq2.setEnabled(false);
                 tq3.setEnabled(true);
                 tq4.setEnabled(true);
+                bVal.setEnabled(true);
             }
         });
 
@@ -188,6 +192,7 @@ public class ParChoixActivity extends AppCompatActivity {
                 tq2.setEnabled(true);
                 tq3.setEnabled(false);
                 tq4.setEnabled(true);
+                bVal.setEnabled(true);
             }
         });
 
@@ -200,6 +205,7 @@ public class ParChoixActivity extends AppCompatActivity {
                 tq2.setEnabled(true);
                 tq3.setEnabled(true);
                 tq4.setEnabled(false);
+                bVal.setEnabled(true);
             }
         });
 
