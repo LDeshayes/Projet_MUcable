@@ -3,6 +3,7 @@ package com.example.projet_mucable.Display;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class ParChoixActivity extends AppCompatActivity {
+public class ParChoixActivity extends Activity {
 
 
 
@@ -34,11 +35,12 @@ public class ParChoixActivity extends AppCompatActivity {
     String[] words_list;// = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] translations_list;// = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
-    String tagsFilter = "'Chiffre', 'Nombre'";
+    String tagsFilter;
 
     SQLiteDatabase CDB;
 
     DicoSeri monDico = new DicoSeri();
+    String test_res = "";
 
     String word = "Car";
     String a1, a2, a3, a4;
@@ -66,11 +68,15 @@ public class ParChoixActivity extends AppCompatActivity {
 
         indTab = new Integer[nb_left];
 
+        if(taille_bd<4){
+            finish();
+        }
 
         if(this_i.getBooleanExtra("Not_First", true)){
             monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
             ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
             indTab = intList.toArray(new Integer[0]);
+            test_res = this_i.getStringExtra("String_res");
         }
         else{
 
@@ -218,15 +224,30 @@ public class ParChoixActivity extends AppCompatActivity {
     // FUTURE : ADD FILTER HERE
     void loadDB() {
 
-        Cursor cursor = CDB.query(
-                "t_"+language,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+        Cursor cursor;
+
+        if(tagsFilter!=null && !tagsFilter.isEmpty()){
+            cursor = CDB.query(
+                    "t_"+language,
+                    null,
+                    "Tag_1 IN ('"+tagsFilter+"') OR Tag_2 IN ('"+tagsFilter+"') OR Tag_3 IN ('"+tagsFilter+"') OR Tag_4 IN ('"+tagsFilter+"')",
+                    null,
+                    null,
+                    null,
+                    null
+            );
+        }
+        else{
+            cursor = CDB.query(
+                    "t_"+language,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+        }
 
         int rowCount = cursor.getCount();
 
@@ -285,8 +306,10 @@ public class ParChoixActivity extends AppCompatActivity {
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
         i.putExtra("Type", false);
+        i.putExtra("TagsFilter", tagsFilter);
 
         i.putExtra("Dico", monDico);
+        i.putExtra("String_res", test_res);
 
         i.putExtra("Question", word);
         i.putExtra("ReponseUser", repo);

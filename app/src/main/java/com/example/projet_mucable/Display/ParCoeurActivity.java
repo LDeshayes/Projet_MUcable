@@ -3,6 +3,7 @@ package com.example.projet_mucable.Display;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class ParCoeurActivity extends AppCompatActivity {
+public class ParCoeurActivity extends Activity {
 
 
     String language;
@@ -34,11 +35,12 @@ public class ParCoeurActivity extends AppCompatActivity {
     String[] words_list;// = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] translations_list;// = { "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
-    String tagsFilter = "'Chiffre', 'Nombre'";
+    String tagsFilter;
 
     SQLiteDatabase CDB;
 
     DicoSeri monDico = new DicoSeri();
+    String test_res = "";
 
     String word = "Car";
     String word_translation;
@@ -48,29 +50,31 @@ public class ParCoeurActivity extends AppCompatActivity {
     Integer[] indTab;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_par_coeur);
 
-        getLanguage();
-        setupDB();
-
-        taille_bd = words_list.length;
-        word_number = new Random().nextInt(words_list.length);
 
         Intent this_i = getIntent();
         tagsFilter = this_i.getStringExtra("TagsFilter");
-        word_number = this_i.getIntExtra("Word_number", new Random().nextInt(words_list.length));
+
+        getLanguage();
+        setupDB();
+        taille_bd = words_list.length;
         nb_left = this_i.getIntExtra("Nb_mots", 5);
-
         indTab = new Integer[nb_left];
+        word_number = this_i.getIntExtra("Word_number", new Random().nextInt(words_list.length));
 
-
+        // Si cest pas la premeire fois qu'on passe dans revisionParCoeur
         if(this_i.getBooleanExtra("Not_First", true)){
-            monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
+
             ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
             indTab = intList.toArray(new Integer[0]);
+
+            monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
+            test_res = this_i.getStringExtra("String_res");
         }
         else{
 
@@ -153,15 +157,30 @@ public class ParCoeurActivity extends AppCompatActivity {
     // FUTURE : ADD FILTER HERE
     void loadDB() {
 
-        Cursor cursor = CDB.query(
-                "t_"+language,
-                null,
-                "Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")",
-                null,
-                null,
-                null,
-                null
-        );
+        Cursor cursor;
+
+        if(tagsFilter!=null && !tagsFilter.isEmpty()){
+            cursor = CDB.query(
+                    "t_"+language,
+                    null,
+                    "Tag_1 IN ('"+tagsFilter+"') OR Tag_2 IN ('"+tagsFilter+"') OR Tag_3 IN ('"+tagsFilter+"') OR Tag_4 IN ('"+tagsFilter+"')",
+                    null,
+                    null,
+                    null,
+                    null
+            );
+        }
+        else{
+            cursor = CDB.query(
+                    "t_"+language,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+        }
 
         int rowCount = cursor.getCount();
 
@@ -213,8 +232,10 @@ public class ParCoeurActivity extends AppCompatActivity {
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
         i.putExtra("Type", true);
+        i.putExtra("TagsFilter", tagsFilter);
 
         i.putExtra("Dico", monDico);
+        i.putExtra("String_res", test_res);
 
         i.putExtra("Question", word);
         i.putExtra("ReponseUser", repo);

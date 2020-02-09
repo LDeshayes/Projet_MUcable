@@ -8,6 +8,7 @@ import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.StringEqualityPercentCheckLevenshteinDistance;
 import com.example.projet_mucable.R;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ import java.util.Random;
 
 
 
-public class RevisionCheckDisplay extends AppCompatActivity {
+public class RevisionCheckDisplay extends Activity {
 
     String language;
     Boolean sens;
@@ -33,6 +34,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
     int taille_bd;
     int word_num;
     boolean type;
+    String tagsFilter;
 
     String question;
     String reponseUser;
@@ -40,6 +42,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
 
     ArrayList list_msgs = new ArrayList();
     DicoSeri monDico = new DicoSeri();
+    String test_res;
     Integer[] indTab;
 
 
@@ -55,12 +58,15 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         language = this_i.getStringExtra("Langue");
         sens = this_i.getBooleanExtra("Sens", true);
         type = this_i.getBooleanExtra("Type", false);
+        tagsFilter = this_i.getStringExtra("TagsFilter");
         monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
 
         indTab = new Integer[nb_left];
         ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
         indTab = intList.toArray(new Integer[0]);
         word_num = intList.get(nb_left);
+
+        test_res = this_i.getStringExtra("String_res");
 
         question = this_i.getStringExtra("Question");
         reponseUser = this_i.getStringExtra("ReponseUser");
@@ -80,10 +86,12 @@ public class RevisionCheckDisplay extends AppCompatActivity {
             tVF.setText("Bonne réponse !");
             list_msgs.add("Parfait");
             monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
+            test_res = test_res+question+" : "+reponseUser+"("+reponse+") Bonne réponse;";
         }
         else{
             tVF.setText("Mauvaise réponse !");
             monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Mauvaise réponse");
+            test_res = test_res+question+" : "+reponseUser+"("+reponse+") Mauvaise réponse;";
 
             if(type){
 
@@ -138,8 +146,10 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
         i.putExtra("Type", type);
+        i.putExtra("TagsFilter", tagsFilter);
 
         i.putExtra("Dico", monDico);
+        i.putExtra("String_res", test_res);
 
         ArrayList<Integer> intList = new ArrayList<Integer>(50);
         for (int k : indTab) intList.add(k);
@@ -151,8 +161,10 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         else{
             i = new Intent ( this, ResultatRevisionDisplay.class );
             i.putExtra("Dico", monDico);
+            i.putExtra("String_res", test_res);
             i.putExtra("Sens", sens);
             i.putExtra("Langue", language);
+            i.putExtra("TagsFilter", tagsFilter);
             startActivity( i );
         }
         finish();
