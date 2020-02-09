@@ -26,7 +26,7 @@ import java.util.Random;
 
 
 
-public class RevisionCheckDisplay extends Activity {
+public class RevisionCheckDisplay extends AppCompatActivity {
 
     String language;
     Boolean sens;
