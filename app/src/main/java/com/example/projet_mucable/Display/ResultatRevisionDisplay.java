@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class ResultatRevisionDisplay extends Activity {
+public class ResultatRevisionDisplay extends AppCompatActivity {
 
     ArrayList list_msgs = new ArrayList();
     DicoSeri monDico = new DicoSeri();

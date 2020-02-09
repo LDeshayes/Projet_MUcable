@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 
 
-public class RevisionDisplay extends Activity {
+public class RevisionDisplay extends AppCompatActivity {
 
     String langue = "Anglais";
     Boolean quel_sens = false;
