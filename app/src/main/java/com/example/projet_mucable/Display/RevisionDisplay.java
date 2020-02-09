@@ -175,7 +175,7 @@ public class RevisionDisplay extends AppCompatActivity {
         i.putExtra("TagsFilter", tag);
 
         if(taille_bd<4){
-            Toast.makeText(getApplicationContext(),"Il faut plus de mots pour c'est conditions...",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Il faut plus de mots pour ces conditions.",Toast.LENGTH_LONG).show();
         }
         else{
             startActivity( i );
