@@ -2,12 +2,18 @@ package com.example.projet_mucable.Display;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,11 +24,18 @@ import java.util.ArrayList;
 
 
 
-public class RevisionDisplay extends AppCompatActivity {
+
+public class RevisionDisplay extends Activity {
 
     String langue = "Anglais";
     Boolean quel_sens = false;
+    String tag;
 
+    int taille_bd=0;
+
+    SQLiteDatabase CDB;
+
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +81,6 @@ public class RevisionDisplay extends AppCompatActivity {
             public void onNothingSelected(AdapterView <?> parent) {
             }
         });
-
         spinnerLF.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -89,6 +101,8 @@ public class RevisionDisplay extends AppCompatActivity {
             public void onNothingSelected(AdapterView <?> parent) {
             }
         });
+
+
     }
 
     public void goToParCoeur(View view) {
@@ -107,12 +121,42 @@ public class RevisionDisplay extends AppCompatActivity {
         i.putExtra("Sens", quel_sens);
         i.putExtra("Type", true);
         i.putExtra("Not_First", false);
-        i.putExtra("TagsFilter", "'Chiffre'");
+        i.putExtra("TagsFilter", tag);
 
         startActivity( i );
     }
 
+    @SuppressLint("WrongConstant")
     public void goToParChoix(View view) {
+
+        CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+        Cursor cursor;
+
+        if(tag!=null && !tag.isEmpty()){
+            cursor = CDB.query(
+                    "t_"+langue,
+                    null,
+                    "Tag_1 IN ('"+tag+"') OR Tag_2 IN ('"+tag+"') OR Tag_3 IN ('"+tag+"') OR Tag_4 IN ('"+tag+"')",
+                    null,
+                    null,
+                    null,
+                    null
+            );
+        }
+        else{
+            cursor = CDB.query(
+                    "t_"+langue,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+        }
+
+
+        taille_bd =  cursor.getCount();
 
         Intent i = new Intent ( this, ParChoixActivity.class );
 
@@ -128,15 +172,33 @@ public class RevisionDisplay extends AppCompatActivity {
         i.putExtra("Sens", quel_sens);
         i.putExtra("Type", false);
         i.putExtra("Not_First", false);
-        i.putExtra("TagsFilter", "'Chiffre'");
+        i.putExtra("TagsFilter", tag);
 
-        startActivity( i );
+        if(taille_bd<4){
+            Toast.makeText(getApplicationContext(),"Il faut plus de mots pour c'est conditions...",Toast.LENGTH_LONG).show();
+        }
+        else{
+            startActivity( i );
+        }
+
     }
 
-    public void clicChoiceTag(View view) {
+
+    public void onClicTag(View view) {
         Intent i = new Intent ( this, ChoixTagsDisplay.class );
-        i.putExtra("Origin", "RevisionDisplay");
         startActivity( i );
-        finish();
     }
+
+    public void onRestart() {
+        super.onRestart();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        tag = preferences.getString("TAG_CHOSEN", null);
+
+        Button button_Tag_1 = findViewById(R.id.buttonTagsSelec);
+        if(tag!=null && !tag.isEmpty()){
+            button_Tag_1.setText(tag);
+        }
+    }
+
 }
