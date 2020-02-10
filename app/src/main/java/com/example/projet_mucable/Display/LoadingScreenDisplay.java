@@ -33,8 +33,8 @@ public class LoadingScreenDisplay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loadingscreen_display);
 
-        createAndLoadDB();
-        saveTags();
+        createAndLoadDBAndsaveTags();
+        //saveTags();
         updateDB();
         getScreenSize();
 
@@ -44,7 +44,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
     }
 
     @SuppressLint("WrongConstant")
-    void createAndLoadDB() {
+    void createAndLoadDBAndsaveTags() {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean fst_launch = preferences.getBoolean("FST_LAUNCH", true);
@@ -106,6 +106,11 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                 Insert_Data = "INSERT INTO t_Espagnol VALUES (NULL,"+data_espagnol[i]+")";
                 CDB.execSQL(Insert_Data);
             }
+
+            // Ajout des tags par défaut
+
+            SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
+            NEW_TAGLIST.putString("TAG_LIST", tag_list);
 
             // CLOSE THE DB BETWEEN ACTIVITIES ?
 
