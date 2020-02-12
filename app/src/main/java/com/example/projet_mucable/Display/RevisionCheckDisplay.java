@@ -86,12 +86,14 @@ public class RevisionCheckDisplay extends AppCompatActivity {
             tVF.setText("Bonne réponse !");
             list_msgs.add("Parfait");
             monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
-            test_res = test_res+question+" : "+reponseUser+"("+reponse+") Bonne réponse;";
+            //test_res = test_res+question+" : "+reponseUser+"("+reponse+") Bonne réponse;";
+            test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓;";
         }
         else{
             tVF.setText("Mauvaise réponse !");
             monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Mauvaise réponse");
-            test_res = test_res+question+" : "+reponseUser+"("+reponse+") Mauvaise réponse;";
+            //test_res = test_res+question+" : "+reponseUser+"("+reponse+") Mauvaise réponse;";
+            test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✗;";
 
             if(type){
 
