@@ -28,6 +28,7 @@
 
     <style name="BeautifulButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/gradient_button</item>
+        <item name="android:textColor">#f8f9f9</item>
     </style>
 
 </resources>
