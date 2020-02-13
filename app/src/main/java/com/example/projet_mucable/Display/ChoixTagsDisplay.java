@@ -102,7 +102,7 @@ public class ChoixTagsDisplay extends AppCompatActivity {
         if ( !tagChosen.equals("NAN") ) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Êtes vous sur(e) de vouloir choisir ce tag "+tagChosen+" ?")
+            builder.setMessage("Êtes vous sur(e) de vouloir choisir le tag "+tagChosen+" ?")
                     .setCancelable(true)
                     .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {

@@ -111,6 +111,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
 
             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
             NEW_TAGLIST.putString("TAG_LIST", tag_list);
+            NEW_TAGLIST.commit();
 
             // CLOSE THE DB BETWEEN ACTIVITIES ?
 
