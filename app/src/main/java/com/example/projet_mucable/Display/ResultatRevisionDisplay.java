@@ -67,7 +67,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             mark_list[tot] = values[3];
 
 
-            if(values[3].charAt(0)=='V'){
+            if(values[3].charAt(0)=='✓'){
                 goodRep+=1;
             }
             tot+=1;
