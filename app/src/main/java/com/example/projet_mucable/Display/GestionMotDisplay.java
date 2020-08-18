@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -263,7 +264,7 @@ public class GestionMotDisplay extends AppCompatActivity {
             CDB.execSQL(insert);
             information_values = (new_information_values[0]+";"+new_information_values[1]+";"+new_information_values[2]+";"+new_information_values[3]+";"+new_information_values[4]+";"+new_information_values[5]).split(";");
             clear();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Modifications réussies !")
                     .setCancelable(true)
                     .setPositiveButton("Ok", null);
@@ -280,7 +281,7 @@ public class GestionMotDisplay extends AppCompatActivity {
             translation = tempEditText.getText().toString();
 
             if ( ( word.length() == 0 ) || ( translation.length() == 0 ) ) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
                 builder.setMessage("L'ajout demande au moins le mot et sa traduction !")
                         .setCancelable(true)
                         .setPositiveButton("Ok", null);
@@ -349,7 +350,7 @@ public class GestionMotDisplay extends AppCompatActivity {
         String tag_4 = button_Tag_4.getText().toString();
 
         if ( tag.equals(tag_1) || tag.equals(tag_2) || tag.equals(tag_3) || tag.equals(tag_4) ) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Ce tag est déjà sélectionné pour ce mot !")
                     .setCancelable(true)
                     .setPositiveButton("Ok", null);

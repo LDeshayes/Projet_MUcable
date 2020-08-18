@@ -121,6 +121,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
 
         }
 
+
     }
 
     void saveTags() {
@@ -219,6 +220,26 @@ public class LoadingScreenDisplay extends AppCompatActivity {
 
             SharedPreferences.Editor DB_NEED_UPD = preferences.edit();
             DB_NEED_UPD.putBoolean("NEED_UPD_01", false);
+            DB_NEED_UPD.commit();
+
+        }
+
+        // Coef update
+        boolean need_upd_02 = preferences.getBoolean("NEED_UPD_02", true);
+        if(need_upd_02){
+
+            SQLiteDatabase CDB = openOrCreateDatabase(
+                    "CDB.db"
+                    , SQLiteDatabase.CREATE_IF_NECESSARY
+                    , null
+            );
+
+            CDB.execSQL("ALTER TABLE t_Anglais ADD COLUMN CoefAppr INTEGER DEFAULT 0 CHECK (CoefAppr>=0 AND CoefAppr<4)");
+            CDB.execSQL("ALTER TABLE t_Allemand ADD COLUMN CoefAppr INTEGER DEFAULT 0 CHECK (CoefAppr>=0 AND CoefAppr<4)");
+            CDB.execSQL("ALTER TABLE t_Espagnol ADD COLUMN CoefAppr INTEGER DEFAULT 0 CHECK (CoefAppr>=0 AND CoefAppr<4)");
+
+            SharedPreferences.Editor DB_NEED_UPD = preferences.edit();
+            DB_NEED_UPD.putBoolean("NEED_UPD_02", false);
             DB_NEED_UPD.commit();
 
         }

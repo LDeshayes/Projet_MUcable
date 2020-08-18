@@ -9,9 +9,11 @@ import com.example.projet_mucable.StringEqualityPercentCheckLevenshteinDistance;
 import com.example.projet_mucable.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -64,7 +66,10 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         indTab = new Integer[nb_left];
         ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
         indTab = intList.toArray(new Integer[0]);
-        word_num = intList.get(nb_left);
+
+
+
+        word_num = this_i.getIntExtra("Word_number", 0);
 
         test_res = this_i.getStringExtra("String_res");
 
@@ -143,7 +148,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
             i = new Intent ( this, ParChoixActivity.class );
         }
 
-        i.putExtra("Word_number", word_num);
+        i.putExtra("Word_number", word_num+1);
         i.putExtra("Nb_mots", nb_left);
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
@@ -156,6 +161,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         ArrayList<Integer> intList = new ArrayList<Integer>(50);
         for (int k : indTab) intList.add(k);
         i.putIntegerArrayListExtra("IndTab",intList);
+
 
         if(nb_left>0){
             startActivity( i );

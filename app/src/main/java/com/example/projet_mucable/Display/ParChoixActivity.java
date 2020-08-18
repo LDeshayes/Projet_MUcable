@@ -49,6 +49,9 @@ public class ParChoixActivity extends AppCompatActivity {
     int nb_left;
     int taille_bd;
     Integer[] indTab;
+    int nbCoef0;
+    int nbCoef1;
+    int nbCoef2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,7 @@ public class ParChoixActivity extends AppCompatActivity {
 
         Intent this_i = getIntent();
         tagsFilter = this_i.getStringExtra("TagsFilter");
-        word_number = this_i.getIntExtra("Word_number", new Random().nextInt(words_list.length));
+        word_number = this_i.getIntExtra("Word_number", 0);
         nb_left = this_i.getIntExtra("Nb_mots", 5);
 
         indTab = new Integer[nb_left];
@@ -89,7 +92,7 @@ public class ParChoixActivity extends AppCompatActivity {
                 }
 
                 // Boucle sur nb_left
-                for(int i=0; i<nb_left; i++){
+                /*for(int i=0; i<nb_left; i++){
                     testEq = false;
                     while (!testEq) {
                         int rdm = (new Random()).nextInt(words_list.length);
@@ -100,7 +103,75 @@ public class ParChoixActivity extends AppCompatActivity {
                             }
                         }
                     }
+                }*/
+
+                int i;
+                int j;
+                int resume;
+
+                ///////////////////////////////////////////////////////// Coef0 /////////////////////////////////////////////////////////////////
+
+                if(nbCoef0>(nb_left*0.6) /*&& nbCoef1+nbCoef2>=nb_left*0.6*/){
+                    // Use 60% coef0
+                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    for (j=0; j<nbCoef0; j++) {
+                        list.add(j);
+                    }
+                    Collections.shuffle(list);
+                    for (i=0; i<(int)(nb_left*0.6)-1 && (nb_left*0.4<(nbCoef2+nbCoef1)) || i<=nb_left-(nbCoef1+nbCoef2) && (nb_left*0.4>=nbCoef2+nbCoef1); i++) {
+                        indTab[i]=list.get(i);
+                    }
                 }
+                else{
+                    // Use all coef 0
+                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    for (i=0; i<nbCoef0; i++) {
+                        indTab[i]=i;
+                    }
+
+                }
+
+                resume = i;
+
+                ///////////////////////////////////////////////////////// Coef1 /////////////////////////////////////////////////////////////////
+
+                if(nbCoef1<(nb_left-resume)/2){
+                    // Use all coef1 possible
+                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    for (i=resume; i<resume+nbCoef1; i++) {
+                        indTab[i]=i;
+                    }
+                }
+                else{
+                    // Use rdm amount of Coef1 and Coef2
+                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    for (j=nbCoef0-1; j<nbCoef0+nbCoef1; j++) {
+                        list.add(i);
+                    }
+                    Collections.shuffle(list);
+                    for (i=resume, j=0; i<resume+(nb_left-resume)/2 && nbCoef2>(nb_left-resume)/2 || i<(nb_left-nbCoef2) && nbCoef2<=(nb_left-resume)/2; i++, j++) {
+                        indTab[i]=list.get(j);
+                    }
+                }
+
+                resume = i;
+
+                ///////////////////////////////////////////////////////// Rest in Coef2 /////////////////////////////////////////////////////////
+                ArrayList<Integer> list = new ArrayList<Integer>();
+                for (j=nbCoef1-1; j<nbCoef1+nbCoef2; j++) {
+                    list.add(i);
+                }
+                Collections.shuffle(list);
+                for (i=resume, j=0; i<nb_left; i++, j++) {
+                    indTab[i]=list.get(j);
+                }
+
+                List<Integer> intList = Arrays.asList(indTab);
+                //indTab = new Integer[nb_left];
+                Collections.shuffle(intList);
+                intList.toArray(indTab);
+
+
             }
             else{
 
@@ -121,7 +192,7 @@ public class ParChoixActivity extends AppCompatActivity {
 
         }
 
-        Integer[] iAnswers = {word_number, 0, 0, 0};
+        Integer[] iAnswers = {indTab[word_number], 0, 0, 0};
         while (iAnswers[0]==iAnswers[1] || iAnswers[0]==iAnswers[2] || iAnswers[0]==iAnswers[3] || iAnswers[1]==iAnswers[2] || iAnswers[1]==iAnswers[3] || iAnswers[2]==iAnswers[3]){
             for(int i=1; i<4; i++){
                 iAnswers[i] = (new Random()).nextInt(words_list.length);
@@ -134,16 +205,16 @@ public class ParChoixActivity extends AppCompatActivity {
 
         sens = this_i.getBooleanExtra("Sens", true);
         if(sens){
-            word = words_list[word_number];
-            word_translation = translations_list[word_number];
+            word = words_list[indTab[word_number]];
+            word_translation = translations_list[indTab[word_number]];
             a1 = translations_list[iAnswers[0]];
             a2 = translations_list[iAnswers[1]];
             a3 = translations_list[iAnswers[2]];
             a4 = translations_list[iAnswers[3]];
         }
         else{
-            word_translation = words_list[word_number];
-            word = translations_list[word_number];
+            word_translation = words_list[indTab[word_number]];
+            word = translations_list[indTab[word_number]];
             a1 = words_list[iAnswers[0]];
             a2 = words_list[iAnswers[1]];
             a3 = words_list[iAnswers[2]];
@@ -231,29 +302,54 @@ public class ParChoixActivity extends AppCompatActivity {
     void loadDB() {
 
         Cursor cursor;
+        final String SQL_COEF0;
+        final String SQL_COEF1;
+        final String SQL_COEF2;
 
         if(tagsFilter!=null && !tagsFilter.isEmpty()){
             cursor = CDB.query(
                     "t_"+language,
                     null,
-                    "Tag_1 IN ('"+tagsFilter+"') OR Tag_2 IN ('"+tagsFilter+"') OR Tag_3 IN ('"+tagsFilter+"') OR Tag_4 IN ('"+tagsFilter+"')",
+                    "Tag_1 IN ('"+tagsFilter+"') OR Tag_2 IN ('"+tagsFilter+"') OR Tag_3 IN ('"+tagsFilter+"') OR Tag_4 IN ('"+tagsFilter+"') AND CoefAppr IN (0,1,2)",
                     null,
                     null,
                     null,
-                    null
+                    "CoefAppr ASC"
             );
+            SQL_COEF0 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=0 AND Tag_1 IN ('"+tagsFilter+"') OR Tag_2 IN ('"+tagsFilter+"') OR Tag_3 IN ('"+tagsFilter+"') OR Tag_4 IN ('"+tagsFilter+"')";
+            SQL_COEF1 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=1 AND Tag_1 IN ('"+tagsFilter+"') OR Tag_2 IN ('"+tagsFilter+"') OR Tag_3 IN ('"+tagsFilter+"') OR Tag_4 IN ('"+tagsFilter+"')";
+            SQL_COEF2 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=2 AND Tag_1 IN ('"+tagsFilter+"') OR Tag_2 IN ('"+tagsFilter+"') OR Tag_3 IN ('"+tagsFilter+"') OR Tag_4 IN ('"+tagsFilter+"')";
         }
         else{
             cursor = CDB.query(
                     "t_"+language,
                     null,
+                    "CoefAppr IN (0,1,2)",
                     null,
                     null,
                     null,
-                    null,
-                    null
+                    "CoefAppr ASC"
             );
+            SQL_COEF0 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=0";
+            SQL_COEF1 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=1";
+            SQL_COEF2 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=2";
         }
+
+
+        // Count nn rows with each CoefAppr
+        Cursor mCount= CDB.rawQuery(SQL_COEF0, null);
+        mCount.moveToFirst();
+        nbCoef0 = mCount.getInt(0);
+
+        mCount= CDB.rawQuery(SQL_COEF1, null);
+        mCount.moveToFirst();
+        nbCoef1= mCount.getInt(0);
+
+        mCount= CDB.rawQuery(SQL_COEF2, null);
+        mCount.moveToFirst();
+        nbCoef2= mCount.getInt(0);
+
+        mCount.close();
 
         int rowCount = cursor.getCount();
 
@@ -309,6 +405,7 @@ public class ParChoixActivity extends AppCompatActivity {
         Intent i = new Intent ( this, RevisionCheckDisplay.class );
         i.putExtra("Taille_bd", taille_bd);
         i.putExtra("Nb_mots", nb_left-1);
+        i.putExtra("Word_number", word_number);
         i.putExtra("Sens", sens);
         i.putExtra("Langue", language);
         i.putExtra("Type", false);

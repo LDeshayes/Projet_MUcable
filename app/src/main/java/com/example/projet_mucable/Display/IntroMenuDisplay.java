@@ -34,4 +34,8 @@ public class IntroMenuDisplay extends AppCompatActivity {
         startActivity(new Intent(IntroMenuDisplay.this, GestionTagsDisplay.class));
     }
 
+    public void goToShareDisplay(View view) {
+        startActivity(new Intent(IntroMenuDisplay.this, PartageDisplay.class));
+    }
+
 }

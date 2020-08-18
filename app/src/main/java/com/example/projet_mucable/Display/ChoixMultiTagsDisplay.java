@@ -1,52 +1,33 @@
 package com.example.projet_mucable.Display;
 
-// Ajout et suppression des tags, 4.4 cdc
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.MatrixCursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.projet_mucable.CustomAdapter;
 import com.example.projet_mucable.R;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
-public class ChoixTagsDisplay extends AppCompatActivity {
+public class ChoixMultiTagsDisplay extends AppCompatActivity {
 
     View tag_view;
-    String tagChosen = "NAN";
+    String tagsChosen = "";
+    Map<String,String> tagsSelected =  new HashMap<String,String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choixtags_display);
-
-        setupElements();
-    }
-
-    void setupElements() {
+        setContentView(R.layout.activity_choixmultitags_display);
         setupListView();
     }
 
@@ -85,44 +66,80 @@ public class ChoixTagsDisplay extends AppCompatActivity {
             tags_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if ( !tagChosen.equals("NAN") ) {
-                        tag_view.setBackgroundResource(0);
-                    }
                     tag_view = view;
-                    tag_view.setBackgroundResource(R.drawable.border);
-                    tagChosen = tag_list[position];
+
+                    if(tagsSelected.get(tag_list[position])!=null){
+                        if(tagsSelected.get(tag_list[position])=="true"){
+                            tagsSelected.put(tag_list[position],"false");
+                            tag_view.setBackgroundResource(0);
+                            //Toast.makeText(getApplicationContext(),"T->F: ",Toast.LENGTH_LONG).show();
+                        }
+                        else if(tagsSelected.get(tag_list[position])=="false"){
+                            tagsSelected.put(tag_list[position],"true");
+                            tag_view.setBackgroundResource(R.drawable.border);
+                            //Toast.makeText(getApplicationContext(),"F->T: ",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    else{
+                        tagsSelected.put(tag_list[position],"true");
+                        tag_view.setBackgroundResource(R.drawable.border);
+                    }
+                    //tagsChosen = tagsChosen + tag_list[position];
                 }
             });
         }
     }
 
-    public void onClickChoiceTag(View view) {
+    public void onClickChoiceTags(View view) {
 
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if ( !tagChosen.equals("NAN") ) {
+        tagsChosen = "";
+        int i =0;
+        for (Map.Entry<String, String> entry : tagsSelected.entrySet()) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
-            builder.setMessage("Êtes vous sur(e) de vouloir choisir le tag "+tagChosen+" ?")
+            if(entry.getValue()=="true"){
+                if(i>0)
+                    tagsChosen = tagsChosen+",";
+                tagsChosen = tagsChosen +"'"+entry.getKey()+"'";
+                i+=1;
+            }
+
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
+
+        if ( !tagsChosen.equals("") ) {
+            builder.setMessage("Êtes vous sur(e) de vouloir choisir ces tags?")
                     .setCancelable(true)
                     .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
-                            NEW_TAGLIST.putString("TAG_CHOSEN", tagChosen);
+                            NEW_TAGLIST.putString("TAG_CHOSEN", tagsChosen);
                             NEW_TAGLIST.commit();
                             finish();
                         }
                     })
-                    .setNegativeButton("Non", null );
+                    .setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
+                            NEW_TAGLIST.putString("TAG_CHOSEN", "");
+                        }
+                    });
             AlertDialog alert = builder.create();
             alert.show();
 
         } else {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Vous n'avez choisit aucun tag !")
                     .setCancelable(true)
-                    .setPositiveButton("Ok", null);
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
+                            NEW_TAGLIST.putString("TAG_CHOSEN", "");
+                            NEW_TAGLIST.commit();
+                            finish();
+                        }
+                    });
             AlertDialog alert = builder.create();
             alert.show();
 

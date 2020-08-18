@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -79,7 +80,9 @@ public class CahierDisplay extends AppCompatActivity {
                 null,
                 null,
                 null,
+                "CoefAppr ASC, Word ASC",
                 null
+
         );
 
         rowCount = cursor.getCount();
@@ -92,6 +95,13 @@ public class CahierDisplay extends AppCompatActivity {
 
         cursor.moveToFirst();
         for ( int i = 0; i < rowCount; i++ ) {
+            // comment here
+            /*AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
+            builder.setMessage("TEST: "+cursor.getString(1)+" - "+cursor.getInt(7)+" !")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok", null);
+            AlertDialog alert = builder.create();
+            alert.show();*/
             key_list_final[i] = cursor.getInt(0);
             key_list[i] = cursor.getInt(0);
             words_list[i] = cursor.getString(1);
@@ -153,7 +163,7 @@ public class CahierDisplay extends AppCompatActivity {
 
     public void onClicModify(View view) {
         if ( key == -1 ) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Veuillez sélectionner une entrée à modifier !")
                     .setCancelable(true)
                     .setPositiveButton("Ok", null);

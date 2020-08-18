@@ -136,7 +136,7 @@ public class RevisionDisplay extends AppCompatActivity {
             cursor = CDB.query(
                     "t_"+langue,
                     null,
-                    "Tag_1 IN ('"+tag+"') OR Tag_2 IN ('"+tag+"') OR Tag_3 IN ('"+tag+"') OR Tag_4 IN ('"+tag+"')",
+                    "Tag_1 IN ('"+tag+"') OR Tag_2 IN ('"+tag+"') OR Tag_3 IN ('"+tag+"') OR Tag_4 IN ('"+tag+"') AND coefAppr = (SELECT min(CoefAppr) FROM "+"t_"+langue+");",
                     null,
                     null,
                     null,

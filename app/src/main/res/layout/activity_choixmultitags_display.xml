@@ -7,28 +7,27 @@
     android:paddingRight="6dp">
 
     <TextView
-        android:id="@+id/tag_title"
+        android:id="@+id/mot_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Liste de tags"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
     <Button
-        android:id="@+id/button_choiceTag"
+        android:id="@+id/button_choiceTags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choisir un tag"
-        android:onClick="onClickChoiceTag"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+        android:onClick="onClickChoiceTags"
+        android:text="Valider" />
 
     <ListView
         android:id="@+id/tags_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_choiceTag"
-        android:layout_below="@id/tag_title"
-        android:layout_marginTop="0dp"
+        android:layout_below="@id/mot_title"
+        android:layout_above="@+id/button_choiceTags"
         android:divider="@color/material_blue_grey_800"
         android:dividerHeight="1dp" />
 
