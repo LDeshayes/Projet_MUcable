@@ -38,6 +38,7 @@ public class CahierDisplay extends AppCompatActivity {
     int rowCount;
     int key = -1; // future key pour repérer le word à modifier
     View key_view;
+    boolean switchCol = false;
     SQLiteDatabase CDB;
 
     @Override
@@ -254,6 +255,25 @@ public class CahierDisplay extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
+
+
+    }
+
+    public void onClickSwitch(View view){
+
+        CustomAdapter customAdapter;
+        switchCol = !switchCol;
+
+        if(!switchCol){
+            words_listview = (ListView) findViewById(R.id.words_listview);
+            customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
+
+        }
+        else{
+            words_listview = (ListView) findViewById(R.id.words_listview);
+            customAdapter = new CustomAdapter(getApplicationContext(), translations_list, words_list, tags_list);
+        }
+        words_listview.setAdapter(customAdapter);
 
 
     }

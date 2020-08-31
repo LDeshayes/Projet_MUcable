@@ -170,6 +170,8 @@ public class ChoixMotsDisplay extends AppCompatActivity {
                             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
                             NEW_TAGLIST.putString("WORDS_CHOSEN", wordsChosen);
                             NEW_TAGLIST.putString("WORDS_CHOSEN2", wordsChosen2);
+                            NEW_TAGLIST.putString("RESTARTFROM", "mots");
+
                             NEW_TAGLIST.commit();
                             finish();
                         }
@@ -179,7 +181,7 @@ public class ChoixMotsDisplay extends AppCompatActivity {
                             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
                             NEW_TAGLIST.putString("WORDS_CHOSEN", "");
                             NEW_TAGLIST.putString("WORDS_CHOSEN2", "");
-
+                            NEW_TAGLIST.putString("RESTARTFROM", "mots");
                         }
                     });
             AlertDialog alert = builder.create();
@@ -188,13 +190,15 @@ public class ChoixMotsDisplay extends AppCompatActivity {
         } else {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
-            builder.setMessage("Vous n'avez choisit aucun mot !")
+            builder.setMessage("Vous avez choisit aucun mot !")
                     .setCancelable(true)
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
                             NEW_TAGLIST.putString("WORDS_CHOSEN", "");
                             NEW_TAGLIST.putString("WORDS_CHOSEN2", "");
+                            NEW_TAGLIST.putString("RESTARTFROM", "mots");
+
                             NEW_TAGLIST.commit();
                             finish();
                         }

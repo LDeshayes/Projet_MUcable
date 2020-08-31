@@ -8,9 +8,12 @@ import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.StringEqualityPercentCheckLevenshteinDistance;
 import com.example.projet_mucable.R;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
@@ -47,7 +50,10 @@ public class RevisionCheckDisplay extends AppCompatActivity {
     String test_res;
     Integer[] indTab;
 
+    SQLiteDatabase CDB;
 
+
+    @SuppressLint("WrongConstant")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,8 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         reponseUser = this_i.getStringExtra("ReponseUser");
         reponse = this_i.getStringExtra("Reponse");
 
+        if(reponseUser=="")
+            reponseUser=" ";
 
 
         TextView tVF = (TextView) findViewById(R.id.textViewVF);
@@ -86,42 +94,59 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         tMP.setText("Le mot à traduire : "+question);
         tRU.setText("Votre traduction  : "+reponseUser);
 
+
         // Vérifie les réponses
         if(reponse.equals(reponseUser)){
             tVF.setText("Bonne réponse !");
             list_msgs.add("Parfait");
             monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
-            //test_res = test_res+question+" : "+reponseUser+"("+reponse+") Bonne réponse;";
             test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓;";
         }
         else{
-            tVF.setText("Mauvaise réponse !");
-            monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Mauvaise réponse");
-            //test_res = test_res+question+" : "+reponseUser+"("+reponse+") Mauvaise réponse;";
-            test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✗;";
 
-            if(type){
+            CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+            String SQL_EXI = "SELECT COUNT(*) FROM t_"+language+" WHERE Word='"+question+"' AND Translation='"+reponseUser+"'";
 
-                // Check taille réponse
-                if(reponse.length() != reponseUser.length()){
+            Cursor mCount= CDB.rawQuery(SQL_EXI, null);
+            mCount.moveToFirst();
+            int nbExi = mCount.getInt(0);
 
-                    if(reponse.length() > reponseUser.length()){
-                        list_msgs.add("Réponse trop courte");
+            if(nbExi>0){
+                tVF.setText("Bonne réponse !");
+                list_msgs.add("Parfait");
+                monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
+                test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓;";
+            }
+            else{
+
+                tVF.setText("Mauvaise réponse !");
+                monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Mauvaise réponse");
+                test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✗;";
+
+                if(type){
+
+                    // Check taille réponse
+                    if(reponse.length() != reponseUser.length()){
+
+                        if(reponse.length() > reponseUser.length()){
+                            list_msgs.add("Réponse trop courte");
+                        }
+                        else{
+                            list_msgs.add("Réponse trop longue");
+                        }
                     }
-                    else{
-                        list_msgs.add("Réponse trop longue");
+                    // Check majuscules
+                    if(reponse.toLowerCase().equals(reponseUser.toLowerCase())){
+                        list_msgs.add("Majuscules ?");
                     }
-                }
-                // Check majuscules
-                if(reponse.toLowerCase().equals(reponseUser.toLowerCase())){
-                    list_msgs.add("Majuscules ?");
+
+                    StringEqualityPercentCheckLevenshteinDistance howClose = new StringEqualityPercentCheckLevenshteinDistance();
+                    double percen = howClose.similarity(reponseUser, reponse)*100;
+                    //percen = new Double(new DecimalFormat(".##").format(percen));
+
+                    list_msgs.add("Votre réponse est à "+new DecimalFormat("##").format(percen)+"% correcte");
                 }
 
-                StringEqualityPercentCheckLevenshteinDistance howClose = new StringEqualityPercentCheckLevenshteinDistance();
-                double percen = howClose.similarity(reponseUser, reponse)*100;
-                //percen = new Double(new DecimalFormat(".##").format(percen));
-
-                list_msgs.add("Votre réponse est à "+new DecimalFormat("##").format(percen)+"% correcte");
             }
 
         }

@@ -28,6 +28,16 @@
         android:onClick="onClicAdd"
         android:layout_alignParentRight="true" />
 
+    <TextView
+        android:id="@+id/buttonSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_addWord"
+        android:layout_alignRight="@+id/button_addWord"
+        android:clickable="true"
+        android:drawableLeft="@android:drawable/stat_notify_sync_noanim"
+        android:onClick="onClickSwitch" />
+
     <EditText
         android:id="@+id/editText_search"
         android:layout_width="wrap_content"
@@ -42,5 +52,7 @@
         android:divider="#000000"
         android:dividerHeight="1dp"
         android:layout_below="@id/editText_search" />
+
+
 
 </RelativeLayout>

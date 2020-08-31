@@ -116,6 +116,8 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
                             NEW_TAGLIST.putString("TAG_CHOSEN", tagsChosen);
+                            NEW_TAGLIST.putString("RESTARTFROM", "tags");
+
                             NEW_TAGLIST.commit();
                             finish();
                         }
@@ -124,18 +126,21 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
                             NEW_TAGLIST.putString("TAG_CHOSEN", "");
+                            NEW_TAGLIST.putString("RESTARTFROM", "tags");
                         }
                     });
             AlertDialog alert = builder.create();
             alert.show();
 
         } else {
-            builder.setMessage("Vous n'avez choisit aucun tag !")
+            builder.setMessage("Vous avez choisit aucun tag !")
                     .setCancelable(true)
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
                             NEW_TAGLIST.putString("TAG_CHOSEN", "");
+                            NEW_TAGLIST.putString("RESTARTFROM", "tags");
+
                             NEW_TAGLIST.commit();
                             finish();
                         }

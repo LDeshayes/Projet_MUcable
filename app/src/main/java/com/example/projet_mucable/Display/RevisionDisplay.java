@@ -30,6 +30,7 @@ public class RevisionDisplay extends AppCompatActivity {
     String langue = "Anglais";
     Boolean quel_sens = false;
     String tag;
+    String tags;
 
     int taille_bd=0;
 
@@ -136,7 +137,7 @@ public class RevisionDisplay extends AppCompatActivity {
             cursor = CDB.query(
                     "t_"+langue,
                     null,
-                    "Tag_1 IN ('"+tag+"') OR Tag_2 IN ('"+tag+"') OR Tag_3 IN ('"+tag+"') OR Tag_4 IN ('"+tag+"') AND coefAppr = (SELECT min(CoefAppr) FROM "+"t_"+langue+");",
+                    "Tag_1 IN ("+tag+") OR Tag_2 IN ("+tag+") OR Tag_3 IN ("+tag+") OR Tag_4 IN ("+tag+") AND coefAppr = (SELECT min(CoefAppr) FROM "+"t_"+langue+");",
                     null,
                     null,
                     null,
@@ -154,7 +155,6 @@ public class RevisionDisplay extends AppCompatActivity {
                     null
             );
         }
-
 
         taille_bd =  cursor.getCount();
 
@@ -186,6 +186,7 @@ public class RevisionDisplay extends AppCompatActivity {
 
     public void onClicTag(View view) {
         Intent i = new Intent ( this, ChoixTagsDisplay.class );
+        //Intent i = new Intent ( this, ChoixMultiTagsDisplay.class );
         startActivity( i );
     }
 
@@ -193,7 +194,7 @@ public class RevisionDisplay extends AppCompatActivity {
         super.onRestart();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        tag = preferences.getString("TAG_CHOSEN", null);
+        tag = "'"+preferences.getString("TAG_CHOSEN", null)+"'";
 
         Button button_Tag_1 = findViewById(R.id.buttonTagsSelec);
         if(tag!=null && !tag.isEmpty()){

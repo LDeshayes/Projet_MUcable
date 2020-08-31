@@ -61,7 +61,8 @@
         android:text="Valider"
         app:layout_constraintBottom_toTopOf="@+id/guideline90h2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline90h2" />
 
     <TableLayout
         android:id="@+id/tableLayout"
