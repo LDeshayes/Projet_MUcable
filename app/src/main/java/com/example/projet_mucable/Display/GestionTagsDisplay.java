@@ -8,23 +8,18 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.projet_mucable.CustomAdapter;
+
 import com.example.projet_mucable.R;
 
 import org.w3c.dom.Text;
@@ -33,9 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GestionTagsDisplay extends AppCompatActivity {
-
-    View tag_view;
-    String tagChosen = "NAN";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,40 +38,47 @@ public class GestionTagsDisplay extends AppCompatActivity {
     }
 
     void setupElements() {
-        setupListView();
+        setChoiceTag();
     }
 
-    void setupListView() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
-        final String[] tag_list = tags.split(";");
+    void setChoiceTag() {
 
-        if ( !tag_list[0].equals("EMPTY_NULL") ) {
+        Button button_selection = findViewById(R.id.button_DelChoice);
 
-            // Définition des colonnes
-            // NB : SimpleCursorAdapter a besoin obligatoirement d'un ID nommé "_id"
-            String[] columns = new String[] { "_id", "col1" };
+        Intent i = getIntent();
+        String choiceTag = i.getStringExtra("ChoiceTag");
 
-            // Définition des données du tableau
-            MatrixCursor matrixCursor= new MatrixCursor(columns);
+        if ( choiceTag == null || choiceTag.equals("NAN") ) {
+            button_selection.setText("Choix");
+        } else {
+            button_selection.setText(choiceTag);
+        }
 
-            for ( int i = 0; ( i < tag_list.length ) ; i++ ) {
-                matrixCursor.addRow(new Object[] { 1,tag_list[i]});
-            }
+    }
 
-            // on prendra les données des colonnes 1 et 2...
-            String[] from = new String[] {"col1"};
+    public void clicAddTag(View view) {
 
-            // ...pour les placer dans les TextView définis dans "tag_listview.xml"
-            int[] to = new int[] { R.id.tag};
+        final EditText editText_AddTag = findViewById(R.id.editText_AddTag);
+        final String newTag = editText_AddTag.getText().toString();
 
-            // création de l'objet SimpleCursorAdapter...
-            SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.tag_listview, matrixCursor, from, to, 0);
+        if ( newTag.length() != 0 ) {
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Êtes vous sur(e) de vouloir ajouter ce tag "+newTag+" ?")
+                    .setCancelable(true)
+                    .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            saveTag( newTag );
+                            editText_AddTag.setText("");
+                        }
+                    })
+                    .setNegativeButton("Non", null );
+            AlertDialog alert = builder.create();
+            alert.show();
 
-            // ...qui va remplir l'objet ListView
-            final ListView tags_listview = (ListView) findViewById(R.id.tags_listview);
-            tags_listview.setAdapter(adapter);
+        } else {
+
+            Toast.makeText(getApplicationContext(), "Le champ pour un nouveau tag est vide !", Toast.LENGTH_SHORT).show();
 
             tags_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -92,26 +91,28 @@ public class GestionTagsDisplay extends AppCompatActivity {
                     tagChosen = tag_list[position];
                 }
             });
+
         }
+
     }
 
-    void saveTag ( String addTag ) {
+    void saveTag ( String tag ) {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
 
         String[] tag_list = tags.split(";");
 
-        if (Arrays.asList(tag_list).contains(addTag)) {
+        if (Arrays.asList(tag_list).contains(tag)) {
             Toast.makeText(getApplicationContext(), "Ce tag existe déjà dans la liste !", Toast.LENGTH_SHORT).show();
         } else {
 
             String tagList;
 
             if ( tag_list[0].equals("EMPTY_NULL") || tag_list[0].equals("") ) {
-                tagList = addTag;
+                tagList = tag;
             } else {
-                tagList = tags + ";" + addTag;
+                tagList = tags + ";" + tag;
             }
 
             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
@@ -122,36 +123,32 @@ public class GestionTagsDisplay extends AppCompatActivity {
 
     }
 
-    public void onClickAddTag(View view) {
+    public void clicChoiceTag(View view) {
+        Intent i = new Intent ( this, ChoixTagsDisplay.class );
+        i.putExtra("Origin", "GestionTagsDisplay");
+        startActivity( i );
+        finish();
+    }
 
-        final EditText editText_AddTag = findViewById(R.id.editText_tag);
-        final String newTag = editText_AddTag.getText().toString();
+    public void clicDelTag(View view) {
 
-        if ( newTag.length() != 0 ) {
+        final Button button_selection = findViewById(R.id.button_DelChoice);
+        final String delTag = (String) button_selection.getText();
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Êtes vous sur(e) de vouloir ajouter ce tag "+newTag+" ?")
-                    .setCancelable(true)
-                    .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            saveTag( newTag );
-                            editText_AddTag.setText("");
-                            finish();
-                            overridePendingTransition(0, 0);
-                            startActivity(getIntent());
-                            overridePendingTransition(0, 0);
-                        }
-                    })
-                    .setNegativeButton("Non", null );
-            AlertDialog alert = builder.create();
-            alert.show();
-
+        if ( delTag.equals("Choix") ) {
+            Toast.makeText(getApplicationContext(), "Choisissez un tag à supprimer !", Toast.LENGTH_SHORT).show();
         } else {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Le champ pour un nouveau tag est vide !")
+            builder.setMessage("Êtes vous sur(e) de vouloir supprimer ce tag "+delTag+" ?")
                     .setCancelable(true)
-                    .setPositiveButton("Ok", null);
+                    .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            delTag(delTag);
+                            button_selection.setText("Choix");
+                        }
+                    })
+                    .setNegativeButton("Non", null );
             AlertDialog alert = builder.create();
             alert.show();
 
@@ -199,47 +196,7 @@ public class GestionTagsDisplay extends AppCompatActivity {
             }
 
         } else {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Ce tag n'existe pas dans la liste !")
-                    .setCancelable(true)
-                    .setPositiveButton("Ok", null);
-            AlertDialog alert = builder.create();
-            alert.show();
-
-        }
-
-    }
-
-    public void onClickDelTag(View view) {
-
-        if ( tagChosen.equals("NAN") ) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Choisissez un tag à supprimer !")
-                    .setCancelable(true)
-                    .setPositiveButton("Ok", null);
-            AlertDialog alert = builder.create();
-            alert.show();
-
-        } else {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Êtes vous sur(e) de vouloir supprimer ce tag "+tagChosen+" ?")
-                    .setCancelable(true)
-                    .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            delTag(tagChosen);
-                            finish();
-                            overridePendingTransition(0, 0);
-                            startActivity(getIntent());
-                            overridePendingTransition(0, 0);
-                        }
-                    })
-                    .setNegativeButton("Non", null );
-            AlertDialog alert = builder.create();
-            alert.show();
-
+            Toast.makeText(getApplicationContext(), "Ce tag n'existe pas dans la liste !", Toast.LENGTH_SHORT).show();
         }
 
     }

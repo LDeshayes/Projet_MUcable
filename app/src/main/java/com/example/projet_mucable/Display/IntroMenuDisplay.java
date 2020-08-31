@@ -3,9 +3,7 @@ package com.example.projet_mucable.Display;
 // Menu principal de l'application, 4.1 cdc
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -37,5 +35,6 @@ public class IntroMenuDisplay extends AppCompatActivity {
     public void goToShareDisplay(View view) {
         startActivity(new Intent(IntroMenuDisplay.this, PartageDisplay.class));
     }
+
 
 }

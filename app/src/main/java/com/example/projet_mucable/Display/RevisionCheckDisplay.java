@@ -30,7 +30,6 @@ import java.util.Random;
 
 
 
-
 public class RevisionCheckDisplay extends AppCompatActivity {
 
     String language;
@@ -78,6 +77,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         word_num = this_i.getIntExtra("Word_number", 0);
 
         test_res = this_i.getStringExtra("String_res");
+
 
         question = this_i.getStringExtra("Question");
         reponseUser = this_i.getStringExtra("ReponseUser");
@@ -188,6 +188,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         i.putIntegerArrayListExtra("IndTab",intList);
 
 
+
         if(nb_left>0){
             startActivity( i );
         }
@@ -204,3 +205,4 @@ public class RevisionCheckDisplay extends AppCompatActivity {
 
     }
 }
+

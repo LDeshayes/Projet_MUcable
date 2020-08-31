@@ -34,6 +34,7 @@
     <activity android:name=".Display.ParCoeurActivity">
     </activity>
 
+
     <activity android:name=".Display.ParChoixActivity">
     </activity>
 
@@ -70,6 +71,5 @@
 
     <activity android:name=".Display.ResultatRevisionDisplay" />
     </application>
-
 
 </manifest>

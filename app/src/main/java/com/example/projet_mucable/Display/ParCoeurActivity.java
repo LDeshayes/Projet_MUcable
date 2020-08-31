@@ -189,7 +189,6 @@ public class ParCoeurActivity extends AppCompatActivity {
         }
 
 
-
         sens = this_i.getBooleanExtra("Sens", true);
         if(sens){
             word = words_list[indTab[word_number]];
@@ -316,7 +315,6 @@ public class ParCoeurActivity extends AppCompatActivity {
 
         TextView t = (TextView) findViewById(R.id.editTextReponse);
         String repo = t.getText().toString();
-
 
         Intent i = new Intent ( this, RevisionCheckDisplay.class );
         i.putExtra("Taille_bd", taille_bd);

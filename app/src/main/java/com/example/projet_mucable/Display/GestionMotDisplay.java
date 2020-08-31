@@ -4,7 +4,6 @@ package com.example.projet_mucable.Display;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;

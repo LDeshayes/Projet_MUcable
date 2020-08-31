@@ -4,7 +4,6 @@ package com.example.projet_mucable.Display;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -170,6 +169,7 @@ public class CahierDisplay extends AppCompatActivity {
                     .setPositiveButton("Ok", null);
             AlertDialog alert = builder.create();
             alert.show();
+
         } else {
             Intent i = new Intent ( this, GestionMotDisplay.class );
             i.putExtra("key",key);

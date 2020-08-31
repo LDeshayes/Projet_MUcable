@@ -1,50 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="6dp"
-    android:paddingRight="6dp">
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tag_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Liste de tags"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
-
-    <Button
-        android:id="@+id/button_delTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Supprimer"
-        android:onClick="onClickDelTag"
-        android:layout_alignParentRight="true" />
-
-    <Button
-        android:id="@+id/button_addTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ajouter"
-        android:onClick="onClickAddTag"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true" />
+        android:id="@+id/textView_AddTag"
+        android:layout_width="184dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="100dp"
+        android:text="Ajouter un tag"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText_tag"
+        android:id="@+id/editText_AddTag"
+        android:layout_width="222dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:hint="Nouveau tag"
+        android:inputType="text"
+        app:layout_constraintEnd_toStartOf="@+id/button_AddTag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_AddTag" />
+
+    <Button
+        android:id="@+id/button_AddTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Nouveau tag à ajouter"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:onClick="clicAddTag"
+        android:text="Ajout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_AddTag" />
 
-    <ListView
-        android:id="@+id/tags_listview"
+    <TextView
+        android:id="@+id/textView_DelTag"
+        android:layout_width="184dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="125dp"
+        android:text="Supprimer un tag"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_AddTag" />
+
+    <Button
+        android:id="@+id/button_DelChoice"
+        android:layout_width="222dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:onClick="clicChoiceTag"
+        app:layout_constraintEnd_toStartOf="@+id/button_DelOk"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_DelTag" />
+
+    <Button
+        android:id="@+id/button_DelOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tag_title"
-        android:layout_above="@+id/button_addTag"
-        android:divider="@color/material_blue_grey_800"
-        android:dividerHeight="1dp" />
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:onClick="clicDelTag"
+        android:text="Supprimer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_DelTag" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/textView_TagCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

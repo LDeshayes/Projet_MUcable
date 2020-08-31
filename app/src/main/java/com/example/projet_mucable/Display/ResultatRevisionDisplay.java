@@ -198,3 +198,4 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
 
     }
 }
+
