@@ -53,13 +53,14 @@
         android:id="@+id/buttonReset"
         android:layout_width="155dp"
         android:layout_height="wrap_content"
+        android:onClick="resetTests"
         android:text="Reset les tests"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline7"
-        tools:visibility="invisible" />
+        tools:visibility="visible" />
 
 
     <Button

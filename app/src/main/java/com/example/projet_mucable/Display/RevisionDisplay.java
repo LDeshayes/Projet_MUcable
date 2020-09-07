@@ -122,7 +122,7 @@ public class RevisionDisplay extends AppCompatActivity {
         i.putExtra("Sens", quel_sens);
         i.putExtra("Type", true);
         i.putExtra("Not_First", false);
-        i.putExtra("TagsFilter", tag);
+        i.putExtra("TagsFilter", tags);
 
         startActivity( i );
     }
@@ -133,26 +133,26 @@ public class RevisionDisplay extends AppCompatActivity {
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
         Cursor cursor;
 
-        if(tag!=null && !tag.isEmpty()){
+        if(tags!=null && !tags.isEmpty()){
             cursor = CDB.query(
                     "t_"+langue,
                     null,
-                    "Tag_1 IN ("+tag+") OR Tag_2 IN ("+tag+") OR Tag_3 IN ("+tag+") OR Tag_4 IN ("+tag+") AND coefAppr = (SELECT min(CoefAppr) FROM "+"t_"+langue+");",
+                    "Tag_1 IN ("+tags+") OR Tag_2 IN ("+tags+") OR Tag_3 IN ("+tags+") OR Tag_4 IN ("+tags+") AND CoefAppr IN (0,1,2)",
                     null,
                     null,
                     null,
-                    null
+                    "CoefAppr ASC"
             );
         }
         else{
             cursor = CDB.query(
                     "t_"+langue,
                     null,
+                    "CoefAppr IN (0,1,2)",
                     null,
                     null,
                     null,
-                    null,
-                    null
+                    "CoefAppr ASC"
             );
         }
 
@@ -172,7 +172,7 @@ public class RevisionDisplay extends AppCompatActivity {
         i.putExtra("Sens", quel_sens);
         i.putExtra("Type", false);
         i.putExtra("Not_First", false);
-        i.putExtra("TagsFilter", tag);
+        i.putExtra("TagsFilter", tags);
 
         if(taille_bd<4){
             Toast.makeText(getApplicationContext(),"Il faut plus de mots pour ces conditions.",Toast.LENGTH_LONG).show();
@@ -185,8 +185,8 @@ public class RevisionDisplay extends AppCompatActivity {
 
 
     public void onClicTag(View view) {
-        Intent i = new Intent ( this, ChoixTagsDisplay.class );
-        //Intent i = new Intent ( this, ChoixMultiTagsDisplay.class );
+        //Intent i = new Intent ( this, ChoixTagsDisplay.class );
+        Intent i = new Intent ( this, ChoixMultiTagsDisplay.class );
         startActivity( i );
     }
 
@@ -194,12 +194,25 @@ public class RevisionDisplay extends AppCompatActivity {
         super.onRestart();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        tag = "'"+preferences.getString("TAG_CHOSEN", null)+"'";
+        //tags = preferences.getString("TAG_CHOSEN", null);
 
-        Button button_Tag_1 = findViewById(R.id.buttonTagsSelec);
-        if(tag!=null && !tag.isEmpty()){
-            button_Tag_1.setText(tag);
+        TextView listeTags = findViewById(R.id.textViewTags);
+        String comefrom  = preferences.getString("RESTARTFROM", "");
+
+        tags = preferences.getString("TAG_CHOSEN", "");
+        if(tags==""){
+            listeTags.setText("aucuns");
         }
+        else{
+            listeTags.setText(tags);
+        }
+
+
+        /*Button button_Tag_1 = findViewById(R.id.buttonTagsSelec);
+        if(tags!=null && !tags.isEmpty()){
+            button_Tag_1.setText(tags);
+        }*/
+
     }
 
 }

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.R;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 
 public class ParCoeurActivity extends AppCompatActivity {
 
@@ -30,12 +30,13 @@ public class ParCoeurActivity extends AppCompatActivity {
     String[] tags_list;// = { "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "Nombre", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "la", "lo" };
     String tagsFilter;
 
+
     SQLiteDatabase CDB;
 
     DicoSeri monDico = new DicoSeri();
     String test_res = "";
 
-    String word = "Car";
+    String word;
     String word_translation;
     int word_number;
     int nb_left;
@@ -45,24 +46,25 @@ public class ParCoeurActivity extends AppCompatActivity {
     int nbCoef0;
     int nbCoef1;
     int nbCoef2;
-    //int nbCoef3;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_par_coeur);
-
-
+        
         Intent this_i = getIntent();
         tagsFilter = this_i.getStringExtra("TagsFilter");
 
         getLanguage();
         setupDB();
+
         taille_bd = words_list.length;
         nb_left = this_i.getIntExtra("Nb_mots", 5);
-        indTab = new Integer[nb_left];
+
         word_number = this_i.getIntExtra("Word_number", 0);
+        indTab = new Integer[nb_left];
+
 
         // Si c'est pas la premiere fois qu'on passe dans revisionParCoeur
         if(this_i.getBooleanExtra("Not_First", true)){
@@ -83,9 +85,8 @@ public class ParCoeurActivity extends AppCompatActivity {
                     indTab[i] = 0;
                 }
 
-                /*
                 // Boucle sur nb_left
-                for(int i=0; i<nb_left; i++){
+                /*for(int i=0; i<nb_left; i++){
                     testEq = false;
                     // Tan que tout les mots ne sont pas différents
                     while (!testEq) {
@@ -110,7 +111,7 @@ public class ParCoeurActivity extends AppCompatActivity {
                 // Use 60% coef0
                     ArrayList<Integer> list = new ArrayList<Integer>();
                     for (j=0; j<nbCoef0; j++) {
-                      list.add(j);
+                        list.add(j);
                     }
                     Collections.shuffle(list);
                     for (i=0; i<(int)(nb_left*0.6)-1 && (nb_left*0.4<(nbCoef2+nbCoef1)) || i<=nb_left-(nbCoef1+nbCoef2) && (nb_left*0.4>=nbCoef2+nbCoef1); i++) {
@@ -141,7 +142,7 @@ public class ParCoeurActivity extends AppCompatActivity {
                 // Use rdm amount of Coef1 and Coef2
                     ArrayList<Integer> list = new ArrayList<Integer>();
                     for (j=nbCoef0-1; j<nbCoef0+nbCoef1; j++) {
-                      list.add(i);
+                        list.add(i);
                     }
                     Collections.shuffle(list);
                     for (i=resume, j=0; i<resume+(nb_left-resume)/2 && nbCoef2>(nb_left-resume)/2 || i<(nb_left-nbCoef2) && nbCoef2<=(nb_left-resume)/2; i++, j++) {
@@ -180,15 +181,12 @@ public class ParCoeurActivity extends AppCompatActivity {
                 }
 
                 List<Integer> intList = Arrays.asList(indTab);
-                //indTab = new Integer[nb_left];
                 Collections.shuffle(intList);
                 intList.toArray(indTab);
 
             }
 
         }
-
-
 
         sens = this_i.getBooleanExtra("Sens", true);
         if(sens){
@@ -232,15 +230,15 @@ public class ParCoeurActivity extends AppCompatActivity {
             cursor = CDB.query(
                     "t_"+language,
                     null,
-                    "Tag_1 IN ('"+tagsFilter+"') OR Tag_2 IN ('"+tagsFilter+"') OR Tag_3 IN ('"+tagsFilter+"') OR Tag_4 IN ('"+tagsFilter+"') AND CoefAppr IN (0,1,2)",
+                    "Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+") AND CoefAppr IN (0,1,2)",
                     null,
                     null,
                     null,
                     "CoefAppr ASC"
             );
-            SQL_COEF0 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=0 AND Tag_1 IN ('"+tagsFilter+"') OR Tag_2 IN ('"+tagsFilter+"') OR Tag_3 IN ('"+tagsFilter+"') OR Tag_4 IN ('"+tagsFilter+"')";
-            SQL_COEF1 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=1 AND Tag_1 IN ('"+tagsFilter+"') OR Tag_2 IN ('"+tagsFilter+"') OR Tag_3 IN ('"+tagsFilter+"') OR Tag_4 IN ('"+tagsFilter+"')";
-            SQL_COEF2 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=2 AND Tag_1 IN ('"+tagsFilter+"') OR Tag_2 IN ('"+tagsFilter+"') OR Tag_3 IN ('"+tagsFilter+"') OR Tag_4 IN ('"+tagsFilter+"')";
+            SQL_COEF0 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=0 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
+            SQL_COEF1 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=1 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
+            SQL_COEF2 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=2 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
         }
         else{
             cursor = CDB.query(

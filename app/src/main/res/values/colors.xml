@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#909497</color>
-    <color name="colorPrimaryDark">#909497</color>
+    <color name="colorPrimaryDark">#65686a</color>
     <color name="colorAccent">#909497</color>
+    <color name="darker">#65686a</color>
+    <color name="everDarker">#444447</color>
+    <color name="myWhite">#FFF</color>
+    <color name="mydark">#000</color>
+    <color name="myBlue">#4e4eff</color>
+
+
+    <color name="primaryColor">#3949ab</color>
+    <color name="primaryLightColor">#6f74dd</color>
+    <color name="primaryDarkColor">#00227b</color>
+
+    <color name="secondaryColor">#1e88e5</color>
+    <color name="secondaryLightColor">#6ab7ff</color>
+    <color name="secondaryDarkColor">#005cb2</color>
+
+    <color name="primaryTextColor">#eceff1</color>
+    <color name="secondaryTextColor">#000000</color>
+
+
 </resources>

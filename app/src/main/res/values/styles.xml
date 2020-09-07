@@ -1,34 +1,51 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/primaryLightColor</item>
+
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textColorSecondary">@color/secondaryTextColor</item>
+
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowBackground">@drawable/gradient_background</item>
-        <item name="buttonStyle">@style/BeautifulButton</item>
+
+        <item name="buttonStyle">@style/BeautifulButton2</item>
+
     </style>
 
+
     <style name="IntroMenuTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/mydark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowBackground">@drawable/gradient_background</item>
-        <item name="buttonStyle">@style/BeautifulButton</item>
+
+        <item name="buttonStyle">@style/BeautifulButton2</item>
+
     </style>
 
     <style name="BeautifulButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/gradient_button</item>
         <item name="android:textColor">#f8f9f9</item>
+    </style>
+
+    <style name="BeautifulButton2" parent="Base.Widget.AppCompat.Button.Colored">
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/everDarker</item>
+        <item name="colorControlActivated">@color/everDarker</item>
     </style>
 
     <style name="AlertDialogDarker" parent="Theme.AppCompat.Light.Dialog.Alert">

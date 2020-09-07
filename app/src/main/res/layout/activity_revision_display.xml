@@ -85,7 +85,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:onClick="onClicTag"
-        android:text="TAG"
+        android:text="TAGS"
         app:layout_constraintBottom_toTopOf="@+id/guideline54h"
         app:layout_constraintEnd_toStartOf="@+id/guideline67v"
         app:layout_constraintHorizontal_bias="0.0"
@@ -182,5 +182,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.6" />
+
+    <TextView
+        android:id="@+id/textViewTags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="aucuns"
+        app:layout_constraintEnd_toEndOf="@+id/buttonTagsSelec"
+        app:layout_constraintStart_toStartOf="@+id/buttonTagsSelec"
+        app:layout_constraintTop_toBottomOf="@+id/buttonTagsSelec" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

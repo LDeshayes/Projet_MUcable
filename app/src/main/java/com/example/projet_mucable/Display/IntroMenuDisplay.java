@@ -2,8 +2,12 @@ package com.example.projet_mucable.Display;
 
 // Menu principal de l'application, 4.1 cdc
 
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -28,6 +32,18 @@ public class IntroMenuDisplay extends AppCompatActivity {
 
     public void goToRevision(View view) {
         startActivity(new Intent(IntroMenuDisplay.this, RevisionDisplay.class));
+    }
+
+    public void resetTests(View view) {
+
+        @SuppressLint("WrongConstant") SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+        ContentValues cv = new ContentValues();
+        cv.put("CoefAppr",0);
+        CDB.update("t_Anglais", cv, "", null);
+        CDB.update("t_Allemand", cv, "", null);
+        CDB.update("t_Espagnol", cv, "", null);
+
+
     }
 
     public void activityToGestionTagsDisplay(View view) {
