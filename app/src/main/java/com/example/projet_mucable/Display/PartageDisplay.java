@@ -265,8 +265,6 @@ public class PartageDisplay extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String comefromT  = preferences.getString("RESTARTFROMTAGS", "false");
         String comefromM  = preferences.getString("RESTARTFROMMOTS", "false");
-        //Toast.makeText(getApplicationContext(),"T: "+tagsChosen,Toast.LENGTH_LONG).show();
-
 
 
         if(comefromT.equals("true")){
@@ -289,8 +287,6 @@ public class PartageDisplay extends AppCompatActivity {
                 listeMots.setText(wordsChosen);
             }
         }
-
-        //Toast.makeText(getApplicationContext(),"T: "+tagsChosen,Toast.LENGTH_LONG).show();
 
     }
 
