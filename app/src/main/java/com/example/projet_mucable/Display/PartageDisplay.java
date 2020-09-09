@@ -103,7 +103,6 @@ public class PartageDisplay extends AppCompatActivity {
             listeTags.setText(tagsChosen);
         }*/
 
-
     }
 
 
