@@ -115,13 +115,13 @@ public class ChoixMotsDisplay extends AppCompatActivity {
                 word_view = view;
 
                 if(motsSelected.get(key_list[position]+"")!=null){
-                    if(motsSelected.get(key_list[position]+"")=="true"){
+                    if(motsSelected.get(key_list[position]+"").equals("true")){
                         motsSelected.put(key_list[position]+"","false");
                         mots.put(key_list[position]+"",words_list[position]+"");
                         word_view.setBackgroundResource(0);
                         //Toast.makeText(getApplicationContext(),"T->F: "+key_list[position],Toast.LENGTH_LONG).show();
                     }
-                    else if(motsSelected.get(key_list[position]+"")=="false"){
+                    else if(motsSelected.get(key_list[position]+"").equals("false")){
                         motsSelected.put(key_list[position]+"","true");
                         mots.put(key_list[position]+"",words_list[position]+"");
                         word_view.setBackgroundResource(R.drawable.border);
@@ -149,7 +149,7 @@ public class ChoixMotsDisplay extends AppCompatActivity {
         int i =0;
         for (Map.Entry<String, String> entry : motsSelected.entrySet()) {
 
-            if(entry.getValue()=="true"){
+            if(entry.getValue().equals("true")){
                 if(i>0){
                     wordsChosen = wordsChosen+",";
                     wordsChosen2 = wordsChosen2+",";
@@ -161,17 +161,18 @@ public class ChoixMotsDisplay extends AppCompatActivity {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
+        final SharedPreferences.Editor NEW_MOTSLIST = preferences.edit();
+        NEW_MOTSLIST.putString("RESTARTFROMMOTS", "true");
+        NEW_MOTSLIST.putString("RESTARTFROMTAGS", "false");
+
 
         if ( !wordsChosen.equals("") ) {
             builder.setMessage("Êtes vous sur(e) de vouloir choisir ces mots?")
                     .setCancelable(true)
                     .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences.Editor NEW_MOTSLIST = preferences.edit();
                             NEW_MOTSLIST.putString("WORDS_CHOSEN", wordsChosen);
                             NEW_MOTSLIST.putString("WORDS_CHOSEN2", wordsChosen2);
-                            NEW_MOTSLIST.putString("RESTARTFROM", "mots");
-
                             NEW_MOTSLIST.commit();
                             finish();
                         }
@@ -181,7 +182,6 @@ public class ChoixMotsDisplay extends AppCompatActivity {
                             SharedPreferences.Editor NEW_MOTSLIST = preferences.edit();
                             NEW_MOTSLIST.putString("WORDS_CHOSEN", "");
                             NEW_MOTSLIST.putString("WORDS_CHOSEN2", "");
-                            NEW_MOTSLIST.putString("RESTARTFROM", "mots");
                         }
                     });
             AlertDialog alert = builder.create();
@@ -195,8 +195,6 @@ public class ChoixMotsDisplay extends AppCompatActivity {
                             SharedPreferences.Editor NEW_MOTSLIST = preferences.edit();
                             NEW_MOTSLIST.putString("WORDS_CHOSEN", "");
                             NEW_MOTSLIST.putString("WORDS_CHOSEN2", "");
-                            NEW_MOTSLIST.putString("RESTARTFROM", "mots");
-
                             NEW_MOTSLIST.commit();
                             finish();
                         }

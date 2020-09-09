@@ -200,7 +200,7 @@ public class RevisionDisplay extends AppCompatActivity {
         String comefrom  = preferences.getString("RESTARTFROM", "");
 
         tags = preferences.getString("TAG_CHOSEN", "");
-        if(tags==""){
+        if(tags.equals("")){
             listeTags.setText("aucuns");
         }
         else{

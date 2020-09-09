@@ -83,7 +83,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         reponseUser = this_i.getStringExtra("ReponseUser");
         reponse = this_i.getStringExtra("Reponse");
 
-        if(reponseUser=="")
+        if(reponseUser.equals(""))
             reponseUser=" ";
 
 

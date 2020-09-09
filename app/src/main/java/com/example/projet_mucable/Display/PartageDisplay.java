@@ -98,6 +98,12 @@ public class PartageDisplay extends AppCompatActivity {
         prefEdit.putString("WORDS_CHOSEN", "");
         prefEdit.putString("TAGS_CHOSEN", "");
 
+        /*if(tagsChosen!=null && !tagsChosen.equals("")){
+            TextView listeTags = findViewById(R.id.textViewListeTags);
+            listeTags.setText(tagsChosen);
+        }*/
+
+
     }
 
 
@@ -162,7 +168,7 @@ public class PartageDisplay extends AppCompatActivity {
 
         Cursor cursor;
 
-        if(tagsChosen=="" && wordsChosen==""){
+        if(tagsChosen.equals("") && wordsChosen.equals("")){
             cursor = CDB.query(
                     "t_"+langue,
                     null,
@@ -258,22 +264,26 @@ public class PartageDisplay extends AppCompatActivity {
         TextView listeMots = findViewById(R.id.textViewMots);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String comefrom  = preferences.getString("RESTARTFROM", "");
+        String comefromT  = preferences.getString("RESTARTFROMTAGS", "false");
+        String comefromM  = preferences.getString("RESTARTFROMMOTS", "false");
+        //Toast.makeText(getApplicationContext(),"T: "+tagsChosen,Toast.LENGTH_LONG).show();
 
 
-        if(comefrom == "tags"){
+
+        if(comefromT.equals("true")){
             tagsChosen = preferences.getString("TAG_CHOSEN", "");
-            if(tagsChosen==""){
+            if(tagsChosen.equals("")){
                 listeTags.setText("aucun");
             }
             else{
                 listeTags.setText(tagsChosen);
             }
         }
-        else if(comefrom != ""){
+
+        if(comefromM.equals("true")){
             wordsChosen = preferences.getString("WORDS_CHOSEN", "");
             wordsChosen2 = preferences.getString("WORDS_CHOSEN2", "");
-            if(wordsChosen==""){
+            if(wordsChosen.equals("")){
                 listeMots.setText("aucun");
             }
             else{

@@ -69,12 +69,12 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                     tag_view = view;
 
                     if(tagsSelected.get(tag_list[position])!=null){
-                        if(tagsSelected.get(tag_list[position])=="true"){
+                        if(tagsSelected.get(tag_list[position]).equals("true")){
                             tagsSelected.put(tag_list[position],"false");
                             tag_view.setBackgroundResource(0);
                             //Toast.makeText(getApplicationContext(),"T->F: ",Toast.LENGTH_LONG).show();
                         }
-                        else if(tagsSelected.get(tag_list[position])=="false"){
+                        else if(tagsSelected.get(tag_list[position]).equals("false")){
                             tagsSelected.put(tag_list[position],"true");
                             tag_view.setBackgroundResource(R.drawable.border);
                             //Toast.makeText(getApplicationContext(),"F->T: ",Toast.LENGTH_LONG).show();
@@ -98,7 +98,7 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
         int i =0;
         for (Map.Entry<String, String> entry : tagsSelected.entrySet()) {
 
-            if(entry.getValue()=="true"){
+            if(entry.getValue().equals("true")){
                 if(i>0)
                     tagsChosen = tagsChosen+",";
                 tagsChosen = tagsChosen +"'"+entry.getKey()+"'";
@@ -107,17 +107,18 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
+        final SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
+        NEW_TAGSLIST.putString("RESTARTFROMTAGS", "true");
+        NEW_TAGSLIST.putString("RESTARTFROMMOTS", "false");
+
 
         if ( !tagsChosen.equals("") ) {
             builder.setMessage("Êtes vous sur(e) de vouloir choisir ces tags?")
                     .setCancelable(true)
                     .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
                             NEW_TAGSLIST.putString("TAG_CHOSEN", tagsChosen);
-                            NEW_TAGSLIST.putString("RESTARTFROM", "tags");
-
-                            NEW_TAGSLIST.commit();
+                            NEW_TAGSLIST.apply();
                             finish();
                         }
                     })
@@ -125,7 +126,6 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
                             NEW_TAGSLIST.putString("TAG_CHOSEN", "");
-                            NEW_TAGSLIST.putString("RESTARTFROM", "tags");
                         }
                     });
             AlertDialog alert = builder.create();
@@ -138,9 +138,7 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
                             NEW_TAGSLIST.putString("TAG_CHOSEN", "");
-                            NEW_TAGSLIST.putString("RESTARTFROM", "tags");
-
-                            NEW_TAGSLIST.commit();
+                            NEW_TAGSLIST.apply();
                             finish();
                         }
                     });

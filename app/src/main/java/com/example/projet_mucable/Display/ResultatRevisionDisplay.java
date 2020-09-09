@@ -175,7 +175,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
 
 
             // If the user didn't get the answer wrong
-            if(adjustWords.get(key)=="y"){
+            if(adjustWords.get(key).equals("y")){
                 // increase coef (max 3)
                 newcoef = Integer.parseInt(information_values[1])+1;
                 if(newcoef>3){
