@@ -73,7 +73,6 @@ public class PartageDisplay extends AppCompatActivity {
 
         // Créaqtion de la liste des différentes langues
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Francais");
         arrayList.add("Anglais");
         arrayList.add("Allemand");
         arrayList.add("Espagnol");
@@ -81,7 +80,7 @@ public class PartageDisplay extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerL.setAdapter(arrayAdapter);
-        spinnerL.setSelection(1);
+        spinnerL.setSelection(0);
 
         // Definition des comportements des spinners
         spinnerL.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -261,6 +260,7 @@ public class PartageDisplay extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String comefrom  = preferences.getString("RESTARTFROM", "");
 
+
         if(comefrom == "tags"){
             tagsChosen = preferences.getString("TAG_CHOSEN", "");
             if(tagsChosen==""){
@@ -270,8 +270,7 @@ public class PartageDisplay extends AppCompatActivity {
                 listeTags.setText(tagsChosen);
             }
         }
-
-        if(comefrom == "mots"){
+        else if(comefrom != ""){
             wordsChosen = preferences.getString("WORDS_CHOSEN", "");
             wordsChosen2 = preferences.getString("WORDS_CHOSEN2", "");
             if(wordsChosen==""){

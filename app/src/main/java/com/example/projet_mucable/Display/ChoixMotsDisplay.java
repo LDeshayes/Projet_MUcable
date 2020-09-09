@@ -160,46 +160,44 @@ public class ChoixMotsDisplay extends AppCompatActivity {
             }
         }
 
-        if ( !wordsChosen.equals("") ) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
+        if ( !wordsChosen.equals("") ) {
             builder.setMessage("Êtes vous sur(e) de vouloir choisir ces mots?")
                     .setCancelable(true)
                     .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
-                            NEW_TAGLIST.putString("WORDS_CHOSEN", wordsChosen);
-                            NEW_TAGLIST.putString("WORDS_CHOSEN2", wordsChosen2);
-                            NEW_TAGLIST.putString("RESTARTFROM", "mots");
+                            SharedPreferences.Editor NEW_MOTSLIST = preferences.edit();
+                            NEW_MOTSLIST.putString("WORDS_CHOSEN", wordsChosen);
+                            NEW_MOTSLIST.putString("WORDS_CHOSEN2", wordsChosen2);
+                            NEW_MOTSLIST.putString("RESTARTFROM", "mots");
 
-                            NEW_TAGLIST.commit();
+                            NEW_MOTSLIST.commit();
                             finish();
                         }
                     })
                     .setNegativeButton("Non", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
-                            NEW_TAGLIST.putString("WORDS_CHOSEN", "");
-                            NEW_TAGLIST.putString("WORDS_CHOSEN2", "");
-                            NEW_TAGLIST.putString("RESTARTFROM", "mots");
+                            SharedPreferences.Editor NEW_MOTSLIST = preferences.edit();
+                            NEW_MOTSLIST.putString("WORDS_CHOSEN", "");
+                            NEW_MOTSLIST.putString("WORDS_CHOSEN2", "");
+                            NEW_MOTSLIST.putString("RESTARTFROM", "mots");
                         }
                     });
             AlertDialog alert = builder.create();
             alert.show();
 
         } else {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Vous avez choisit aucun mot !")
                     .setCancelable(true)
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
-                            NEW_TAGLIST.putString("WORDS_CHOSEN", "");
-                            NEW_TAGLIST.putString("WORDS_CHOSEN2", "");
-                            NEW_TAGLIST.putString("RESTARTFROM", "mots");
+                            SharedPreferences.Editor NEW_MOTSLIST = preferences.edit();
+                            NEW_MOTSLIST.putString("WORDS_CHOSEN", "");
+                            NEW_MOTSLIST.putString("WORDS_CHOSEN2", "");
+                            NEW_MOTSLIST.putString("RESTARTFROM", "mots");
 
-                            NEW_TAGLIST.commit();
+                            NEW_MOTSLIST.commit();
                             finish();
                         }
                     });

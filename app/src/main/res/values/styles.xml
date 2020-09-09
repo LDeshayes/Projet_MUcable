@@ -6,7 +6,7 @@
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/primaryLightColor</item>
 
-        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
         <item name="android:textColorSecondary">@color/secondaryTextColor</item>
 
         <item name="android:windowNoTitle">true</item>
@@ -39,11 +39,12 @@
 
     <style name="BeautifulButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/gradient_button</item>
-        <item name="android:textColor">#f8f9f9</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
     </style>
 
     <style name="BeautifulButton2" parent="Base.Widget.AppCompat.Button.Colored">
         <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
         <item name="colorControlHighlight">@color/everDarker</item>
         <item name="colorControlActivated">@color/everDarker</item>
     </style>

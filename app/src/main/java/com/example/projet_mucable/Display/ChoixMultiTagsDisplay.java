@@ -104,7 +104,6 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                 tagsChosen = tagsChosen +"'"+entry.getKey()+"'";
                 i+=1;
             }
-
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
@@ -114,19 +113,19 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                     .setCancelable(true)
                     .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
-                            NEW_TAGLIST.putString("TAG_CHOSEN", tagsChosen);
-                            NEW_TAGLIST.putString("RESTARTFROM", "tags");
+                            SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
+                            NEW_TAGSLIST.putString("TAG_CHOSEN", tagsChosen);
+                            NEW_TAGSLIST.putString("RESTARTFROM", "tags");
 
-                            NEW_TAGLIST.commit();
+                            NEW_TAGSLIST.commit();
                             finish();
                         }
                     })
                     .setNegativeButton("Non", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
-                            NEW_TAGLIST.putString("TAG_CHOSEN", "");
-                            NEW_TAGLIST.putString("RESTARTFROM", "tags");
+                            SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
+                            NEW_TAGSLIST.putString("TAG_CHOSEN", "");
+                            NEW_TAGSLIST.putString("RESTARTFROM", "tags");
                         }
                     });
             AlertDialog alert = builder.create();
@@ -137,11 +136,11 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                     .setCancelable(true)
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
-                            NEW_TAGLIST.putString("TAG_CHOSEN", "");
-                            NEW_TAGLIST.putString("RESTARTFROM", "tags");
+                            SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
+                            NEW_TAGSLIST.putString("TAG_CHOSEN", "");
+                            NEW_TAGSLIST.putString("RESTARTFROM", "tags");
 
-                            NEW_TAGLIST.commit();
+                            NEW_TAGSLIST.commit();
                             finish();
                         }
                     });
