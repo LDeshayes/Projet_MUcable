@@ -71,13 +71,14 @@ public class PartageDisplay extends AppCompatActivity {
         // Recupération des spinners
         final Spinner spinnerL = findViewById(R.id.spinnerL);
 
-        // Créaqtion de la liste des différentes langues
-        ArrayList<String> arrayList = new ArrayList<>();
+        // Création de la liste des différentes langues
+        /*ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Anglais");
         arrayList.add("Allemand");
-        arrayList.add("Espagnol");
+        arrayList.add("Espagnol");*/
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
+        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerL.setAdapter(arrayAdapter);
         spinnerL.setSelection(0);
@@ -268,7 +269,7 @@ public class PartageDisplay extends AppCompatActivity {
 
 
         if(comefromT.equals("true")){
-            tagsChosen = preferences.getString("TAG_CHOSEN", "");
+            tagsChosen = preferences.getString("TAGS_CHOSEN", "");
             if(tagsChosen.equals("")){
                 listeTags.setText("aucun");
             }

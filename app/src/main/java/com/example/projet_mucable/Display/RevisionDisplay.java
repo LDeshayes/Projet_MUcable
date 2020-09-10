@@ -199,7 +199,7 @@ public class RevisionDisplay extends AppCompatActivity {
         TextView listeTags = findViewById(R.id.textViewTags);
         String comefrom  = preferences.getString("RESTARTFROM", "");
 
-        tags = preferences.getString("TAG_CHOSEN", "");
+        tags = preferences.getString("TAGS_CHOSEN", "");
         if(tags.equals("")){
             listeTags.setText("aucuns");
         }

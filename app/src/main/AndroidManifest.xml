@@ -37,6 +37,9 @@
     <activity android:name=".Display.ParChoixActivity">
     </activity>
 
+    <activity android:name=".Display.StatsActivity">
+    </activity>
+
     <activity
         android:name=".Display.GestionTagsDisplay"
         android:windowSoftInputMode="stateHidden">

@@ -36,13 +36,14 @@ public class IntroMenuDisplay extends AppCompatActivity {
 
     public void resetTests(View view) {
 
-        @SuppressLint("WrongConstant") SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+        /*@SuppressLint("WrongConstant") SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
         ContentValues cv = new ContentValues();
         cv.put("CoefAppr",0);
         CDB.update("t_Anglais", cv, "", null);
         CDB.update("t_Allemand", cv, "", null);
-        CDB.update("t_Espagnol", cv, "", null);
+        CDB.update("t_Espagnol", cv, "", null);*/
 
+        startActivity(new Intent(IntroMenuDisplay.this, StatsActivity.class));
 
     }
 

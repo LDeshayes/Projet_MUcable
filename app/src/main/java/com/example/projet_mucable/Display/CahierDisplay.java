@@ -72,6 +72,25 @@ public class CahierDisplay extends AppCompatActivity {
     }
 
     // FUTURE : ADD FILTER HERE
+    String printNAN ( String tag1, String tag2, String tag3, String tag4 ) {
+
+        String[] tabTag = { tag1, tag2, tag3, tag4 };
+        StringBuilder tempTag = new StringBuilder();
+
+        for (String s : tabTag) {
+            if (!(s.equals("NAN"))) {
+                tempTag.append(" - ").append(s);
+            }
+        }
+
+        if ( tempTag.length() == 0 ) {
+            return (tempTag.toString());
+        } else {
+            return ( tempTag.substring(3) );
+        }
+
+    }
+
     void loadDB() {
 
         Cursor cursor = CDB.query(
@@ -109,25 +128,6 @@ public class CahierDisplay extends AppCompatActivity {
             translations_list[i] = cursor.getString(2);
             tags_list[i] = printNAN ( cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6) );
             cursor.moveToNext();
-        }
-
-    }
-
-    String printNAN ( String tag1, String tag2, String tag3, String tag4 ) {
-
-        String[] tabTag = { tag1, tag2, tag3, tag4 };
-        String tempTag = "";
-
-        for ( int i = 0; i < tabTag.length; i++ ) {
-            if ( !( tabTag[i].equals("NAN") ) ) {
-                tempTag = tempTag + " - " + tabTag[i];
-            }
-        }
-
-        if ( tempTag.length() == 0 ) {
-            return ( tempTag );
-        } else {
-            return ( tempTag.substring(3) );
         }
 
     }

@@ -117,7 +117,7 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                     .setCancelable(true)
                     .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            NEW_TAGSLIST.putString("TAG_CHOSEN", tagsChosen);
+                            NEW_TAGSLIST.putString("TAGS_CHOSEN", tagsChosen);
                             NEW_TAGSLIST.apply();
                             finish();
                         }
@@ -125,7 +125,7 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                     .setNegativeButton("Non", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
-                            NEW_TAGSLIST.putString("TAG_CHOSEN", "");
+                            NEW_TAGSLIST.putString("TAGS_CHOSEN", "");
                         }
                     });
             AlertDialog alert = builder.create();
@@ -137,7 +137,7 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
-                            NEW_TAGSLIST.putString("TAG_CHOSEN", "");
+                            NEW_TAGSLIST.putString("TAGS_CHOSEN", "");
                             NEW_TAGSLIST.apply();
                             finish();
                         }
