@@ -124,7 +124,7 @@ public class StatsActivity extends AppCompatActivity {
         rowCount = cursor.getCount();
 
         int t1;
-        if( (rowCount/3)%3 == 0){
+        if( rowCount/3 == rowCount/3.0){
             t1 = rowCount/3;
         }
         else{
@@ -144,11 +144,11 @@ public class StatsActivity extends AppCompatActivity {
         for ( int i=0; i < rowCount; i++ ) {
 
 
-            Double dK = i / (rowCount / 3.0);
-            int k = dK.intValue();
+            double dK = i / (rowCount / 3.0);
+            int k = (int) dK;
 
-            Double dJ = i % (rowCount / 3.0);
-            int j = dJ.intValue();
+            double dJ = i % (rowCount / 3.0);
+            int j = (int) dJ;
 
             //key_list_final[i/(rowCount/3)][j] = cursor.getInt(0);
             //key_list[i/(rowCount/3)][j] = cursor.getInt(0);
