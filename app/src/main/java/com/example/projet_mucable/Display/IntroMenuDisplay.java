@@ -43,7 +43,7 @@ public class IntroMenuDisplay extends AppCompatActivity {
         CDB.update("t_Allemand", cv, "", null);
         CDB.update("t_Espagnol", cv, "", null);*/
 
-        startActivity(new Intent(IntroMenuDisplay.this, StatsActivity.class));
+        startActivity(new Intent(IntroMenuDisplay.this, StatsDisplay.class));
 
     }
 

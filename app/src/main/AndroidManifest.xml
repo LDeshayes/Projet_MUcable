@@ -37,7 +37,7 @@
     <activity android:name=".Display.ParChoixActivity">
     </activity>
 
-    <activity android:name=".Display.StatsActivity">
+    <activity android:name=".Display.StatsDisplay">
     </activity>
 
     <activity

@@ -1,16 +1,23 @@
 package com.example.projet_mucable.Display;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -22,7 +29,7 @@ import com.example.projet_mucable.R;
 
 
 
-public class StatsActivity extends AppCompatActivity {
+public class StatsDisplay extends AppCompatActivity {
 
     String language = "Anglais";
     ListView w_words_listview;
@@ -51,13 +58,14 @@ public class StatsActivity extends AppCompatActivity {
         final Spinner spinnerL = findViewById(R.id.spinnerLang);
 
         // Créaqtion de la liste des différentes langues
-        /*ArrayList<String> arrayList = new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("Choisissez une langue");
         arrayList.add("Anglais");
         arrayList.add("Allemand");
-        arrayList.add("Espagnol");*/
+        arrayList.add("Espagnol");
 
-        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
-        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
+        //ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_item);
 
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerL.setAdapter(arrayAdapter);
@@ -67,7 +75,12 @@ public class StatsActivity extends AppCompatActivity {
         spinnerL.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                language = parent.getItemAtPosition(position).toString();
+                if(position>0){
+                    language = parent.getItemAtPosition(position).toString();
+                    loadDB(language);
+                    final LinearLayout linlay = findViewById(R.id.linLay);
+                    linlay.setVisibility(View.VISIBLE);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView <?> parent) {
@@ -79,7 +92,7 @@ public class StatsActivity extends AppCompatActivity {
 
     void setupDB() {
         getDB();
-        loadDB();
+        //loadDB(language);
     }
 
     @SuppressLint("WrongConstant")
@@ -107,10 +120,10 @@ public class StatsActivity extends AppCompatActivity {
 
     }
 
-    void loadDB() {
+    void loadDB(String lang) {
 
         Cursor cursor = CDB.query(
-                "t_"+language,
+                "t_"+lang,
                 null,
                 null,
                 null,
@@ -190,14 +203,36 @@ public class StatsActivity extends AppCompatActivity {
 
     public void resetTests(View view) {
 
-        /*@SuppressLint("WrongConstant") SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
-        ContentValues cv = new ContentValues();
-        cv.put("CoefAppr",0);
-        CDB.update("t_Anglais", cv, "", null);
-        CDB.update("t_Allemand", cv, "", null);
-        CDB.update("t_Espagnol", cv, "", null);*/
 
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
+        builder.setMessage("Êtes vous sur(e) de vouloir réinitialiser les tests ?")
+                .setCancelable(true)
+                .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        @SuppressLint("WrongConstant") SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+                        ContentValues cv = new ContentValues();
+                        cv.put("CoefAppr",0);
+                        CDB.update("t_Anglais", cv, "", null);
+                        CDB.update("t_Allemand", cv, "", null);
+                        CDB.update("t_Espagnol", cv, "", null);
+                    }
+                })
+                .setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void toGraphs(View view) {
+        /*Intent i = new Intent ( this, ChoixMultiTagsDisplay.class );
+        i.putExtra("Language",language);
+        startActivity( i );*/
     }
 
 
-}
+
+    }
