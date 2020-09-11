@@ -54,11 +54,11 @@
         android:layout_width="155dp"
         android:layout_height="wrap_content"
         android:onClick="resetTests"
-        android:text="Reset les tests"
+        android:text="Stats"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline7"
         tools:visibility="visible" />
 
@@ -70,9 +70,9 @@
         android:onClick="activityToGestionTagsDisplay"
         android:text="Gérer les tags"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline5"
         app:layout_constraintVertical_bias="1.0" />
 

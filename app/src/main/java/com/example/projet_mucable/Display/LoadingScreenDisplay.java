@@ -243,6 +243,30 @@ public class LoadingScreenDisplay extends AppCompatActivity {
             DB_NEED_UPD.commit();
 
         }
+        /*boolean need_upd_03 = preferences.getBoolean("NEED_UPD_03", true);
+        if ( need_upd_03 ) {
+
+            SQLiteDatabase CDB = openOrCreateDatabase(
+                    "CDB.db"
+                    , SQLiteDatabase.CREATE_IF_NECESSARY
+                    , null
+            );
+
+            final String Create_table_STATSMEM =
+                    "CREATE TABLE t_Espagnol ("
+                            + "Id_stat INTEGER PRIMARY KEY AUTOINCREMENT,"
+                            + "Id_Word INTEGER FOREIGN KEY,"
+                            + "Date DATE,"
+                            + " FOREIGN KEY (Id_Word) REFERENCES "+CAT_TABLE+"(Id_Word));";
+
+            CDB.execSQL(Create_table_STATSMEM);
+
+
+            SharedPreferences.Editor DB_NEED_UPD = preferences.edit();
+            DB_NEED_UPD.putBoolean("NEED_UPD_02", false);
+            DB_NEED_UPD.commit();
+
+        }*/
 
     }
 

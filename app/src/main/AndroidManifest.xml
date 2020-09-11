@@ -1,78 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.projet_mucable"
-    >
+    package="com.example.projet_mucable">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
+        android:configChanges="locale"
         android:icon="@mipmap/ic_launcher"
         android:label="Cahiers de vocabulaire"
         android:roundIcon="@drawable/logo_appli"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:configChanges="locale"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Display.GraphMemDisplay"></activity>
+        <activity android:name=".Display.LoadingScreenDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-    <activity android:name=".Display.LoadingScreenDisplay">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-
-    <activity
-        android:name=".Display.IntroMenuDisplay"
-        android:theme="@style/IntroMenuTheme">
-    </activity>
-
-    <activity android:name=".Display.RevisionDisplay">
-    </activity>
-
-    <activity android:name=".Display.ParCoeurActivity">
-    </activity>
-
-    <activity android:name=".Display.ParChoixActivity">
-    </activity>
-
-    <activity android:name=".Display.StatsDisplay">
-    </activity>
-
-    <activity
-        android:name=".Display.GestionTagsDisplay"
-        android:windowSoftInputMode="stateHidden">
-    </activity>
-
-    <activity android:name=".Display.ChoixTagsDisplay">
-    </activity>
-
-    <activity android:name=".Display.ChoixMotsDisplay">
-    </activity>
-
-    <activity android:name=".Display.ChoixMultiTagsDisplay">
-    </activity>
-
-    <activity android:name=".Display.PartageDisplay">
-    </activity>
-
-    <activity android:name=".Display.ChoixLangueDisplay">
-    </activity>
-
-    <activity
-        android:name=".Display.CahierDisplay"
-        android:windowSoftInputMode="stateHidden">
-    </activity>
-
-    <activity android:name=".Display.GestionMotDisplay">
-    </activity>
-
-    <activity android:name=".Display.RevisionCheckDisplay">
-    </activity>
-
-    <activity android:name=".Display.ResultatRevisionDisplay" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Display.IntroMenuDisplay"
+            android:theme="@style/IntroMenuTheme"></activity>
+        <activity android:name=".Display.RevisionDisplay"></activity>
+        <activity android:name=".Display.ParCoeurActivity"></activity>
+        <activity android:name=".Display.ParChoixActivity"></activity>
+        <activity android:name=".Display.StatsDisplay"></activity>
+        <activity
+            android:name=".Display.GestionTagsDisplay"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".Display.ChoixTagsDisplay"></activity>
+        <activity android:name=".Display.ChoixMotsDisplay"></activity>
+        <activity android:name=".Display.ChoixMultiTagsDisplay"></activity>
+        <activity android:name=".Display.PartageDisplay"></activity>
+        <activity android:name=".Display.ChoixLangueDisplay"></activity>
+        <activity
+            android:name=".Display.CahierDisplay"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".Display.GestionMotDisplay"></activity>
+        <activity android:name=".Display.RevisionCheckDisplay"></activity>
+        <activity android:name=".Display.ResultatRevisionDisplay" />
     </application>
-
 
 </manifest>

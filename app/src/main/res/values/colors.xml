@@ -5,9 +5,14 @@
     <color name="colorAccent">#909497</color>
     <color name="darker">#65686a</color>
     <color name="everDarker">#444447</color>
+
     <color name="myWhite">#FFF</color>
     <color name="mydark">#000</color>
     <color name="myBlue">#4e4eff</color>
+    <color name="myGreen">#055e2d</color>
+    <color name="myRed1">#9c1a11</color>
+    <color name="myRed2">#75150e</color>
+    <color name="myRed3">#420905</color>
 
 
     <color name="primaryColor">#3949ab</color>

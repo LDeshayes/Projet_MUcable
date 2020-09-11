@@ -49,6 +49,8 @@
         <item name="colorControlActivated">@color/everDarker</item>
     </style>
 
+
+
     <style name="AlertDialogDarker" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">#696969</item>
     </style>
