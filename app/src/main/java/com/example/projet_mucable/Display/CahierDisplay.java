@@ -39,7 +39,12 @@ public class CahierDisplay extends AppCompatActivity {
     int key = -1; // future key pour repérer le word à modifier
     View key_view;
     boolean switchCol = false;
+    boolean bsearch = false;
     SQLiteDatabase CDB;
+
+    String[] words_list_temp;
+    String[] translations_list_temp;
+    String[] tags_list_temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,10 +205,12 @@ public class CahierDisplay extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 String search = s.toString().toLowerCase();
+                CustomAdapter customAdapter;
 
                 if (search.length() != 0) {
 
                     key = -1;
+                    bsearch = true;
 
                     int counter = 0;
                     int[] searchOK = new int[rowCount];
@@ -225,9 +232,10 @@ public class CahierDisplay extends AppCompatActivity {
                     }
 
                     key_list = new int[counter];
-                    String[] words_list_temp = new String[counter];
-                    String[] translations_list_temp = new String[counter];
-                    String[] tags_list_temp = new String[counter];
+
+                    words_list_temp = new String[counter];
+                    translations_list_temp = new String[counter];
+                    tags_list_temp = new String[counter];
 
                     int incr = 0;
                     for (int i = 0; i < rowCount; i++) {
@@ -240,15 +248,25 @@ public class CahierDisplay extends AppCompatActivity {
                         }
                     }
 
-                    CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words_list_temp, translations_list_temp, tags_list_temp);
-                    words_listview.setAdapter(customAdapter);
-
+                    if(!switchCol){
+                        customAdapter = new CustomAdapter(getApplicationContext(), words_list_temp, translations_list_temp, tags_list_temp);
+                    }
+                    else{
+                        customAdapter = new CustomAdapter(getApplicationContext(), translations_list_temp,  words_list_temp, tags_list_temp);
+                    }
                 } else {
+                    bsearch = false;
 
-                    CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
-                    words_listview.setAdapter(customAdapter);
+                    if(!switchCol){
+                        customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
+                    }
+                    else{
+                        customAdapter = new CustomAdapter(getApplicationContext(), translations_list, words_list, tags_list);
+                    }
 
                 }
+                words_listview.setAdapter(customAdapter);
+
 
             }
 
@@ -263,19 +281,31 @@ public class CahierDisplay extends AppCompatActivity {
 
         CustomAdapter customAdapter;
         switchCol = !switchCol;
+        words_listview = (ListView) findViewById(R.id.words_listview);
+
 
         if(!switchCol){
-            words_listview = (ListView) findViewById(R.id.words_listview);
-            customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
+
+            if(!bsearch){
+                customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
+            }
+            else{
+                customAdapter = new CustomAdapter(getApplicationContext(), words_list_temp, translations_list_temp, tags_list_temp);
+            }
 
         }
         else{
-            words_listview = (ListView) findViewById(R.id.words_listview);
-            customAdapter = new CustomAdapter(getApplicationContext(), translations_list, words_list, tags_list);
+
+            if(!bsearch){
+                customAdapter = new CustomAdapter(getApplicationContext(), translations_list, words_list, tags_list);
+            }
+            else{
+                customAdapter = new CustomAdapter(getApplicationContext(), translations_list_temp ,words_list_temp , tags_list_temp);
+            }
         }
+
         words_listview.setAdapter(customAdapter);
-
-
+        
     }
 
 }
