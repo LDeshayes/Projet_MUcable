@@ -283,7 +283,6 @@ public class CahierDisplay extends AppCompatActivity {
         switchCol = !switchCol;
         words_listview = (ListView) findViewById(R.id.words_listview);
 
-
         if(!switchCol){
 
             if(!bsearch){
@@ -305,7 +304,7 @@ public class CahierDisplay extends AppCompatActivity {
         }
 
         words_listview.setAdapter(customAdapter);
-        
+
     }
 
 }
