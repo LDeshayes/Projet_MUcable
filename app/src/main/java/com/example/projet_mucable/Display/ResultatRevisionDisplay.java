@@ -54,6 +54,8 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         String[] rep_list = new String[size];
         String[] attendu_list = new String[size];
         String[] mark_list = new String[size];
+        double[] temps = new double[size];
+        double[] percent = new double[size];
 
         /*String[] list_test_res = test_res.split(";");
         for(String line : list_test_res){
@@ -75,6 +77,9 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             rep_list[tot] = values[1];
             attendu_list[tot] = values[2];
             mark_list[tot] = values[3];
+            temps[tot] = Double.parseDouble(values[4]);
+            percent[tot] = Double.parseDouble(values[5]);
+
 
             if(adjustWords.get(values[0])==null){
                 if(values[3].charAt(0)=='✓'){
@@ -157,14 +162,14 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             }
             else{
                 wordTmp = key.split("_")[1];
-                 translaTmp = key.split("_")[0];
+                translaTmp = key.split("_")[0];
             }
             String selecTmp = "Word='"+wordTmp+"' AND Translation='"+translaTmp+"'";
 
             Cursor cursor = CDB.query(
-                    "t_" + language,
+                    /*"t_" + language,*/"t_Mot",
                     null,
-                    selecTmp+"",
+                    "Langue LIKE '"+language+"' AND "+selecTmp+"",
                     null,
                     null,
                     null,
@@ -173,13 +178,19 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             cursor.moveToFirst();
             String[] information_values = (cursor.getString(0) + ";" + cursor.getString(7)).split(";");
 
+            ContentValues cvStat = new ContentValues();
+            cvStat.put("CoefAppr",information_values[1]);
+            cvStat.put("Temps",0);
+            cvStat.put("Resultat",0);
+            CDB.update("t_Mot", cv, "Langue LIKE '"+language+"' AND Id_word="+information_values[0], null);
+
 
             // If the user didn't get the answer wrong
             if(adjustWords.get(key).equals("y")){
                 // increase coef (max 3)
                 newcoef = Integer.parseInt(information_values[1])+1;
-                if(newcoef>3){
-                    newcoef=3;
+                if(newcoef>5){
+                    newcoef=5;
                 }
                 cv.put("CoefAppr",newcoef);
             }
@@ -191,7 +202,11 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
                 }
                 cv.put("CoefAppr",newcoef);
             }
-            CDB.update("t_"+language, cv, "Id_word="+information_values[0], null);
+            //CDB.update("t_"+language, cv, "Id_word="+information_values[0], null);
+            CDB.update("t_Mot", cv, "Langue LIKE '"+language+"' AND Id_word="+information_values[0], null);
+
+
+
 
         }
 

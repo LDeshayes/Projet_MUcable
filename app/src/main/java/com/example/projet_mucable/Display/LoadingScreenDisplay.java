@@ -265,13 +265,12 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                             + "Tag_2 TEXT,"
                             + "Tag_3 TEXT,"
                             + "Tag_4 TEXT,"
-                            + "CoefAppr INTEGER DEFAULT 0 CHECK (CoefAppr>=0 AND CoefAppr<4),"
+                            + "CoefAppr INTEGER DEFAULT 0 CHECK (CoefAppr>=0 AND CoefAppr<=5),"
                             + "Langue TEXT);";
 
             final String Create_table_STATS =
                     "CREATE TABLE t_Stat ("
                             + "Id_Stat INTEGER PRIMARY KEY AUTOINCREMENT,"
-                            + "Date DATE,"
                             + "Temps DOUBLE,"
                             + "CoefAppr INTEGER,"
                             + "Resultat INTEGER,"
@@ -283,6 +282,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
             final String Create_table_Session =
                     "CREATE TABLE t_Session ("
                             + "Id_Session INTEGER PRIMARY KEY AUTOINCREMENT,"
+                            + "Date DATE,"
                             + "Score INTEGER,"
                             + "Temps DOUBLE);";
 

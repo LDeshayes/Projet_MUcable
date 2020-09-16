@@ -107,7 +107,7 @@ public class ParChoixActivity extends AppCompatActivity {
                         list.add(j);
                     }
                     Collections.shuffle(list);
-                    for (i=0; i<(int)(nb_left*0.6)-1 && (nb_left*0.4<(nbCoef2+nbCoef1)) || i<=nb_left-(nbCoef1+nbCoef2) && (nb_left*0.4>=nbCoef2+nbCoef1); i++) {
+                    for (i=0; i<(int)(nb_left*0.6)-1 && (nb_left*0.4<(nbCoef2+nbCoef1)) || i<nb_left-(nbCoef1+nbCoef2) && (nb_left*0.4>=nbCoef2+nbCoef1); i++) {
                         indTab[i]=list.get(i);
                     }
                 }
@@ -308,31 +308,32 @@ public class ParChoixActivity extends AppCompatActivity {
 
         if(tagsFilter!=null && !tagsFilter.isEmpty()){
             cursor = CDB.query(
-                    "t_"+language,
+                    /*"t_"+language,*/"t_Mot",
                     null,
-                    "Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+") AND CoefAppr IN (0,1,2)",
+                    "Langue LIKE '"+language+"' AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+") AND CoefAppr IN (0,1,2,3,4)",
                     null,
                     null,
                     null,
                     "CoefAppr ASC"
             );
-            SQL_COEF0 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=0 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
-            SQL_COEF1 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=1 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
-            SQL_COEF2 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=2 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
+            SQL_COEF0 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr IN (0,1,2) AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
+            SQL_COEF1 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=3 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
+            SQL_COEF2 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=4 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
         }
         else{
             cursor = CDB.query(
-                    "t_"+language,
+                    /*"t_"+language,*/"t_Mot",
                     null,
-                    "CoefAppr IN (0,1,2)",
+                    "Langue LIKE '"+language+"' AND  CoefAppr IN (0,1,2,3,4)",
                     null,
                     null,
                     null,
                     "CoefAppr ASC"
             );
-            SQL_COEF0 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=0";
-            SQL_COEF1 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=1";
-            SQL_COEF2 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=2";
+            /*SQL_COEF0 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=0";*/
+            SQL_COEF0 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr IN (0,1,2)";
+            SQL_COEF1 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=3";
+            SQL_COEF2 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=4";
         }
 
 

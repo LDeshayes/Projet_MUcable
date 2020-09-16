@@ -50,6 +50,9 @@ public class RevisionCheckDisplay extends AppCompatActivity {
     String test_res;
     Integer[] indTab;
 
+    double chrono = 0.0;
+    double percen = 0.0;
+
     SQLiteDatabase CDB;
 
 
@@ -74,7 +77,6 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         indTab = intList.toArray(new Integer[0]);
 
 
-
         word_num = this_i.getIntExtra("Word_number", 0);
 
         test_res = this_i.getStringExtra("String_res");
@@ -82,6 +84,9 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         question = this_i.getStringExtra("Question");
         reponseUser = this_i.getStringExtra("ReponseUser");
         reponse = this_i.getStringExtra("Reponse");
+
+        chrono = this_i.getDoubleExtra("Temps", 0.0);
+
 
         if(reponseUser.equals(""))
             reponseUser=" ";
@@ -100,12 +105,15 @@ public class RevisionCheckDisplay extends AppCompatActivity {
             tVF.setText("Bonne réponse !");
             list_msgs.add("Parfait");
             monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
-            test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓;";
+            //test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓;";
+            test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓°"+chrono+"°100;";
         }
         else{
 
             CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
-            String SQL_EXI = "SELECT COUNT(*) FROM t_"+language+" WHERE Word='"+question+"' AND Translation='"+reponseUser+"'";
+            //String SQL_EXI = "SELECT COUNT(*) FROM t_"+language+" WHERE Word='"+question+"' AND Translation='"+reponseUser+"'";
+            String SQL_EXI = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND Word='"+question+"' AND Translation='"+reponseUser+"'";
+
 
             Cursor mCount= CDB.rawQuery(SQL_EXI, null);
             mCount.moveToFirst();
@@ -115,13 +123,18 @@ public class RevisionCheckDisplay extends AppCompatActivity {
                 tVF.setText("Bonne réponse !");
                 list_msgs.add("Parfait");
                 monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
-                test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓;";
+                //test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓;";
+                test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓°"+chrono+"°100;";
             }
             else{
 
+                StringEqualityPercentCheckLevenshteinDistance howClose = new StringEqualityPercentCheckLevenshteinDistance();
+                percen = howClose.similarity(reponseUser, reponse)*100;
+
                 tVF.setText("Mauvaise réponse !");
                 monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Mauvaise réponse");
-                test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✗;";
+                //test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✗;";
+                test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓°"+chrono+"°"+new DecimalFormat("##").format(percen)+";";
 
                 if(type){
 
@@ -140,10 +153,8 @@ public class RevisionCheckDisplay extends AppCompatActivity {
                         list_msgs.add("Majuscules ?");
                     }
 
-                    StringEqualityPercentCheckLevenshteinDistance howClose = new StringEqualityPercentCheckLevenshteinDistance();
-                    double percen = howClose.similarity(reponseUser, reponse)*100;
-                    //percen = new Double(new DecimalFormat(".##").format(percen));
 
+                    //percen = new Double(new DecimalFormat(".##").format(percen));
                     list_msgs.add("Votre réponse est à "+new DecimalFormat("##").format(percen)+"% correcte");
                 }
 

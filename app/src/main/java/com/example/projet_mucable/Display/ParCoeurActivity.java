@@ -13,9 +13,14 @@ import android.widget.Toast;
 
 import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.R;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class ParCoeurActivity extends AppCompatActivity {
@@ -46,6 +51,9 @@ public class ParCoeurActivity extends AppCompatActivity {
     int nbCoef0;
     int nbCoef1;
     int nbCoef2;
+
+    Date debutTimer;
+    Date finTimer;
 
 
     @Override
@@ -85,8 +93,10 @@ public class ParCoeurActivity extends AppCompatActivity {
                     indTab[i] = 0;
                 }
 
+
+                /*
                 // Boucle sur nb_left
-                /*for(int i=0; i<nb_left; i++){
+                for(int i=0; i<nb_left; i++){
                     testEq = false;
                     // Tan que tout les mots ne sont pas différents
                     while (!testEq) {
@@ -114,7 +124,7 @@ public class ParCoeurActivity extends AppCompatActivity {
                         list.add(j);
                     }
                     Collections.shuffle(list);
-                    for (i=0; i<(int)(nb_left*0.6)-1 && (nb_left*0.4<(nbCoef2+nbCoef1)) || i<=nb_left-(nbCoef1+nbCoef2) && (nb_left*0.4>=nbCoef2+nbCoef1); i++) {
+                    for (i=0; i<(int)(nb_left*0.6)-1 && (nb_left*0.4<(nbCoef2+nbCoef1)) || i<nb_left-(nbCoef1+nbCoef2) && (nb_left*0.4>=nbCoef2+nbCoef1); i++) {
                         indTab[i]=list.get(i);
                     }
                 }
@@ -200,6 +210,11 @@ public class ParCoeurActivity extends AppCompatActivity {
 
         TextView t = (TextView) findViewById(R.id.textViewQuestion);
         t.setText(word);
+
+        // Start timer
+        debutTimer = new Date();
+
+
     }
 
     void setupDB() {
@@ -228,31 +243,31 @@ public class ParCoeurActivity extends AppCompatActivity {
 
         if(tagsFilter!=null && !tagsFilter.isEmpty()){
             cursor = CDB.query(
-                    "t_"+language,
+                    /*"t_"+language,*/"t_Mot",
                     null,
-                    "Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+") AND CoefAppr IN (0,1,2)",
+                    "Langue LIKE '"+language+"' AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+") AND CoefAppr IN (0,1,2,3,4)",
                     null,
                     null,
                     null,
                     "CoefAppr ASC"
             );
-            SQL_COEF0 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=0 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
-            SQL_COEF1 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=1 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
-            SQL_COEF2 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=2 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
+            SQL_COEF0 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr IN (0,1,2) AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
+            SQL_COEF1 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=3 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
+            SQL_COEF2 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=4 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
         }
         else{
             cursor = CDB.query(
-                    "t_"+language,
+                    /*"t_"+language,*/"t_Mot",
                     null,
-                    "CoefAppr IN (0,1,2)",
+                    "Langue LIKE '"+language+"' AND CoefAppr IN (0,1,2,3,4)",
                     null,
                     null,
                     null,
                     "CoefAppr ASC"
             );
-            SQL_COEF0 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=0";
-            SQL_COEF1 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=1";
-            SQL_COEF2 = "SELECT COUNT(*) FROM t_"+language+" WHERE CoefAppr=2";
+            SQL_COEF0 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr IN (0,1,2)";
+            SQL_COEF1 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=3";
+            SQL_COEF2 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=4";
 
         }
 
@@ -315,6 +330,10 @@ public class ParCoeurActivity extends AppCompatActivity {
         TextView t = (TextView) findViewById(R.id.editTextReponse);
         String repo = t.getText().toString();
 
+        // Fin timer
+        finTimer = new Date();
+        Double chrono = (double)(finTimer.getTime()-debutTimer.getTime())/1000;
+
 
         Intent i = new Intent ( this, RevisionCheckDisplay.class );
         i.putExtra("Taille_bd", taille_bd);
@@ -331,6 +350,8 @@ public class ParCoeurActivity extends AppCompatActivity {
         i.putExtra("Question", word);
         i.putExtra("ReponseUser", repo);
         i.putExtra("Reponse", word_translation);
+
+        i.putExtra("Temps", chrono);
 
         ArrayList<Integer> intList = new ArrayList<Integer>(50);
         for (int k : indTab) intList.add(k);
