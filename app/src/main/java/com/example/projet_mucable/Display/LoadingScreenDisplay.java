@@ -243,7 +243,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
             DB_NEED_UPD.commit();
 
         }
-        /*boolean need_upd_03 = preferences.getBoolean("NEED_UPD_03", true);
+        boolean need_upd_03 = preferences.getBoolean("NEED_UPD_03", true);
         if ( need_upd_03 ) {
 
             SQLiteDatabase CDB = openOrCreateDatabase(
@@ -252,21 +252,120 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                     , null
             );
 
-            final String Create_table_STATSMEM =
-                    "CREATE TABLE t_Espagnol ("
-                            + "Id_stat INTEGER PRIMARY KEY AUTOINCREMENT,"
-                            + "Id_Word INTEGER FOREIGN KEY,"
-                            + "Date DATE,"
-                            + " FOREIGN KEY (Id_Word) REFERENCES "+CAT_TABLE+"(Id_Word));";
+            /*CDB.execSQL("DROP TABLE t_Mot");
+            CDB.execSQL("DROP TABLE t_Session");
+            CDB.execSQL("DROP TABLE t_Stat");*/
 
-            CDB.execSQL(Create_table_STATSMEM);
+            final String Create_table_Mot =
+                    "CREATE TABLE t_Mot ("
+                            + "Id_Word INTEGER PRIMARY KEY AUTOINCREMENT,"
+                            + "Word TEXT,"
+                            + "Translation TEXT,"
+                            + "Tag_1 TEXT,"
+                            + "Tag_2 TEXT,"
+                            + "Tag_3 TEXT,"
+                            + "Tag_4 TEXT,"
+                            + "CoefAppr INTEGER DEFAULT 0 CHECK (CoefAppr>=0 AND CoefAppr<4),"
+                            + "Langue TEXT);";
+
+            final String Create_table_STATS =
+                    "CREATE TABLE t_Stat ("
+                            + "Id_Stat INTEGER PRIMARY KEY AUTOINCREMENT,"
+                            + "Date DATE,"
+                            + "Temps DOUBLE,"
+                            + "CoefAppr INTEGER,"
+                            + "Resultat INTEGER,"
+                            + "Id_Session INTEGER,"
+                            + "Id_WORD INTEGER,"
+                            + "FOREIGN KEY (Id_Session) REFERENCES t_Session(Id_Session),"
+                            + "FOREIGN KEY (Id_word) REFERENCES t_Mot(Id_Word));";
+
+            final String Create_table_Session =
+                    "CREATE TABLE t_Session ("
+                            + "Id_Session INTEGER PRIMARY KEY AUTOINCREMENT,"
+                            + "Score INTEGER,"
+                            + "Temps DOUBLE);";
+
+
+            CDB.execSQL(Create_table_Mot);
+            CDB.execSQL(Create_table_Session);
+            CDB.execSQL(Create_table_STATS);
+
+
+            int rowCount, i;
+            String delete, insert, lowered;
+            Cursor cursor;
+
+            cursor = CDB.query(
+                    "t_Anglais",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            rowCount = cursor.getCount();
+            cursor.moveToFirst();
+            for ( i = 0; i < rowCount; i++ ) {
+
+                lowered = "'"+cursor.getString(1)+"', '"+cursor.getString(2).toLowerCase()+"', '"+cursor.getString(3)+"', '"+cursor.getString(4)+"', '"+cursor.getString(5)+"', '"+cursor.getString(6)+"', '"+cursor.getInt(7)+"'";
+                insert = "INSERT INTO t_Mot (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr, Langue) VALUES ("+lowered+", 'Anglais')";
+                CDB.execSQL(insert);
+                cursor.moveToNext();
+            }
+
+            cursor = CDB.query(
+                    "t_Espagnol",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            rowCount = cursor.getCount();
+            cursor.moveToFirst();
+            for ( i = 0; i < rowCount; i++ ) {
+
+                lowered = "'"+cursor.getString(1)+"', '"+cursor.getString(2).toLowerCase()+"', '"+cursor.getString(3)+"', '"+cursor.getString(4)+"', '"+cursor.getString(5)+"', '"+cursor.getString(6)+"', '"+cursor.getInt(7)+"'";
+                insert = "INSERT INTO t_Mot (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr, Langue) VALUES ("+lowered+", 'Espagnol')";
+                CDB.execSQL(insert);
+                cursor.moveToNext();
+            }
+
+            cursor = CDB.query(
+                    "t_Allemand",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            rowCount = cursor.getCount();
+            cursor.moveToFirst();
+            for ( i = 0; i < rowCount; i++ ) {
+
+                lowered = "'"+cursor.getString(1)+"', '"+cursor.getString(2).toLowerCase()+"', '"+cursor.getString(3)+"', '"+cursor.getString(4)+"', '"+cursor.getString(5)+"', '"+cursor.getString(6)+"', '"+cursor.getInt(7)+"'";
+                insert = "INSERT INTO t_Mot (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr, Langue) VALUES ("+lowered+", 'Allemand')";
+                CDB.execSQL(insert);
+                cursor.moveToNext();
+            }
+
+            final String drop_anglais  = "DROP TABLE t_Anglais";
+            final String drop_espagnol = "DROP TABLE t_Espagnol";
+            final String drop_allemand = "DROP TABLE t_Allemand";
+            CDB.execSQL(drop_anglais);
+            CDB.execSQL(drop_espagnol);
+            CDB.execSQL(drop_allemand);
 
 
             SharedPreferences.Editor DB_NEED_UPD = preferences.edit();
-            DB_NEED_UPD.putBoolean("NEED_UPD_02", false);
+            DB_NEED_UPD.putBoolean("NEED_UPD_03", false);
             DB_NEED_UPD.commit();
 
-        }*/
+        }
 
     }
 

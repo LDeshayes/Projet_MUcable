@@ -170,7 +170,7 @@ public class PartageDisplay extends AppCompatActivity {
 
         if(tagsChosen.equals("") && wordsChosen.equals("")){
             cursor = CDB.query(
-                    "t_"+langue,
+                    /*"t_"+langue,*/"t_Mot",
                     null,
                     null,
                     null,
@@ -183,9 +183,9 @@ public class PartageDisplay extends AppCompatActivity {
         }
         else {
             cursor = CDB.query(
-                    "t_" + langue,
+                    /*"t_" + langue,*/"t_Mot",
                     null,
-                    "Tag_1 IN ("+tagsChosen+") OR Tag_2 IN ("+tagsChosen+") OR Tag_3 IN ("+tagsChosen+") OR Tag_4 IN ("+tagsChosen+") OR Id_Word IN ("+wordsChosen2+")",
+                    "Langue LIKE '"+langue+"' AND Tag_1 IN ("+tagsChosen+") OR Tag_2 IN ("+tagsChosen+") OR Tag_3 IN ("+tagsChosen+") OR Tag_4 IN ("+tagsChosen+") OR Id_Word IN ("+wordsChosen2+")",
                     null,
                     null,
                     null,
@@ -227,15 +227,17 @@ public class PartageDisplay extends AppCompatActivity {
                 System.out.println(line);
                 String[] parts = line.split(",");
 
-                String SQL_exist = "SELECT COUNT(*) FROM t_"+langue+" WHERE Word='"+parts[0]+"' AND Translation='"+parts[1]+"'";
+                //String SQL_exist = "SELECT COUNT(*) FROM t_"+langue+" WHERE Word='"+parts[0]+"' AND Translation='"+parts[1]+"'";
+                String SQL_exist = "SELECT * FROM t_Mot WHERE Langue='"+langue+"' AND Word='"+parts[0]+"' AND Translation='"+parts[1]+"'";
                 //Toast.makeText(getApplicationContext(),"T: "+SQL_exist,Toast.LENGTH_LONG).show();
 
                 // Count nn rows with each CoefAppr
                 Cursor mCount= CDB.rawQuery(SQL_exist, null);
                 int count = mCount.getCount();
-                Toast.makeText(getApplicationContext(),"n° : "+count,Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"# : "+count,Toast.LENGTH_LONG).show();
                 if(!(count > 0)){
-                    String insert = "INSERT INTO t_"+langue+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+parts[6]+"')";
+                    //String insert = "INSERT INTO t_"+langue+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+parts[6]+"')";
+                    String insert = "INSERT INTO t_Mot (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr, Langue) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+parts[6]+"', '"+langue+"')";
                     CDB.execSQL(insert);
                 }
 

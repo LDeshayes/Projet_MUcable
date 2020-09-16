@@ -120,9 +120,9 @@ public class GestionMotDisplay extends AppCompatActivity {
     void getKeyRow() {
         if (mode.equals("Modify")) {
             Cursor cursor = CDB.query(
-                    "t_" + language,
+                    /*"t_" + language,*/"t_Mot",
                     new String[]{"Word", "Translation", "Tag_1", "Tag_2", "Tag_3", "Tag_4"},
-                    "Id_Word=" + key,
+                    "Langue LIKE '"+language+"' AND Id_Word=" + key,
                     null,
                     null,
                     null,
@@ -249,7 +249,8 @@ public class GestionMotDisplay extends AppCompatActivity {
     }
 
     public void deleteKey() {
-        String delete = "DELETE FROM t_"+language+" WHERE Id_Word="+key;
+        //String delete = "DELETE FROM t_"+language+" WHERE Id_Word="+key;
+        String delete = "DELETE FROM t_Mot WHERE Langue LIKE '"+language+"' AND Id_Word="+key;
         CDB.execSQL(delete);
     }
 
@@ -260,7 +261,8 @@ public class GestionMotDisplay extends AppCompatActivity {
 
         if ( mode.equals("Modify") ) {
             deleteKey();
-            insert = "INSERT INTO t_"+language+" (Id_Word, Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ("+key+", '"+new_information_values[0]+"', '"+new_information_values[1]+"', '"+new_information_values[2]+"', '"+new_information_values[3]+"', '"+new_information_values[4]+"', '"+new_information_values[5]+"')";
+            //insert = "INSERT INTO t_"+language+" (Id_Word, Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ("+key+", '"+new_information_values[0]+"', '"+new_information_values[1]+"', '"+new_information_values[2]+"', '"+new_information_values[3]+"', '"+new_information_values[4]+"', '"+new_information_values[5]+"')";
+            insert = "INSERT INTO t_Mot (Id_Word, Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, Langue) VALUES ("+key+", '"+new_information_values[0]+"', '"+new_information_values[1]+"', '"+new_information_values[2]+"', '"+new_information_values[3]+"', '"+new_information_values[4]+"', '"+new_information_values[5]+"', '"+language+"')";
             CDB.execSQL(insert);
             information_values = (new_information_values[0]+";"+new_information_values[1]+";"+new_information_values[2]+";"+new_information_values[3]+";"+new_information_values[4]+";"+new_information_values[5]).split(";");
             clear();
@@ -288,7 +290,7 @@ public class GestionMotDisplay extends AppCompatActivity {
                 AlertDialog alert = builder.create();
                 alert.show();
             } else {
-                insert = "INSERT INTO t_"+language+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4) VALUES ('"+new_information_values[0]+"', '"+new_information_values[1]+"', '"+new_information_values[2]+"', '"+new_information_values[3]+"', '"+new_information_values[4]+"', '"+new_information_values[5]+"')";
+                insert = "INSERT INTO t_Mot (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, Langue) VALUES ('"+new_information_values[0]+"', '"+new_information_values[1]+"', '"+new_information_values[2]+"', '"+new_information_values[3]+"', '"+new_information_values[4]+"', '"+new_information_values[5]+"', '"+language+"')";
                 CDB.execSQL(insert);
 
                 Intent i = new Intent ( this, CahierDisplay.class );

@@ -56,7 +56,7 @@
         android:layout_width="155dp"
         android:layout_height="wrap_content"
         android:onClick="resetTests"
-        android:text="Reset les tests"
+        android:text="Stats"
         android:textSize="20sp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"

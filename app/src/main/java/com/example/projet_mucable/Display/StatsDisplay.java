@@ -123,9 +123,9 @@ public class StatsDisplay extends AppCompatActivity {
     void loadDB(String lang) {
 
         Cursor cursor = CDB.query(
-                "t_"+lang,
+                /*"t_"+lang,*/"t_Mot",
                 null,
-                null,
+                "Langue LIKE '"+language+"'",
                 null,
                 null,
                 null,

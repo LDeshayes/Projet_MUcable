@@ -99,9 +99,9 @@ public class CahierDisplay extends AppCompatActivity {
     void loadDB() {
 
         Cursor cursor = CDB.query(
-                "t_"+language,
+                /*"t_"+language,*/"t_Mot",
                 null,
-                null,
+                "Langue LIKE '"+language+"'",
                 null,
                 null,
                 null,
