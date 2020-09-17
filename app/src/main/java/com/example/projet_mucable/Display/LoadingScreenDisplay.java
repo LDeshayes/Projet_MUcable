@@ -275,14 +275,14 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                             + "CoefAppr INTEGER,"
                             + "Resultat INTEGER,"
                             + "Id_Session INTEGER,"
-                            + "Id_WORD INTEGER,"
+                            + "Id_Word INTEGER,"
                             + "FOREIGN KEY (Id_Session) REFERENCES t_Session(Id_Session),"
-                            + "FOREIGN KEY (Id_word) REFERENCES t_Mot(Id_Word));";
+                            + "FOREIGN KEY (Id_Word) REFERENCES t_Mot(Id_Word));";
 
             final String Create_table_Session =
                     "CREATE TABLE t_Session ("
                             + "Id_Session INTEGER PRIMARY KEY AUTOINCREMENT,"
-                            + "Date DATE,"
+                            + "Date INTEGER,"
                             + "Score INTEGER,"
                             + "Temps DOUBLE);";
 

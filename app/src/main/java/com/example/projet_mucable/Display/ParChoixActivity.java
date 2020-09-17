@@ -39,7 +39,7 @@ public class ParChoixActivity extends AppCompatActivity {
 
     SQLiteDatabase CDB;
 
-    DicoSeri monDico = new DicoSeri();
+    //DicoSeri monDico = new DicoSeri();
     String test_res = "";
 
     String word;
@@ -80,7 +80,7 @@ public class ParChoixActivity extends AppCompatActivity {
             ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
             indTab = intList.toArray(new Integer[0]);
 
-            monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
+            //monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
             test_res = this_i.getStringExtra("String_res");
         }
         else{
@@ -412,7 +412,7 @@ public class ParChoixActivity extends AppCompatActivity {
         i.putExtra("Type", false);
         i.putExtra("TagsFilter", tagsFilter);
 
-        i.putExtra("Dico", monDico);
+        //i.putExtra("Dico", monDico);
         i.putExtra("String_res", test_res);
 
         i.putExtra("Question", word);

@@ -46,7 +46,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
     String reponse;
 
     ArrayList list_msgs = new ArrayList();
-    DicoSeri monDico = new DicoSeri();
+    //DicoSeri monDico = new DicoSeri();
     String test_res;
     Integer[] indTab;
 
@@ -70,7 +70,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         sens = this_i.getBooleanExtra("Sens", true);
         type = this_i.getBooleanExtra("Type", false);
         tagsFilter = this_i.getStringExtra("TagsFilter");
-        monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
+        //monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
 
         indTab = new Integer[nb_left];
         ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
@@ -104,7 +104,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         if(reponse.equals(reponseUser)){
             tVF.setText("Bonne réponse !");
             list_msgs.add("Parfait");
-            monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
+            //monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
             //test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓;";
             test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓°"+chrono+"°100;";
         }
@@ -122,7 +122,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
             if(nbExi>0){
                 tVF.setText("Bonne réponse !");
                 list_msgs.add("Parfait");
-                monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
+                //monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
                 //test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓;";
                 test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓°"+chrono+"°100;";
             }
@@ -132,9 +132,9 @@ public class RevisionCheckDisplay extends AppCompatActivity {
                 percen = howClose.similarity(reponseUser, reponse)*100;
 
                 tVF.setText("Mauvaise réponse !");
-                monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Mauvaise réponse");
+                //monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Mauvaise réponse");
                 //test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✗;";
-                test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓°"+chrono+"°"+new DecimalFormat("##").format(percen)+";";
+                test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✗°"+chrono+"°"+new DecimalFormat("##").format(percen)+";";
 
                 if(type){
 
@@ -191,7 +191,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         i.putExtra("Type", type);
         i.putExtra("TagsFilter", tagsFilter);
 
-        i.putExtra("Dico", monDico);
+        //i.putExtra("Dico", monDico);
         i.putExtra("String_res", test_res);
 
         ArrayList<Integer> intList = new ArrayList<Integer>(50);
@@ -204,7 +204,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         }
         else{
             i = new Intent ( this, ResultatRevisionDisplay.class );
-            i.putExtra("Dico", monDico);
+            //i.putExtra("Dico", monDico);
             i.putExtra("String_res", test_res);
             i.putExtra("Sens", sens);
             i.putExtra("Langue", language);

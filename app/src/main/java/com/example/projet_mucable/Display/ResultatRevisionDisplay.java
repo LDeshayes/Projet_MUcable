@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -29,7 +30,7 @@ import java.util.Objects;
 public class ResultatRevisionDisplay extends AppCompatActivity {
 
     ArrayList list_msgs = new ArrayList();
-    DicoSeri monDico = new DicoSeri();
+    //DicoSeri monDico = new DicoSeri();
     String language;
     String tagsFilter = "...";
     Boolean sens;
@@ -39,76 +40,39 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resultat_revision_display);
 
+
         Intent this_i = getIntent();
         language = this_i.getStringExtra("Langue");
         sens = this_i.getBooleanExtra("Sens", true);
         tagsFilter = this_i.getStringExtra("TagsFilter");
-        monDico = (DicoSeri)this_i.getSerializableExtra("Dico");
         String test_res = this_i.getStringExtra("String_res");
         String[] list_test_res = test_res.split(";");
+
         int size = list_test_res.length;
         int tot = 0;
+        double tpsTot = 0;
         int goodRep = 0;
+        Date date = new Date();
+        long id_session;
 
         String[] question_list = new String[size];
         String[] rep_list = new String[size];
         String[] attendu_list = new String[size];
         String[] mark_list = new String[size];
-        double[] temps = new double[size];
-        double[] percent = new double[size];
+        String[] requests = new String[size];
 
-        /*String[] list_test_res = test_res.split(";");
-        for(String line : list_test_res){
-            list_msgs.add(line);
-            if(line.charAt(line.length()-10)=='n'){
-                goodRep+=1;
-            }
-            tot+=1;
-        }*/
-
-        // Counting t/f answers to order words in cahier
-        Map<String,String> adjustWords =  new HashMap<String,String>();
-
-        for(String line : list_test_res){
-
-            String[] values = list_test_res[tot].split("°");
-
-            question_list[tot] = values[0];
-            rep_list[tot] = values[1];
-            attendu_list[tot] = values[2];
-            mark_list[tot] = values[3];
-            temps[tot] = Double.parseDouble(values[4]);
-            percent[tot] = Double.parseDouble(values[5]);
+        String wordTmp;
+        String translaTmp;
+        int newcoef;
+        int i = 0;
 
 
-            if(adjustWords.get(values[0])==null){
-                if(values[3].charAt(0)=='✓'){
-                    adjustWords.put(values[0]+"_"+values[2],"y");
-                }
-                else{
-                    adjustWords.put(values[0]+"_"+values[2],"n");
-                }
-            }
-            else{
-                if(values[3].charAt(0)!='✓'){
-                    adjustWords.put(values[0]+"_"+values[2],"n");
-                }
-            }
-
-            if(values[3].charAt(0)=='✓'){
-                goodRep+=1;
-            }
-            tot+=1;
-        }
-
+        // Access DB and change Coef value of words based on the fact that the user got them right
+        @SuppressLint("WrongConstant") SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
 
         // textViewLangue
         TextView tLangue = (TextView) findViewById(R.id.textViewLangue);
         tLangue.setText("Révision en "+language);
-
-        // textViewLangue
-        TextView tScore = (TextView) findViewById(R.id.textViewScore);
-        tScore.setText("Score : "+goodRep+"/"+tot);
 
         // textViewTag
         TextView tTag = (TextView) findViewById(R.id.textViewTags);
@@ -117,41 +81,109 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         }
         tTag.setText("Tag : "+tagsFilter);
 
-        //for(String key : ((HashMap<String,String>)monDico.getMap()).keySet()){
-        //    list_msgs.add(/*key+"\n- "+*/monDico.get(key));
-        //}
+        for(String line : list_test_res){
+            if(line.split("°")[3].charAt(0)=='✓'){
+                goodRep+=1;
+            }
+            tpsTot += Double.parseDouble(line.split("°")[4]);
+            tot+=1;
+        }
 
-        /*
-        ListView listView = (ListView) findViewById(R.id.words_listview_res);
-        ArrayAdapter itemsAdapter = new ArrayAdapter<String>(this, R.layout.resultats_listview, list_msgs);
-        listView.setAdapter(itemsAdapter);
-        */
+        // Assertion de la nouvelle session
+        //String newSession = "INSERT INTO t_Session (date, score, temps) VALUES ('"+date.getTime()+"','"+(goodRep/tot)*20.0+"','"+tpsTot+"');";
+        ContentValues valuesSess = new ContentValues();
+        valuesSess.put("Date",date.getTime());
+        valuesSess.put("Score",(goodRep/tot)*20.0);
+        valuesSess.put("Temps",tpsTot);
+        //The insert method returns the id of row just inserted or -1 if there was an error during insertion.
+        id_session = CDB.insert("t_Session","",valuesSess);
 
-        ListView listView = (ListView) findViewById(R.id.words_listview_res);
-        ResultatsAdapter itemsAdapter = new ResultatsAdapter(this, question_list, rep_list, attendu_list, mark_list);
-        listView.setAdapter(itemsAdapter);
 
 
-        // Access DB and change Coef value of words based on the fact that the user got them right
-        @SuppressLint("WrongConstant") SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+        // Counting t/f answers to order words in cahier
+        Map<String,String> adjustWords =  new HashMap<String,String>();
 
-        /*
-        * Cursor cursor = CDB.query(
-                    "t_" + language,
-                    new String[]{"key.split('*')[0]", "key.split('*')[1]"},
-                    "Id_Word=" + key,
+        for(String line : list_test_res){
+            String[] values = line.split("°");
+
+            question_list[i] = values[0];
+            rep_list[i] = values[1];
+            attendu_list[i] = values[2];
+            mark_list[i] = values[3];
+            double tps = Double.parseDouble(values[4]);
+            double percen = Double.parseDouble(values[5]);
+
+            String que = values[0];
+            //String rep = values[1];
+            String attendu = values[2];
+            String mark = values[3];
+
+
+            if(sens){
+                wordTmp = que;
+                translaTmp =attendu;
+            }
+            else{
+                wordTmp = attendu;
+                translaTmp = que;
+            }
+            String selecTmp = "Word='"+wordTmp+"' AND Translation='"+translaTmp+"'";
+
+            Cursor cursor = CDB.query(
+                    /*"t_" + language,*/"t_Mot",
+                    null,
+                    "Langue LIKE '"+language+"' AND "+selecTmp+"",
                     null,
                     null,
                     null,
                     null
             );
             cursor.moveToFirst();
-            information_values = (cursor.getString(0) + ";" + cursor.getString(1) + ";" + cursor.getString(2) + ";" + cursor.getString(3) + ";" + cursor.getString(4) + ";" + cursor.getString(5)).split(";");
-        * */
+            String[] inf_val = (cursor.getString(0) + ";" + cursor.getString(7)).split(";");
+            cursor.close();
 
-        String wordTmp;
-        String translaTmp;
-        int newcoef;
+            //requests[i] = "INSERT INTO t_Stat (Temps, CoefAppr, Resultat, Id_Session, Id_Word) VALUES ('"+tps+"','"+inf_val[1]+"','"+percen+"','"+id_session+"','"+inf_val[0]+"');";
+            ContentValues valuesStat = new ContentValues();
+            valuesStat.put("Temps",tps);
+            valuesStat.put("CoefAppr",inf_val[1]);
+            valuesStat.put("Resultat",percen);
+            valuesStat.put("Id_Session",id_session);
+            valuesStat.put("Id_Word",inf_val[0]);
+            //The insert method returns the id of row just inserted or -1 if there was an error during insertion.
+            CDB.insert("t_Stat","",valuesStat);
+
+            i+=1;
+
+            if(adjustWords.get(que)==null){
+                if(mark.charAt(0)=='✓'){
+                    adjustWords.put(que+"_"+attendu,"y");
+                }
+                else{
+                    adjustWords.put(que+"_"+attendu,"n");
+                }
+            }
+            else{
+                if(mark.charAt(0)!='✓'){
+                    adjustWords.put(que+"_"+attendu,"n");
+                }
+            }
+
+            /*if(mark.charAt(0)=='✓'){
+                goodRep+=1;
+            }
+            tot+=1;*/
+
+        }
+
+
+        // textViewScore
+        TextView tScore = (TextView) findViewById(R.id.textViewScore);
+        tScore.setText("Score : "+goodRep+"/"+tot);
+
+        ListView listView = (ListView) findViewById(R.id.words_listview_res);
+        ResultatsAdapter itemsAdapter = new ResultatsAdapter(this, question_list, rep_list, attendu_list, mark_list);
+        listView.setAdapter(itemsAdapter);
+
 
         for (String key : adjustWords.keySet()) {
             ContentValues cv = new ContentValues();
@@ -167,7 +199,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             String selecTmp = "Word='"+wordTmp+"' AND Translation='"+translaTmp+"'";
 
             Cursor cursor = CDB.query(
-                    /*"t_" + language,*/"t_Mot",
+                    "t_Mot",
                     null,
                     "Langue LIKE '"+language+"' AND "+selecTmp+"",
                     null,
@@ -177,12 +209,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             );
             cursor.moveToFirst();
             String[] information_values = (cursor.getString(0) + ";" + cursor.getString(7)).split(";");
-
-            ContentValues cvStat = new ContentValues();
-            cvStat.put("CoefAppr",information_values[1]);
-            cvStat.put("Temps",0);
-            cvStat.put("Resultat",0);
-            CDB.update("t_Mot", cv, "Langue LIKE '"+language+"' AND Id_word="+information_values[0], null);
+            cursor.close();
 
 
             // If the user didn't get the answer wrong
@@ -204,8 +231,6 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             }
             //CDB.update("t_"+language, cv, "Id_word="+information_values[0], null);
             CDB.update("t_Mot", cv, "Langue LIKE '"+language+"' AND Id_word="+information_values[0], null);
-
-
 
 
         }
