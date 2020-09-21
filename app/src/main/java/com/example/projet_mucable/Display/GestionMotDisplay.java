@@ -49,6 +49,7 @@ public class GestionMotDisplay extends AppCompatActivity {
     @SuppressLint("WrongConstant")
     void getDB() {
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+        CDB.execSQL("PRAGMA foreign_keys = ON;");
     }
 
     void getIntentValues() {

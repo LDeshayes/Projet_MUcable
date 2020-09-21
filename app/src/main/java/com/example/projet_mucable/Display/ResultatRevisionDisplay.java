@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,6 +71,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
 
         // Access DB and change Coef value of words based on the fact that the user got them right
         @SuppressLint("WrongConstant") SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+        CDB.execSQL("PRAGMA foreign_keys = ON;");
 
         // textViewLangue
         TextView tLangue = (TextView) findViewById(R.id.textViewLangue);
@@ -235,6 +238,75 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
 
         }
 
+        // TO do
+        // Recupérer la derniere stats de chaques mots
+        // si session de stat du mot < sessionActu-4
+        //      => coefAppr
 
+        // get
+
+        final Cursor cursorStats = CDB.rawQuery("" +
+                " SELECT st.*" +
+                " FROM t_Stat st" +
+                " INNER JOIN" +
+                "    (SELECT Id_Word, MAX(Id_Session) AS MaxSession" +
+                "    FROM t_Stat" +
+                "    GROUP BY Id_Word) groupedst " +
+                " ON st.Id_Word = groupedst.Id_Word " +
+                " AND st.Id_Session = groupedst.MaxSession", null);
+
+        ContentValues cvStat = new ContentValues();
+
+        cursorStats.moveToFirst();
+        while(!cursorStats.isAfterLast()){
+
+            if(cursorStats.getInt(4)<id_session-4 && cursorStats.getInt(4)==5){
+                cvStat.put("CoefAppr",4);
+                CDB.update("t_Mot", cvStat, "Langue LIKE '"+language+"' AND Id_word="+cursorStats.getInt(5), null);
+            }
+            cursorStats.moveToNext();
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /*Cursor c1 = CDB.query(
+                "t_Stat",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        c1.moveToFirst();
+        while(!c1.isAfterLast()){
+            Log.d("TABLES69420", " STATS :"+c1.getInt(4)+" - "+c1.getInt(5)+" - "+c1.getDouble(1)+" - "+c1.getDouble(2)+" - "+c1.getDouble(3));
+            c1.moveToNext();
+        }
+
+        Cursor c2 = CDB.query(
+                "t_Session",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        c2.moveToFirst();
+        while(!c2.isAfterLast()){
+            Log.d("TABLES69420", " SESSIONS :"+c2.getInt(0)+" - "+c2.getInt(1)+" - "+c2.getInt(2)+" - "+c2.getDouble(3));
+            c2.moveToNext();
+        }
+
+        Log.d("TABLES69420", "---------------------------------------------- ");*/
+
+    }
+
+    public Date getDateBeforeTwoWeeks(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, -14); //2 weeks
+        return calendar.getTime();
     }
 }

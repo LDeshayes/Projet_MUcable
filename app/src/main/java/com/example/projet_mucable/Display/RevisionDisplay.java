@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,6 +42,9 @@ public class RevisionDisplay extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_revision_display);
+
+        CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+
 
         // Recupération des spinners
         final Spinner spinnerLD = findViewById(R.id.spinnerLDep);
@@ -130,14 +134,13 @@ public class RevisionDisplay extends AppCompatActivity {
     @SuppressLint("WrongConstant")
     public void goToParChoix(View view) {
 
-        CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
         Cursor cursor;
 
         if(tags!=null && !tags.isEmpty()){
             cursor = CDB.query(
                     /*"t_"+langue,*/"t_Mot",
                     null,
-                    "Langue LIKE '"+langue+"' AND Tag_1 IN ("+tags+") OR Tag_2 IN ("+tags+") OR Tag_3 IN ("+tags+") OR Tag_4 IN ("+tags+") AND CoefAppr IN (0,1,2)",
+                    "Langue LIKE '"+langue+"' AND Tag_1 IN ("+tags+") OR Tag_2 IN ("+tags+") OR Tag_3 IN ("+tags+") OR Tag_4 IN ("+tags+") AND CoefAppr IN (0,1,2,3,4)",
                     null,
                     null,
                     null,
@@ -148,7 +151,7 @@ public class RevisionDisplay extends AppCompatActivity {
             cursor = CDB.query(
                     /*"t_"+langue,*/"t_Mot",
                     null,
-                    "Langue LIKE '"+langue+"' AND CoefAppr IN (0,1,2)",
+                    "Langue LIKE '"+langue+"' AND CoefAppr IN (0,1,2,3,4)",
                     null,
                     null,
                     null,

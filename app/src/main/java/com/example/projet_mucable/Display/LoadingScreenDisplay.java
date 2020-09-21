@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
         data_allemand = new String[]{"'Ein', 'Un', 'Nombre', 'Chiffre', 'NAN', 'NAN'", "'Zwei', 'Deux', 'NAN', 'Chiffre', 'NAN', 'NAN'", "'Drei', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
         data_espagnol = new String[]{"'Una', 'Un', 'Nombre', 'Chiffre', 'NAN', 'NAN'", "'Dos', 'Deux', 'NAN', 'Chiffre', 'NAN', 'NAN'", "'Tres', 'Trois', 'Nombre', 'NAN', 'NAN', 'NAN'"};
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,11 +248,15 @@ public class LoadingScreenDisplay extends AppCompatActivity {
         boolean need_upd_03 = preferences.getBoolean("NEED_UPD_03", true);
         if ( need_upd_03 ) {
 
-            SQLiteDatabase CDB = openOrCreateDatabase(
+            SQLiteDatabase CDB;
+            CDB = openOrCreateDatabase(
                     "CDB.db"
                     , SQLiteDatabase.CREATE_IF_NECESSARY
                     , null
             );
+
+            CDB.setForeignKeyConstraintsEnabled(true);
+            CDB.execSQL("PRAGMA foreign_keys = ON;");
 
             /*CDB.execSQL("DROP TABLE t_Mot");
             CDB.execSQL("DROP TABLE t_Session");
@@ -276,8 +282,8 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                             + "Resultat INTEGER,"
                             + "Id_Session INTEGER,"
                             + "Id_Word INTEGER,"
-                            + "FOREIGN KEY (Id_Session) REFERENCES t_Session(Id_Session),"
-                            + "FOREIGN KEY (Id_Word) REFERENCES t_Mot(Id_Word));";
+                            + "FOREIGN KEY (Id_Session) REFERENCES t_Session(Id_Session) ON DELETE CASCADE,"
+                            + "FOREIGN KEY (Id_Word) REFERENCES t_Mot(Id_Word) ON DELETE CASCADE);";
 
             final String Create_table_Session =
                     "CREATE TABLE t_Session ("
@@ -290,7 +296,6 @@ public class LoadingScreenDisplay extends AppCompatActivity {
             CDB.execSQL(Create_table_Mot);
             CDB.execSQL(Create_table_Session);
             CDB.execSQL(Create_table_STATS);
-
 
             int rowCount, i;
             String delete, insert, lowered;
@@ -368,6 +373,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
         }
 
     }
+
 
     void getScreenSize() {
 
