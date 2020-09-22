@@ -3,7 +3,6 @@ package com.example.projet_mucable.Display;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,10 +13,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+/*import android.util.Log;
+import android.widget.Button;
+import android.app.Activity;*/
 
 import com.example.projet_mucable.R;
 
@@ -30,7 +32,7 @@ public class RevisionDisplay extends AppCompatActivity {
 
     String langue = "Anglais";
     Boolean quel_sens = false;
-    String tag;
+    //String tag;
     String tags;
 
     int taille_bd=0;
@@ -112,9 +114,37 @@ public class RevisionDisplay extends AppCompatActivity {
 
     public void goToParCoeur(View view) {
 
+        Cursor cursor;
+
+        if(tags!=null && !tags.isEmpty()){
+            cursor = CDB.query(
+                    /*"t_"+langue,*/"t_Mot",
+                    null,
+                    "Langue LIKE '"+langue+"' AND Tag_1 IN ("+tags+") OR Tag_2 IN ("+tags+") OR Tag_3 IN ("+tags+") OR Tag_4 IN ("+tags+") AND CoefAppr IN (0,1,2,3,4)",
+                    null,
+                    null,
+                    null,
+                    "CoefAppr ASC"
+            );
+        }
+        else{
+            cursor = CDB.query(
+                    /*"t_"+langue,*/"t_Mot",
+                    null,
+                    "Langue LIKE '"+langue+"' AND CoefAppr IN (0,1,2,3,4)",
+                    null,
+                    null,
+                    null,
+                    "CoefAppr ASC"
+            );
+        }
+
+        taille_bd =  cursor.getCount();
+        cursor.close();
+
         Intent i = new Intent ( this, ParCoeurActivity.class );
 
-        TextView t = (TextView) findViewById(R.id.editNBM);
+        TextView t = findViewById(R.id.editNBM);
         String nb_m_s = t.getText().toString();
         if(nb_m_s.length()<1){
             nb_m_s="5";
@@ -128,7 +158,17 @@ public class RevisionDisplay extends AppCompatActivity {
         i.putExtra("Not_First", false);
         i.putExtra("TagsFilter", tags);
 
-        startActivity( i );
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
+        NEW_TAGSLIST.putString("RESTARTFROMTAGS", "false");
+        NEW_TAGSLIST.apply();
+
+        if(taille_bd<1){
+            Toast.makeText(getApplicationContext(),"Il faut plus de mots pour ces conditions.",Toast.LENGTH_LONG).show();
+        }
+        else{
+            startActivity( i );
+        }
     }
 
     @SuppressLint("WrongConstant")
@@ -160,10 +200,11 @@ public class RevisionDisplay extends AppCompatActivity {
         }
 
         taille_bd =  cursor.getCount();
+        cursor.close();
 
         Intent i = new Intent ( this, ParChoixActivity.class );
 
-        TextView t = (TextView) findViewById(R.id.editNBM);
+        TextView t = findViewById(R.id.editNBM);
         String nb_m_s = t.getText().toString();
         if(nb_m_s.length()<1){
             nb_m_s="5";
@@ -176,6 +217,11 @@ public class RevisionDisplay extends AppCompatActivity {
         i.putExtra("Type", false);
         i.putExtra("Not_First", false);
         i.putExtra("TagsFilter", tags);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
+        NEW_TAGSLIST.putString("RESTARTFROMTAGS", "false");
+        NEW_TAGSLIST.apply();
 
         if(taille_bd<4){
             Toast.makeText(getApplicationContext(),"Il faut plus de mots pour ces conditions.",Toast.LENGTH_LONG).show();
@@ -200,15 +246,20 @@ public class RevisionDisplay extends AppCompatActivity {
         //tags = preferences.getString("TAG_CHOSEN", null);
 
         TextView listeTags = findViewById(R.id.textViewTags);
-        String comefrom  = preferences.getString("RESTARTFROM", "");
+        String comefromtags  = preferences.getString("RESTARTFROMTAGS", "false");
+        Log.d("testtest", " comfrom :"+comefromtags);
 
-        tags = preferences.getString("TAGS_CHOSEN", "");
-        if(tags.equals("")){
-            listeTags.setText("aucuns");
+
+        if(comefromtags.equals("true")){
+            tags = preferences.getString("TAGS_CHOSEN", "");
+            if(tags.equals("")){
+                listeTags.setText("aucuns");
+            }
+            else{
+                listeTags.setText(tags);
+            }
         }
-        else{
-            listeTags.setText(tags);
-        }
+
 
 
         /*Button button_Tag_1 = findViewById(R.id.buttonTagsSelec);

@@ -24,7 +24,7 @@
         android:ems="10"
         android:hint="Réponse"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/guideline90v"
+        app:layout_constraintEnd_toStartOf="@+id/textViewIndice"
         app:layout_constraintStart_toStartOf="@+id/guideline10v"
         app:layout_constraintTop_toTopOf="@+id/guideline30h" />
 
@@ -73,5 +73,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.1" />
+
+    <TextView
+        android:id="@+id/textViewIndice"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/editTextReponse"
+        app:layout_constraintEnd_toStartOf="@+id/guideline90v"
+        app:layout_constraintTop_toTopOf="@+id/editTextReponse" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

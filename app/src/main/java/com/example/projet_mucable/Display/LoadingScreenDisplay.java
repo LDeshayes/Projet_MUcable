@@ -292,14 +292,23 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                             + "Score INTEGER,"
                             + "Temps DOUBLE);";
 
+            final String Create_table_TagColor =
+                    "CREATE TABLE t_TagColor ("
+                            + "Id_Tag INTEGER PRIMARY KEY AUTOINCREMENT,"
+                            + "Nom STRING,"
+                            + "Couleur STRING DEFAULT '#000000');";
+
 
             CDB.execSQL(Create_table_Mot);
             CDB.execSQL(Create_table_Session);
             CDB.execSQL(Create_table_STATS);
+            CDB.execSQL(Create_table_TagColor);
 
             int rowCount, i;
             String delete, insert, lowered;
             Cursor cursor;
+
+            // Remplissage des tables de mots
 
             cursor = CDB.query(
                     "t_Anglais",
@@ -357,6 +366,15 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                 CDB.execSQL(insert);
                 cursor.moveToNext();
             }
+
+            // Remplissage table des tags
+            String[] tags = preferences.getString("TAG_LIST", "EMPTY_NULL").split(";");
+            for(String tag: tags){
+                insert = "INSERT INTO t_TagColor (Nom) VALUES (tag)";
+                CDB.execSQL(insert);
+            }
+
+
 
             final String drop_anglais  = "DROP TABLE t_Anglais";
             final String drop_espagnol = "DROP TABLE t_Espagnol";

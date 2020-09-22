@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -129,7 +130,7 @@ public class GestionTagsDisplay extends AppCompatActivity {
 
         if ( newTag.length() != 0 ) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Êtes vous sur(e) de vouloir ajouter ce tag "+newTag+" ?")
                     .setCancelable(true)
                     .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
@@ -148,7 +149,7 @@ public class GestionTagsDisplay extends AppCompatActivity {
 
         } else {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Le champ pour un nouveau tag est vide !")
                     .setCancelable(true)
                     .setPositiveButton("Ok", null);
@@ -192,15 +193,15 @@ public class GestionTagsDisplay extends AppCompatActivity {
             // Suppression des occurrences du tag dans la DB
             SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
             String[] language_array = getResources().getStringArray(R.array.language_array);;
-            for ( i = 0; i < language_array.length; i++ ) {
+            //for ( i = 0; i < language_array.length; i++ ) {
                 for ( j = 1; j < 5; j++ ) {
-                    CDB.execSQL("UPDATE t_"+language_array[i]+" SET Tag_"+j+"='NAN' WHERE Tag_"+j+"='"+delTag+"' ");
+                    CDB.execSQL("UPDATE t_Mot SET Tag_"+j+"='NAN' WHERE Tag_"+j+"='"+delTag+"' ");
                 }
-            }
+            //}
 
         } else {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Ce tag n'existe pas dans la liste !")
                     .setCancelable(true)
                     .setPositiveButton("Ok", null);
@@ -215,7 +216,7 @@ public class GestionTagsDisplay extends AppCompatActivity {
 
         if ( tagChosen.equals("NAN") ) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Choisissez un tag à supprimer !")
                     .setCancelable(true)
                     .setPositiveButton("Ok", null);
@@ -224,7 +225,7 @@ public class GestionTagsDisplay extends AppCompatActivity {
 
         } else {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Êtes vous sur(e) de vouloir supprimer ce tag "+tagChosen+" ?")
                     .setCancelable(true)
                     .setPositiveButton("Oui", new DialogInterface.OnClickListener() {

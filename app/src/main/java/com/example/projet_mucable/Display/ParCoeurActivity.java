@@ -7,7 +7,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,11 +60,61 @@ public class ParCoeurActivity extends AppCompatActivity {
     Date debutTimer;
     Date finTimer;
 
+    long startTime = System.currentTimeMillis();
+    TextView indiceTextView;
+    boolean showyet = false;
+    boolean clickedIndice = false;
+    String indiceMot = "";
+
+    //runs without a timer by reposting this handler at the end of the runnable
+    Handler timerHandler = new Handler();
+    Runnable timerRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            long millis = System.currentTimeMillis() - startTime;
+            int seconds = (int) (millis / 1000);
+
+            indiceTextView.setText(5-seconds+"");
+
+            if(seconds>5 && !showyet){
+                //mettre bouton indice disponible
+                indiceTextView.setCompoundDrawablesWithIntrinsicBounds(0, android.R.drawable.ic_dialog_info, 0, 0);
+                indiceTextView.setVisibility(View.VISIBLE);
+                showyet = true;
+                Toast.makeText(getApplicationContext(), "Indice disponible", Toast.LENGTH_SHORT).show();
+
+                timerHandler.removeCallbacks(timerRunnable);
+            }
+
+            timerHandler.postDelayed(this, 100);
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timerHandler.removeCallbacks(timerRunnable);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putLong("TIMER", startTime);
+        //declare values before saving the state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_par_coeur);
+
+        if (savedInstanceState != null){
+            //Do whatever you need with the string here, like assign it to variable.
+            startTime = savedInstanceState.getLong("TIMER");
+        }
         
         Intent this_i = getIntent();
         tagsFilter = this_i.getStringExtra("TagsFilter");
@@ -72,6 +127,11 @@ public class ParCoeurActivity extends AppCompatActivity {
 
         word_number = this_i.getIntExtra("Word_number", 0);
         indTab = new Integer[nb_left];
+        final EditText editMot = findViewById(R.id.editTextReponse);
+        indiceTextView = findViewById(R.id.textViewIndice);
+
+
+        timerHandler.postDelayed(timerRunnable, 0);
 
 
         // Si c'est pas la premiere fois qu'on passe dans revisionParCoeur
@@ -208,8 +268,58 @@ public class ParCoeurActivity extends AppCompatActivity {
             word = translations_list[indTab[word_number]];
         }
 
-        TextView t = (TextView) findViewById(R.id.textViewQuestion);
+        TextView t = findViewById(R.id.textViewQuestion);
         t.setText(word);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+        //indiceTextView.setVisibility(View.INVISIBLE);
+        for(int i = 0; i<word_translation.length(); i++){
+            indiceMot+="_ ";
+        }
+
+        indiceTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editMot.setHint(indiceMot);
+                clickedIndice = true;
+            }
+        });
+
+
+
+        /*editMot.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable e) {
+                String textFromEditView = e.toString();
+                String newText = textFromEditView;
+
+                String[] allChars = textFromEditView.split("");
+                if(clickedIndice){
+                    if(textFromEditView.length()<indiceMot.length()){
+                        for(int i = 0; i < ((indiceMot.length()/2)-textFromEditView.length()); i++){
+                            newText+="_ ";
+                        }
+                    }
+                    //editMot.setText(newText);
+                    //e.replace(0,e.length(),newText);
+                    Toast.makeText(getApplicationContext(), "="+indiceMot.length()+"="+newText, Toast.LENGTH_SHORT).show();
+                }
+                //Toast.makeText(getApplicationContext(), "afterTextChanged", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Toast.makeText(getApplicationContext(), "beforeTextChanged", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Toast.makeText(getApplicationContext(), "onTextChanged", Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
 
         // Start timer
         debutTimer = new Date();

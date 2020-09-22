@@ -120,13 +120,13 @@ public class CahierDisplay extends AppCompatActivity {
 
         cursor.moveToFirst();
         for ( int i = 0; i < rowCount; i++ ) {
-            // comment here
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
+            // put in comment here
+            /*AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("TEST: "+cursor.getString(1)+" - "+cursor.getInt(7)+" !")
                     .setCancelable(true)
                     .setPositiveButton("Ok", null);
             AlertDialog alert = builder.create();
-            alert.show();
+            alert.show();*/
             key_list_final[i] = cursor.getInt(0);
             key_list[i] = cursor.getInt(0);
             words_list[i] = cursor.getString(1);

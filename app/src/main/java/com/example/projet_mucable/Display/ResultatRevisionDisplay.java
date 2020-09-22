@@ -55,6 +55,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         double tpsTot = 0;
         int goodRep = 0;
         Date date = new Date();
+        Date date2sem;
         long id_session;
 
         String[] question_list = new String[size];
@@ -101,6 +102,9 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         //The insert method returns the id of row just inserted or -1 if there was an error during insertion.
         id_session = CDB.insert("t_Session","",valuesSess);
 
+
+        // Get 2-week-prior date
+        date2sem = getDateBeforeTwoWeeks(date);
 
 
         // Counting t/f answers to order words in cahier
@@ -243,8 +247,6 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         // si session de stat du mot < sessionActu-4
         //      => coefAppr
 
-        // get
-
         final Cursor cursorStats = CDB.rawQuery("" +
                 " SELECT st.*" +
                 " FROM t_Stat st" +
@@ -260,9 +262,15 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         cursorStats.moveToFirst();
         while(!cursorStats.isAfterLast()){
 
-            if(cursorStats.getInt(4)<id_session-4 && cursorStats.getInt(4)==5){
+            final Cursor cursorSess = CDB.rawQuery("SELECT Date FROM t_Session WHERE Id_session="+cursorStats.getInt(4),null);
+            cursorSess.moveToFirst();
+            int dateFormerSession = cursorSess.getInt(0);
+
+            if( (cursorStats.getInt(4)<=id_session-3 || dateFormerSession<date2sem.getTime()) && cursorStats.getInt(4)==5){
                 cvStat.put("CoefAppr",4);
                 CDB.update("t_Mot", cvStat, "Langue LIKE '"+language+"' AND Id_word="+cursorStats.getInt(5), null);
+                Log.d("testtest", " Dans le if");
+
             }
             cursorStats.moveToNext();
         }
