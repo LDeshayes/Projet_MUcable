@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -37,11 +38,36 @@ public class ChoixTagsDisplay extends AppCompatActivity {
 
     View tag_view;
     String tagChosen = "NAN";
+    SQLiteDatabase CDB;
+    String[] tag_listDB;
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choixtags_display);
+
+        CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+        Cursor cTag = CDB.query(
+                "t_TagColor",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        int tailleReq = cTag.getCount();
+        tag_listDB = new String[tailleReq];
+        int i = 0;
+
+        cTag.moveToFirst();
+        while(!cTag.isAfterLast()){
+            //Log.d("testtest", " tag :"+c2.getString(1));
+            tag_listDB[i] = cTag.getString(1);
+            i++;
+            cTag.moveToNext();
+        }
 
         setupElements();
     }
@@ -53,7 +79,8 @@ public class ChoixTagsDisplay extends AppCompatActivity {
     void setupListView() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
-        final String[] tag_list = tags.split(";");
+        //final String[] tag_list = tags.split(";");
+        final String[] tag_list = tag_listDB;
 
         if ( !tag_list[0].equals("EMPTY_NULL") ) {
 

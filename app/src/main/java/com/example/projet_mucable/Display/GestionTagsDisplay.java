@@ -5,14 +5,17 @@ package com.example.projet_mucable.Display;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,11 +40,36 @@ public class GestionTagsDisplay extends AppCompatActivity {
 
     View tag_view;
     String tagChosen = "NAN";
+    SQLiteDatabase CDB;
+    String[] tag_listDB;
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestiontags_display);
+
+        CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+        Cursor cTag = CDB.query(
+                "t_TagColor",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        int tailleReq = cTag.getCount();
+        tag_listDB = new String[tailleReq];
+        int i = 0;
+
+        cTag.moveToFirst();
+        while(!cTag.isAfterLast()){
+            //Log.d("testtest", " tag :"+c2.getString(1));
+            tag_listDB[i] = cTag.getString(1);
+            i++;
+            cTag.moveToNext();
+        }
 
         setupElements();
     }
@@ -53,7 +81,10 @@ public class GestionTagsDisplay extends AppCompatActivity {
     void setupListView() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
-        final String[] tag_list = tags.split(";");
+        //final String[] tag_list = tags.split(";");
+        final String[] tag_list = tag_listDB;
+
+
 
         if ( !tag_list[0].equals("EMPTY_NULL") ) {
 
@@ -128,6 +159,9 @@ public class GestionTagsDisplay extends AppCompatActivity {
         final EditText editText_AddTag = findViewById(R.id.editText_tag);
         final String newTag = editText_AddTag.getText().toString();
 
+        final ContentValues valTag = new ContentValues();
+        valTag.put("Nom",newTag);
+
         if ( newTag.length() != 0 ) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
@@ -138,6 +172,9 @@ public class GestionTagsDisplay extends AppCompatActivity {
                             saveTag( newTag );
                             editText_AddTag.setText("");
                             finish();
+
+                            CDB.insert("t_TagColor","",valTag);
+
                             overridePendingTransition(0, 0);
                             startActivity(getIntent());
                             overridePendingTransition(0, 0);
@@ -232,6 +269,9 @@ public class GestionTagsDisplay extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             delTag(tagChosen);
                             finish();
+
+                            CDB.delete("t_TagColor","Nom=?",new String[]{tagChosen});
+
                             overridePendingTransition(0, 0);
                             startActivity(getIntent());
                             overridePendingTransition(0, 0);

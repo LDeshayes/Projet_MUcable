@@ -370,7 +370,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
             // Remplissage table des tags
             String[] tags = preferences.getString("TAG_LIST", "EMPTY_NULL").split(";");
             for(String tag: tags){
-                insert = "INSERT INTO t_TagColor (Nom) VALUES (tag)";
+                insert = "INSERT INTO t_TagColor (Nom) VALUES ('"+tag+"')";
                 CDB.execSQL(insert);
             }
 

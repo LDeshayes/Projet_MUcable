@@ -1,7 +1,6 @@
 package com.example.projet_mucable.Display;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
@@ -339,7 +338,6 @@ public class ParCoeurActivity extends AppCompatActivity {
 
                             // is only executed if the EditText was directly changed by the user
                             editMot.setText(newText);
-                            //Toast.makeText(getApplicationContext(), "=" + indiceMot.length() + "="+ textFromEditClean.length() + "=" + newText, Toast.LENGTH_SHORT).show();
                             //Log.d("fuckspace","pos: "+position+" - "+editMot.length());
                             if(position>editMot.length()){
                                 editMot.setSelection(editMot.length());
