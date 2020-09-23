@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -62,9 +63,12 @@ public class ParCoeurActivity extends AppCompatActivity {
 
     long startTime = System.currentTimeMillis();
     TextView indiceTextView;
+    EditText editMot;
     boolean showyet = false;
     boolean clickedIndice = false;
+    boolean edited = true;
     String indiceMot = "";
+    String newIndiceMot = "";
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
@@ -127,7 +131,7 @@ public class ParCoeurActivity extends AppCompatActivity {
 
         word_number = this_i.getIntExtra("Word_number", 0);
         indTab = new Integer[nb_left];
-        final EditText editMot = findViewById(R.id.editTextReponse);
+        editMot = findViewById(R.id.editTextReponse);
         indiceTextView = findViewById(R.id.textViewIndice);
 
 
@@ -275,7 +279,16 @@ public class ParCoeurActivity extends AppCompatActivity {
 
         //indiceTextView.setVisibility(View.INVISIBLE);
         for(int i = 0; i<word_translation.length(); i++){
-            indiceMot+="_ ";
+            if(word_translation.charAt(i) == ' '){
+                indiceMot+="  ";
+                newIndiceMot+="s";
+
+            }
+            else{
+                indiceMot+="_ ";
+                newIndiceMot+="l";
+
+            }
         }
 
         indiceTextView.setOnClickListener(new View.OnClickListener() {
@@ -288,25 +301,58 @@ public class ParCoeurActivity extends AppCompatActivity {
 
 
 
-        /*editMot.addTextChangedListener(new TextWatcher() {
+        editMot.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void afterTextChanged(Editable e) {
-                String textFromEditView = e.toString();
-                String newText = textFromEditView;
 
-                String[] allChars = textFromEditView.split("");
-                if(clickedIndice){
-                    if(textFromEditView.length()<indiceMot.length()){
-                        for(int i = 0; i < ((indiceMot.length()/2)-textFromEditView.length()); i++){
-                            newText+="_ ";
-                        }
+                int position = editMot.getSelectionStart();
+                String textFromEditView = e.toString();
+                String textFromEditClean = textFromEditView.replaceAll("_ ","").replaceAll("  ","").replaceAll("_","").replaceAll(" ","");
+                boolean antiTitouan = (textFromEditView.replaceAll("_","").replaceAll(" ","")).isEmpty();
+                boolean antiMartin = (position>editMot.length());
+                String newText = textFromEditClean;
+                //String newText = textFromEditView.split("_")[0];
+
+
+                if(edited){
+                    if(antiTitouan){
+                        edited=false;
+                        editMot.setText("");
+                        edited=true;
                     }
-                    //editMot.setText(newText);
-                    //e.replace(0,e.length(),newText);
-                    Toast.makeText(getApplicationContext(), "="+indiceMot.length()+"="+newText, Toast.LENGTH_SHORT).show();
+                    else{
+
+                        edited=false;
+                        if (clickedIndice) {
+                            if (textFromEditClean.length() < indiceMot.length()/2) {
+                                for(int i = (textFromEditClean.length()); i<newIndiceMot.length(); i++){
+                                    if(newIndiceMot.charAt(i)=='s'){
+                                        newText+="  ";
+                                    }
+                                    else{
+                                        newText+="_ ";
+                                    }
+                                }
+
+                            }
+
+                            // is only executed if the EditText was directly changed by the user
+                            editMot.setText(newText);
+                            //Toast.makeText(getApplicationContext(), "=" + indiceMot.length() + "="+ textFromEditClean.length() + "=" + newText, Toast.LENGTH_SHORT).show();
+                            //Log.d("fuckspace","pos: "+position+" - "+editMot.length());
+                            if(position>editMot.length()){
+                                editMot.setSelection(editMot.length());
+                            }
+                            else{
+                                editMot.setSelection(position);
+                            }
+
+                        }
+                        edited=true;
+                    }
                 }
-                //Toast.makeText(getApplicationContext(), "afterTextChanged", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -318,7 +364,7 @@ public class ParCoeurActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //Toast.makeText(getApplicationContext(), "onTextChanged", Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
 
 
         // Start timer
