@@ -30,13 +30,25 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true" />
 
+    <Button
+        android:id="@+id/button_pickColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/button_addTag"
+        android:layout_toLeftOf="@+id/button_addTag"
+        android:onClick="onClickPickColor"
+        android:text="Couleur" />
+
     <EditText
         android:id="@+id/editText_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Nouveau tag à ajouter"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/button_pickColor"
+        android:layout_toLeftOf="@+id/button_pickColor"
+        android:hint="Nouveau tag" />
 
     <ListView
         android:id="@+id/tags_listview"

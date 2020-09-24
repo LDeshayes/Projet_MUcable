@@ -296,7 +296,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                     "CREATE TABLE t_TagColor ("
                             + "Id_Tag INTEGER PRIMARY KEY AUTOINCREMENT,"
                             + "Nom STRING,"
-                            + "Couleur STRING DEFAULT '#000000');";
+                            + "Couleur STRING DEFAULT '#ff000000');";
 
 
             CDB.execSQL(Create_table_Mot);

@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.projet_mucable.ColorPicker;
 import com.example.projet_mucable.CustomAdapter;
 import com.example.projet_mucable.R;
 
@@ -42,6 +43,7 @@ public class GestionTagsDisplay extends AppCompatActivity {
     String tagChosen = "NAN";
     SQLiteDatabase CDB;
     String[] tag_listDB;
+    String hexaColor = "#ff000000";
 
     @SuppressLint("WrongConstant")
     @Override
@@ -65,7 +67,7 @@ public class GestionTagsDisplay extends AppCompatActivity {
 
         cTag.moveToFirst();
         while(!cTag.isAfterLast()){
-            Log.d("testtest", " tag :"+cTag.getString(1));
+            //Log.d("testtest", " tag :"+cTag.getString(1)+" - Couleur :"+cTag.getString(2));
             tag_listDB[i] = cTag.getString(1);
             i++;
             cTag.moveToNext();
@@ -161,6 +163,7 @@ public class GestionTagsDisplay extends AppCompatActivity {
 
         final ContentValues valTag = new ContentValues();
         valTag.put("Nom",newTag);
+        valTag.put("Couleur",hexaColor);
 
         if ( newTag.length() != 0 ) {
 
@@ -284,5 +287,22 @@ public class GestionTagsDisplay extends AppCompatActivity {
         }
 
     }
+
+    public void onClickPickColor(View view) {
+        Intent i = new Intent ( this, ColorPicker.class );
+        startActivity( i );
+    }
+
+    public void onRestart() {
+        super.onRestart();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        hexaColor  = preferences.getString("COLOR_PICKED", "#ff000000");
+        EditText textTag = findViewById(R.id.editText_tag);
+        textTag.setTextColor(Color.parseColor(hexaColor));
+
+
+    }
+
 
 }

@@ -32,8 +32,6 @@ public class CahierAdapter extends BaseAdapter {
         this.tagColMap = tagCol;
         inflter = (LayoutInflater.from(applicationContext));
 
-
-
     }
 
 
@@ -80,6 +78,7 @@ public class CahierAdapter extends BaseAdapter {
             case 1:
                 tag1.setText(tagsSplit[0]);
                 tag1.setTextColor(Color.parseColor(tagColMap.get(tagsSplit[0])));
+                // 25 54 92 52 55
                 break;
             case 2:
                 tag1.setText(tagsSplit[0]+"  -  ");
@@ -87,7 +86,6 @@ public class CahierAdapter extends BaseAdapter {
 
                 tag2.setText(tagsSplit[1]);
                 tag2.setTextColor(Color.parseColor(tagColMap.get(tagsSplit[1])));
-
                 break;
             case 3:
                 tag1.setText(tagsSplit[0]+"  -  ");
@@ -98,7 +96,6 @@ public class CahierAdapter extends BaseAdapter {
 
                 tag3.setText(tagsSplit[2]);
                 tag3.setTextColor(Color.parseColor(tagColMap.get(tagsSplit[2])));
-
                 break;
             case 4:
                 tag1.setText(tagsSplit[0]+"  -  ");
@@ -112,7 +109,6 @@ public class CahierAdapter extends BaseAdapter {
 
                 tag4.setText(tagsSplit[3]);
                 tag4.setTextColor(Color.parseColor(tagColMap.get(tagsSplit[3])));
-
                 break;
 
             default:
