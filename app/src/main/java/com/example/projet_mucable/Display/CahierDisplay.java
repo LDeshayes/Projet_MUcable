@@ -24,10 +24,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.projet_mucable.CahierAdapter;
 import com.example.projet_mucable.CustomAdapter;
 import com.example.projet_mucable.R;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CahierDisplay extends AppCompatActivity {
 
@@ -143,16 +146,49 @@ public class CahierDisplay extends AppCompatActivity {
     }
 
     void setupLanguage() {
-        TextView textView = (TextView) findViewById(R.id.language);
+        TextView textView = findViewById(R.id.language);
         textView.setText(language+" ");
     }
 
+    Map<String, String> getTagsColor(){
+
+        Map<String,String> tagColMap = new HashMap<>();
+
+        // on prends toutes les lignes de tags
+        for(String tl : tags_list){
+            // on recupere les tags de chaque lignes
+            String[] tmpTags = tl.split(" - ");
+            for(String t : tmpTags){
+                // on verifier qu'ils sont pas nuls
+                if(t != null && !t.equals("") && !t.equals("NAN") && !t.equals("NAN_NULL")){
+                    tagColMap.put(t,"");
+                }
+            }
+        }
+
+
+        // de tout les tags recupérés on récupere la couleur
+        for(String tag: tagColMap.keySet()){
+            Cursor c = CDB.rawQuery("SELECT Couleur FROM t_TagColor WHERE Nom LIKE '"+tag+"'", null);
+            c.moveToFirst();
+            Log.d("testtest",c.getString(0));
+            tagColMap.put(tag,c.getString(0));
+        }
+
+        return tagColMap;
+    }
+
     void setupListView() {
-        words_listview = (ListView) findViewById(R.id.words_listview);
+        /*words_listview = (ListView) findViewById(R.id.words_listview);
         CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
-        words_listview.setAdapter(customAdapter);
+        words_listview.setAdapter(customAdapter);*/
+
+
 
         words_listview = (ListView) findViewById(R.id.words_listview);
+        CahierAdapter customAdapter = new CahierAdapter(getApplicationContext(), words_list, translations_list, tags_list, getTagsColor());
+        words_listview.setAdapter(customAdapter);
+
 
         words_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

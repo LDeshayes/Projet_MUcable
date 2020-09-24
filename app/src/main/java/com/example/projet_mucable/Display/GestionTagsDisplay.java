@@ -65,7 +65,7 @@ public class GestionTagsDisplay extends AppCompatActivity {
 
         cTag.moveToFirst();
         while(!cTag.isAfterLast()){
-            //Log.d("testtest", " tag :"+c2.getString(1));
+            Log.d("testtest", " tag :"+cTag.getString(1));
             tag_listDB[i] = cTag.getString(1);
             i++;
             cTag.moveToNext();

@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.projet_mucable.Cahier;
 import com.example.projet_mucable.R;
 
 public class IntroMenuDisplay extends AppCompatActivity {
