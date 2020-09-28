@@ -63,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
-    
+
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -79,11 +79,19 @@
             android:layout_height="match_parent"
             android:gravity="center|center_horizontal|center_vertical">
 
+
             <Button
                 android:id="@+id/buttonQ1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Button" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal|center_vertical">
 
             <Button
                 android:id="@+id/buttonQ2"
@@ -103,6 +111,13 @@
                 android:layout_height="match_parent"
                 android:text="Button" />
 
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal|center_vertical">
+
             <Button
                 android:id="@+id/buttonQ4"
                 android:layout_width="match_parent"
@@ -113,11 +128,15 @@
 
     </TableLayout>
 
+
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline35"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

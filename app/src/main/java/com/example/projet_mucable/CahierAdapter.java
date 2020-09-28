@@ -114,7 +114,7 @@ public class CahierAdapter extends BaseAdapter {
 
 
         word.setText("  "+words_list[i]);
-        trad.setText("  "+translations_list[i]);
+        trad.setText(""+translations_list[i]);
         return view;
     }
 }
