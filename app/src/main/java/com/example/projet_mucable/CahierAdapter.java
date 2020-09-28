@@ -34,9 +34,6 @@ public class CahierAdapter extends BaseAdapter {
 
     }
 
-
-
-
     @Override
     public int getCount() {
         return words_list.length;

@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -235,10 +236,12 @@ public class ParChoixActivity extends AppCompatActivity {
         tq1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 repo = a1;
-                tq1.setEnabled(false);
-                tq2.setEnabled(true);
-                tq3.setEnabled(true);
-                tq4.setEnabled(true);
+                //tq1.setEnabled(false);
+                tq1.setTextColor(Color.BLACK);
+                tq2.setTextColor(Color.WHITE);
+                tq3.setTextColor(Color.WHITE);
+                tq4.setTextColor(Color.WHITE);
+
                 bVal.setEnabled(true);
             }
         });
@@ -247,10 +250,10 @@ public class ParChoixActivity extends AppCompatActivity {
         tq2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 repo = a2;
-                tq1.setEnabled(true);
-                tq2.setEnabled(false);
-                tq3.setEnabled(true);
-                tq4.setEnabled(true);
+                tq1.setTextColor(Color.WHITE);
+                tq2.setTextColor(Color.BLACK);
+                tq3.setTextColor(Color.WHITE);
+                tq4.setTextColor(Color.WHITE);
                 bVal.setEnabled(true);
             }
         });
@@ -259,10 +262,10 @@ public class ParChoixActivity extends AppCompatActivity {
         tq3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 repo = a3;
-                tq1.setEnabled(true);
-                tq2.setEnabled(true);
-                tq3.setEnabled(false);
-                tq4.setEnabled(true);
+                tq1.setTextColor(Color.WHITE);
+                tq2.setTextColor(Color.WHITE);
+                tq3.setTextColor(Color.BLACK);
+                tq4.setTextColor(Color.WHITE);
                 bVal.setEnabled(true);
             }
         });
@@ -272,10 +275,10 @@ public class ParChoixActivity extends AppCompatActivity {
         tq4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 repo = a4;
-                tq1.setEnabled(true);
-                tq2.setEnabled(true);
-                tq3.setEnabled(true);
-                tq4.setEnabled(false);
+                tq1.setTextColor(Color.WHITE);
+                tq2.setTextColor(Color.WHITE);
+                tq3.setTextColor(Color.WHITE);
+                tq4.setTextColor(Color.BLACK);
                 bVal.setEnabled(true);
             }
         });

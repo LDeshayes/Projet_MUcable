@@ -32,12 +32,12 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:onClick="goToParCoeur"
         android:text="Valider"
-        app:layout_constraintBottom_toTopOf="@+id/guideline90h"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline90h" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewIndiceTag" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline30h"
@@ -82,5 +82,12 @@
         app:layout_constraintBottom_toBottomOf="@+id/editTextReponse"
         app:layout_constraintEnd_toStartOf="@+id/guideline90v"
         app:layout_constraintTop_toTopOf="@+id/editTextReponse" />
+
+    <TextView
+        android:id="@+id/textViewIndiceTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/editTextReponse"
+        app:layout_constraintTop_toBottomOf="@+id/editTextReponse" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

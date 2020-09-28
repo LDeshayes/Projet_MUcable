@@ -45,67 +45,79 @@
         android:id="@+id/textViewQuestion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="Blabla"
         android:textAlignment="center"
         app:layout_constraintEnd_toStartOf="@+id/guideline90v2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline10v2"
-        app:layout_constraintTop_toTopOf="@+id/guideline10h2"
-        android:gravity="center_horizontal" />
+        app:layout_constraintTop_toTopOf="@+id/guideline10h2" />
 
     <Button
         android:id="@+id/buttonValider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:onClick="goToParChoix"
         android:text="Valider"
-        app:layout_constraintBottom_toTopOf="@+id/guideline90h2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline90h2" />
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+    
 
     <TableLayout
         android:id="@+id/tableLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/guideline90v2"
         app:layout_constraintStart_toStartOf="@+id/guideline10v2"
         app:layout_constraintTop_toTopOf="@+id/guideline20h2">
 
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal|center_vertical">
 
             <Button
                 android:id="@+id/buttonQ1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Button" />
 
             <Button
                 android:id="@+id/buttonQ2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Button" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center|center_horizontal|center_vertical">
 
             <Button
                 android:id="@+id/buttonQ3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Button" />
 
             <Button
                 android:id="@+id/buttonQ4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Button" />
         </TableRow>
 
+
     </TableLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline35"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

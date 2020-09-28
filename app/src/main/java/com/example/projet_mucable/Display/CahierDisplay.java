@@ -184,7 +184,6 @@ public class CahierDisplay extends AppCompatActivity {
         words_listview.setAdapter(customAdapter);*/
 
 
-
         words_listview = (ListView) findViewById(R.id.words_listview);
         CahierAdapter customAdapter = new CahierAdapter(getApplicationContext(), words_list, translations_list, tags_list, getTagsColor());
         words_listview.setAdapter(customAdapter);
@@ -242,6 +241,7 @@ public class CahierDisplay extends AppCompatActivity {
 
                 String search = s.toString().toLowerCase();
                 CustomAdapter customAdapter;
+                CahierAdapter cahierAdapter;
 
                 if (search.length() != 0) {
 
@@ -285,23 +285,30 @@ public class CahierDisplay extends AppCompatActivity {
                     }
 
                     if(!switchCol){
-                        customAdapter = new CustomAdapter(getApplicationContext(), words_list_temp, translations_list_temp, tags_list_temp);
+                        //customAdapter = new CustomAdapter(getApplicationContext(), words_list_temp, translations_list_temp, tags_list_temp);
+                        cahierAdapter = new CahierAdapter(getApplicationContext(), words_list_temp, translations_list_temp, tags_list_temp, getTagsColor());
+
                     }
                     else{
-                        customAdapter = new CustomAdapter(getApplicationContext(), translations_list_temp,  words_list_temp, tags_list_temp);
+                        //customAdapter = new CustomAdapter(getApplicationContext(), translations_list_temp,  words_list_temp, tags_list_temp);
+                        cahierAdapter = new CahierAdapter(getApplicationContext(), translations_list_temp, words_list_temp, tags_list_temp, getTagsColor());
+
                     }
                 } else {
                     bsearch = false;
 
                     if(!switchCol){
-                        customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
+                        //customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
+                        cahierAdapter = new CahierAdapter(getApplicationContext(), words_list, translations_list, tags_list, getTagsColor());
                     }
                     else{
-                        customAdapter = new CustomAdapter(getApplicationContext(), translations_list, words_list, tags_list);
+                        //customAdapter = new CustomAdapter(getApplicationContext(), translations_list, words_list, tags_list);
+                        cahierAdapter = new CahierAdapter(getApplicationContext(), translations_list, words_list, tags_list, getTagsColor());
                     }
 
                 }
-                words_listview.setAdapter(customAdapter);
+                //words_listview.setAdapter(customAdapter);
+                words_listview.setAdapter(cahierAdapter);
 
 
             }
@@ -316,30 +323,36 @@ public class CahierDisplay extends AppCompatActivity {
     public void onClickSwitch(View view){
 
         CustomAdapter customAdapter;
+        CahierAdapter cahierAdapter;
         switchCol = !switchCol;
         words_listview = (ListView) findViewById(R.id.words_listview);
 
         if(!switchCol){
 
             if(!bsearch){
-                customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
+                //customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
+                cahierAdapter = new CahierAdapter(getApplicationContext(), words_list, translations_list, tags_list, getTagsColor());
             }
             else{
-                customAdapter = new CustomAdapter(getApplicationContext(), words_list_temp, translations_list_temp, tags_list_temp);
+                //customAdapter = new CustomAdapter(getApplicationContext(), words_list_temp, translations_list_temp, tags_list_temp);
+                cahierAdapter = new CahierAdapter(getApplicationContext(), words_list_temp, translations_list_temp, tags_list_temp, getTagsColor());
             }
 
         }
         else{
 
             if(!bsearch){
-                customAdapter = new CustomAdapter(getApplicationContext(), translations_list, words_list, tags_list);
+                //customAdapter = new CustomAdapter(getApplicationContext(), translations_list, words_list, tags_list);
+                cahierAdapter = new CahierAdapter(getApplicationContext(), translations_list, words_list, tags_list, getTagsColor());
             }
             else{
-                customAdapter = new CustomAdapter(getApplicationContext(), translations_list_temp ,words_list_temp , tags_list_temp);
+                //customAdapter = new CustomAdapter(getApplicationContext(), translations_list_temp ,words_list_temp , tags_list_temp);
+                cahierAdapter = new CahierAdapter(getApplicationContext(), translations_list_temp, words_list_temp, tags_list_temp, getTagsColor());
             }
         }
 
-        words_listview.setAdapter(customAdapter);
+        //words_listview.setAdapter(customAdapter);
+        words_listview.setAdapter(cahierAdapter);
 
     }
 

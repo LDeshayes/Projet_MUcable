@@ -28,11 +28,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projet_mucable.CustomAdapter;
 import com.example.projet_mucable.R;
+import com.example.projet_mucable.TagAdapter;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChoixTagsDisplay extends AppCompatActivity {
 
@@ -68,8 +71,37 @@ public class ChoixTagsDisplay extends AppCompatActivity {
             i++;
             cTag.moveToNext();
         }
+        cTag.close();
 
         setupElements();
+    }
+
+    Map<String, String> getTagsColor(){
+
+        Map<String,String> tagColMap = new HashMap<>();
+
+        // on prends toutes les lignes de tags
+        for(String tl : tag_listDB){
+            // on recupere les tags de chaque lignes
+            String[] tmpTags = tl.split(" - ");
+            for(String t : tmpTags){
+                // on verifier qu'ils sont pas nuls
+                if(t != null && !t.equals("") && !t.equals("NAN") && !t.equals("NAN_NULL")){
+                    tagColMap.put(t,"");
+                }
+            }
+        }
+
+        // de tout les tags recupérés on récupere la couleur
+        for(String tag: tagColMap.keySet()){
+            Cursor c = CDB.rawQuery("SELECT Couleur FROM t_TagColor WHERE Nom LIKE '"+tag+"'", null);
+            c.moveToFirst();
+            //Log.d("testtest",c.getString(0));
+            tagColMap.put(tag,c.getString(0));
+            c.close();
+        }
+
+        return tagColMap;
     }
 
     void setupElements() {
@@ -79,31 +111,12 @@ public class ChoixTagsDisplay extends AppCompatActivity {
     void setupListView() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
-        //final String[] tag_list = tags.split(";");
         final String[] tag_list = tag_listDB;
 
         if ( !tag_list[0].equals("EMPTY_NULL") ) {
 
-            // Définition des colonnes
-            // NB : SimpleCursorAdapter a besoin obligatoirement d'un ID nommé "_id"
-            String[] columns = new String[] { "_id", "col1" };
-
-            // Définition des données du tableau
-            MatrixCursor matrixCursor= new MatrixCursor(columns);
-
-            for ( int i = 0; ( i < tag_list.length ) ; i++ ) {
-                matrixCursor.addRow(new Object[] { 1,tag_list[i]});
-            }
-
-            // on prendra les données des colonnes 1 et 2...
-            String[] from = new String[] {"col1"};
-
-            // ...pour les placer dans les TextView définis dans "tag_listview.xml"
-            int[] to = new int[] { R.id.tag};
-
             // création de l'objet SimpleCursorAdapter...
-            SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.tag_listview, matrixCursor, from, to, 0);
-
+            TagAdapter adapter = new TagAdapter(getApplicationContext(), tag_listDB, getTagsColor());
 
             // ...qui va remplir l'objet ListView
             final ListView tags_listview = (ListView) findViewById(R.id.tags_listview);
