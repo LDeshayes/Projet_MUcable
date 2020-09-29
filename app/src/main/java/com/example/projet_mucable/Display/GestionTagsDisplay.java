@@ -19,15 +19,18 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.projet_mucable.ColorPicker;
 import com.example.projet_mucable.CustomAdapter;
@@ -158,7 +161,10 @@ public class GestionTagsDisplay extends AppCompatActivity {
                     tag_view.setBackgroundResource(R.drawable.border);
                     tagChosen = tag_list[position];
                 }
+
             });
+
+
         }
     }
 
@@ -341,6 +347,66 @@ public class GestionTagsDisplay extends AppCompatActivity {
         EditText textTag = findViewById(R.id.editText_tag);
         textTag.setTextColor(Color.parseColor(hexaColor));
 
+
+    }
+
+    public void popUpModif(View v){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
+        final EditText input = new EditText(GestionTagsDisplay.this);
+        //final Intent iPicker = new Intent ( this, ColorPicker.class );
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+
+
+        builder.setView(input);
+
+        if ( tagChosen != "NAN" ) {
+
+            input.setText(tagChosen);
+            builder.setView(input);
+
+            builder.setTitle("Nouveau nom du tag")
+                    .setCancelable(false)
+                    /*.setNeutralButton("Couleur", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivity( iPicker );
+                        }
+                    })*/
+                    .setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            if(!input.getText().toString().isEmpty()  && !(input.getText().toString()).replaceAll(" ","").equals("") ){
+                                ContentValues newTag = new ContentValues();
+                                newTag.put("Nom",input.getText().toString());
+                                CDB.update("t_TagColor",newTag,"Nom='"+tagChosen+"'",null);
+                                for ( int j = 1; j <= 4; j++ ) {
+                                    CDB.execSQL("UPDATE t_Mot SET Tag_"+j+"='"+input.getText().toString()+"' WHERE Tag_"+j+"='"+tagChosen+"' ");
+                                }
+
+
+                                finish();
+                                overridePendingTransition(0, 0);
+                                startActivity(getIntent());
+                                overridePendingTransition(0, 0);
+
+
+
+                            }
+
+                        }
+                    })
+                    .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
 
     }
 

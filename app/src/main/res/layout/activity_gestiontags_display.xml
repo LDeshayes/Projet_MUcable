@@ -59,4 +59,17 @@
         android:divider="@color/material_blue_grey_800"
         android:dividerHeight="1dp" />
 
+    <TextView
+        android:id="@+id/textViewModif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button_delTag"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/button_delTag"
+        android:layout_toLeftOf="@+id/button_delTag"
+        android:clickable="true"
+        android:onClick="popUpModif"
+        android:drawableLeft="@android:drawable/ic_menu_preferences"
+        android:text="" />
+
 </RelativeLayout>

@@ -121,6 +121,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             mark_list[i] = values[3];
             double tps = Double.parseDouble(values[4]);
             double percen = Double.parseDouble(values[5]);
+            int nbIndice = Integer.parseInt(values[6]);
 
             String que = values[0];
             //String rep = values[1];
@@ -158,6 +159,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             valuesStat.put("Resultat",percen);
             valuesStat.put("Id_Session",id_session);
             valuesStat.put("Id_Word",inf_val[0]);
+            valuesStat.put("NbIndice", nbIndice);
             //The insert method returns the id of row just inserted or -1 if there was an error during insertion.
             CDB.insert("t_Stat","",valuesStat);
 

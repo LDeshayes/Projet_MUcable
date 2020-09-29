@@ -322,7 +322,7 @@ public class CahierDisplay extends AppCompatActivity {
 
     public void onClickSwitch(View view){
 
-        CustomAdapter customAdapter;
+        //CustomAdapter customAdapter;
         CahierAdapter cahierAdapter;
         switchCol = !switchCol;
         words_listview = (ListView) findViewById(R.id.words_listview);

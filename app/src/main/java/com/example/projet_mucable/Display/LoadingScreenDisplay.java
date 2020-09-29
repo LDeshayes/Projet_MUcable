@@ -282,6 +282,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                             + "Resultat INTEGER,"
                             + "Id_Session INTEGER,"
                             + "Id_Word INTEGER,"
+                            + "NbIndice INTEGER,"
                             + "FOREIGN KEY (Id_Session) REFERENCES t_Session(Id_Session) ON DELETE CASCADE,"
                             + "FOREIGN KEY (Id_Word) REFERENCES t_Mot(Id_Word) ON DELETE CASCADE);";
 
