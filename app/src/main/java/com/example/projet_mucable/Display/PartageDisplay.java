@@ -276,7 +276,7 @@ public class PartageDisplay extends AppCompatActivity {
                 listeTags.setText("aucun");
             }
             else{
-                listeTags.setText(tagsChosen);
+                listeTags.setText(tagsChosen.replaceAll("'","").replaceAll(",",", "));
             }
         }
 
@@ -287,7 +287,7 @@ public class PartageDisplay extends AppCompatActivity {
                 listeMots.setText("aucun");
             }
             else{
-                listeMots.setText(wordsChosen);
+                listeMots.setText(wordsChosen.replaceAll("'","").replaceAll(",",", "));
             }
         }
 

@@ -182,7 +182,7 @@ public class ParChoixActivity extends AppCompatActivity {
 
         }
 
-        Integer[] iAnswers = {indTab[word_number], 0, 0, 0};
+        Integer[] iAnswers = {word_number, 0, 0, 0};
 
         /*while (iAnswers[0]==iAnswers[1] || iAnswers[0]==iAnswers[2] || iAnswers[0]==iAnswers[3] || iAnswers[1]==iAnswers[2] || iAnswers[1]==iAnswers[3] || iAnswers[2]==iAnswers[3]){
             for(int i=1; i<4; i++){
@@ -196,8 +196,8 @@ public class ParChoixActivity extends AppCompatActivity {
                 listAns.add(k);
         }
         Collections.shuffle(listAns);
-        for(int l=0; l<3; l++) {
-            iAnswers[l]=listAns.get(l);
+        for(int l=1; l<4; l++) {
+            iAnswers[l]=listAns.get(l-1);
         }
 
         List<Integer> listAnswers = Arrays.asList(iAnswers);

@@ -3,10 +3,12 @@ package com.example.projet_mucable.Display;
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -60,11 +62,12 @@ public class ParCoeurActivity extends AppCompatActivity {
     Date debutTimer;
     Date finTimer;
 
-    long startTime = System.currentTimeMillis();
+    long startTime;
+
     TextView indiceTextView;
     EditText editMot;
     boolean showyet = false;
-    boolean clickedIndice = false;
+    int clickedIndice = 0;
     boolean edited = true;
     String indiceMot = "";
     String newIndiceMot = "";
@@ -75,6 +78,7 @@ public class ParCoeurActivity extends AppCompatActivity {
 
         @Override
         public void run() {
+
             long millis = System.currentTimeMillis() - startTime;
             int seconds = (int) (millis / 1000);
 
@@ -97,25 +101,42 @@ public class ParCoeurActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
+
         timerHandler.removeCallbacks(timerRunnable);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong("TIMER", startTime);
+        editor.commit();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        timerHandler.postDelayed(timerRunnable, 0);
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putLong("TIMER", startTime);
-        //declare values before saving the state
         super.onSaveInstanceState(savedInstanceState);
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_par_coeur);
 
+        startTime = System.currentTimeMillis();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong("TIMER", startTime);
+        editor.commit();
+
+        //Log.d("testtest","create: "+startTime+" / "+System.currentTimeMillis());
+
         if (savedInstanceState != null){
-            //Do whatever you need with the string here, like assign it to variable.
+            //Log.d("testtest","savedinstance: "+startTime+" / "+savedInstanceState.getLong("TIMER"));
             startTime = savedInstanceState.getLong("TIMER");
         }
         
@@ -294,7 +315,13 @@ public class ParCoeurActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editMot.setHint(indiceMot);
-                clickedIndice = true;
+
+                if(tagsFilter!=null && !tagsFilter.isEmpty() && clickedIndice==1){
+                    TextView indiceTag = findViewById(R.id.textViewIndiceTag);
+                    indiceTag.setText("Tags du mots :  "+tagsFilter.replaceAll("'",""));
+                }
+
+                    clickedIndice++;
             }
         });
 
@@ -323,7 +350,7 @@ public class ParCoeurActivity extends AppCompatActivity {
                     else{
 
                         edited=false;
-                        if (clickedIndice) {
+                        if (clickedIndice>0) {
                             if (textFromEditClean.length() < indiceMot.length()/2) {
                                 for(int i = (textFromEditClean.length()); i<newIndiceMot.length(); i++){
                                     if(newIndiceMot.charAt(i)=='s'){
@@ -506,6 +533,7 @@ public class ParCoeurActivity extends AppCompatActivity {
         i.putExtra("Reponse", word_translation);
 
         i.putExtra("Temps", chrono);
+        i.putExtra("NbIndice", clickedIndice);
 
         ArrayList<Integer> intList = new ArrayList<Integer>(50);
         for (int k : indTab) intList.add(k);

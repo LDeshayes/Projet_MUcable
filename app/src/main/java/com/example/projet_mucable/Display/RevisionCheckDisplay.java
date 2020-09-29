@@ -41,6 +41,8 @@ public class RevisionCheckDisplay extends AppCompatActivity {
     boolean type;
     String tagsFilter;
 
+    String XX = "#";
+
     String question;
     String reponseUser;
     String reponse;
@@ -51,6 +53,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
     Integer[] indTab;
 
     double chrono = 0.0;
+    int nbIndices = 0;
     double percen = 0.0;
 
     SQLiteDatabase CDB;
@@ -86,7 +89,11 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         reponse = this_i.getStringExtra("Reponse");
 
         chrono = this_i.getDoubleExtra("Temps", 0.0);
+        nbIndices = this_i.getIntExtra("NbIndice", 0);
 
+        if(language!="Allemands" && language!="allemands"){
+            reponseUser = reponseUser.toLowerCase();
+        }
 
         if(reponseUser.equals(""))
             reponseUser=" ";
@@ -106,7 +113,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
             list_msgs.add("Parfait");
             //monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
             //test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓;";
-            test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓°"+chrono+"°100;";
+            test_res = test_res+question+XX+reponseUser+XX+reponse+XX+"✓"+XX+chrono+XX+"100"+XX+nbIndices+";";
         }
         else{
 
@@ -124,7 +131,10 @@ public class RevisionCheckDisplay extends AppCompatActivity {
                 list_msgs.add("Parfait");
                 //monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Bonne réponse");
                 //test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓;";
-                test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✓°"+chrono+"°100;";
+                test_res = test_res+question+XX+reponseUser+XX+reponse+XX+"✓"+XX+chrono+XX+"100"+XX+nbIndices+";";
+
+
+
             }
             else{
 
@@ -134,7 +144,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
                 tVF.setText("Mauvaise réponse !");
                 //monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Mauvaise réponse");
                 //test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✗;";
-                test_res = test_res+question+"°"+reponseUser+"°"+reponse+"°✗°"+chrono+"°"+new DecimalFormat("##").format(percen)+";";
+                test_res = test_res+question+XX+reponseUser+XX+reponse+XX+"✗"+XX+chrono+XX+new DecimalFormat("##").format(percen)+XX+nbIndices+";";
 
                 if(type){
 

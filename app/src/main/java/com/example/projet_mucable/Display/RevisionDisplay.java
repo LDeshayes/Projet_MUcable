@@ -247,7 +247,7 @@ public class RevisionDisplay extends AppCompatActivity {
 
         TextView listeTags = findViewById(R.id.textViewTags);
         String comefromtags  = preferences.getString("RESTARTFROMTAGS", "false");
-        Log.d("testtest", " comfrom :"+comefromtags);
+        //Log.d("testtest", " comfrom :"+comefromtags);
 
 
         if(comefromtags.equals("true")){
@@ -256,7 +256,7 @@ public class RevisionDisplay extends AppCompatActivity {
                 listeTags.setText("aucuns");
             }
             else{
-                listeTags.setText(tags);
+                listeTags.setText(tags.replaceAll("'","").replaceAll(",",", "));
             }
         }
 

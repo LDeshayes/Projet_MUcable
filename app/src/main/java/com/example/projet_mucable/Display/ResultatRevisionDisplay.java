@@ -50,6 +50,8 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         String test_res = this_i.getStringExtra("String_res");
         String[] list_test_res = test_res.split(";");
 
+        String XX = "#";
+
         int size = list_test_res.length;
         int tot = 0;
         double tpsTot = 0;
@@ -86,10 +88,10 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         tTag.setText("Tag : "+tagsFilter);
 
         for(String line : list_test_res){
-            if(line.split("°")[3].charAt(0)=='✓'){
+            if(line.split(XX)[3].charAt(0)=='✓'){
                 goodRep+=1;
             }
-            tpsTot += Double.parseDouble(line.split("°")[4]);
+            tpsTot += Double.parseDouble(line.split(XX)[4]);
             tot+=1;
         }
 
@@ -111,7 +113,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         Map<String,String> adjustWords =  new HashMap<String,String>();
 
         for(String line : list_test_res){
-            String[] values = line.split("°");
+            String[] values = line.split(XX);
 
             question_list[i] = values[0];
             rep_list[i] = values[1];
