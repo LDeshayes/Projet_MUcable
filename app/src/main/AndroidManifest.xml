@@ -14,7 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Display.GraphMemDisplay"></activity>
+
+        <activity android:name=".Display.GraphMemDisplay"
+            android:screenOrientation="landscape"/>
+
         <activity android:name=".Display.LoadingScreenDisplay">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,25 +27,26 @@
         </activity>
         <activity
             android:name=".Display.IntroMenuDisplay"
-            android:theme="@style/IntroMenuTheme"></activity>
-        <activity android:name=".Display.RevisionDisplay"></activity>
-        <activity android:name=".Display.ParCoeurActivity"></activity>
-        <activity android:name=".Display.ParChoixActivity"></activity>
-        <activity android:name=".Display.StatsDisplay"></activity>
+            android:theme="@style/IntroMenuTheme" />
+        <activity android:name=".Display.RevisionDisplay" />
+        <activity android:name=".Display.ParCoeurActivity" />
+        <activity android:name=".Display.ParChoixActivity" />
+        <activity android:name=".Display.StatsDisplay" />
         <activity
             android:name=".Display.GestionTagsDisplay"
-            android:windowSoftInputMode="stateHidden"></activity>
-        <activity android:name=".Display.ChoixTagsDisplay"></activity>
-        <activity android:name=".Display.ChoixMotsDisplay"></activity>
-        <activity android:name=".Display.ChoixMultiTagsDisplay"></activity>
-        <activity android:name=".Display.PartageDisplay"></activity>
-        <activity android:name=".Display.ChoixLangueDisplay"></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".Display.ChoixTagsDisplay" />
+        <activity android:name=".Display.ChoixMotsDisplay" />
+        <activity android:name=".Display.ChoixMultiTagsDisplay" />
+        <activity android:name=".Display.PartageDisplay" />
+        <activity android:name=".Display.ChoixLangueDisplay" />
         <activity
             android:name=".Display.CahierDisplay"
-            android:windowSoftInputMode="stateHidden"></activity>
-        <activity android:name=".Display.GestionMotDisplay"></activity>
-        <activity android:name=".Display.RevisionCheckDisplay"></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".Display.GestionMotDisplay" />
+        <activity android:name=".Display.RevisionCheckDisplay" />
         <activity android:name=".Display.ResultatRevisionDisplay" />
+        <activity android:name=".ColorPicker" />
     </application>
 
 </manifest>

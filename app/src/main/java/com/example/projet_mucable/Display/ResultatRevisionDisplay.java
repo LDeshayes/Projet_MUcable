@@ -273,7 +273,6 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             if( (cursorStats.getInt(4)<=id_session-3 || dateFormerSession<date2sem.getTime()) && cursorStats.getInt(4)==5){
                 cvStat.put("CoefAppr",4);
                 CDB.update("t_Mot", cvStat, "Langue LIKE '"+language+"' AND Id_word="+cursorStats.getInt(5), null);
-                Log.d("testtest", " Dans le if");
 
             }
             cursorStats.moveToNext();

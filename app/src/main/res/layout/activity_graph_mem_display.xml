@@ -10,7 +10,7 @@
         android:id="@+id/buttonSelectMot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="Stats"
         app:layout_constraintStart_toStartOf="@+id/guideline32"
         app:layout_constraintTop_toTopOf="@+id/guideline34" />
 
@@ -41,4 +41,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.05" />
+
+    <Spinner
+        android:id="@+id/spinnerPeriode"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonSelectMot"
+        app:layout_constraintStart_toEndOf="@+id/buttonSelectMot"
+        app:layout_constraintTop_toTopOf="@+id/guideline34" />
 </androidx.constraintlayout.widget.ConstraintLayout>

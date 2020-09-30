@@ -35,11 +35,13 @@ public class StatsDisplay extends AppCompatActivity {
     ListView w_words_listview;
     ListView m_words_listview;
     ListView b_words_listview;
-    Integer[][] key_list_final, key_list;
-    String[][] words_list, translations_list, tags_list;
-    int rowCount;
-    /*int key = -1; // future key pour repérer le word à modifier
-    View key_view;*/
+    //Integer[][] key_list_final, key_list;
+    String[][] list_ww;
+    String[][] list_mw;
+    String[][] list_bw;
+    int[] rowCount = new int[3];
+    int key = -1; // future key pour repérer le word à modifier
+    View key_view;
     SQLiteDatabase CDB;
 
 
@@ -122,10 +124,13 @@ public class StatsDisplay extends AppCompatActivity {
 
     void loadDB(String lang) {
 
-        Cursor cursor = CDB.query(
+
+
+        //// Worst Words /////////////////////////////////////////////////////
+        Cursor cursorWW = CDB.query(
                 /*"t_"+lang,*/"t_Mot",
                 null,
-                "Langue LIKE '"+language+"'",
+                "Langue LIKE '"+language+"' AND CoefAppr IN ('0','1','2')",
                 null,
                 null,
                 null,
@@ -133,45 +138,65 @@ public class StatsDisplay extends AppCompatActivity {
                 null
 
         );
-
-        rowCount = cursor.getCount();
-
-        int t1;
-        if( rowCount/3 == rowCount/3.0){
-            t1 = rowCount/3;
+        rowCount[0] = cursorWW.getCount();
+        list_ww = new String[4][rowCount[0]];
+        cursorWW.moveToFirst();
+        for ( int i=0; i < rowCount[0]; i++ ) {
+            list_ww[0][i] = cursorWW.getString(1);
+            list_ww[1][i] = cursorWW.getString(2);
+            list_ww[2][i] = printNAN ( cursorWW.getString(3), cursorWW.getString(4), cursorWW.getString(5), cursorWW.getString(6) );
+            list_ww[3][i] = cursorWW.getString(0);
+            cursorWW.moveToNext();
         }
-        else{
-            t1 = (int)Math.round((rowCount/3.0) + 0.5);
+        cursorWW.close();
+
+        //// Medium Words /////////////////////////////////////////////////////
+        Cursor cursorMW = CDB.query(
+                /*"t_"+lang,*/"t_Mot",
+                null,
+                "Langue LIKE '"+language+"' AND CoefAppr IN ('3','4')",
+                null,
+                null,
+                null,
+                "CoefAppr ASC, Word ASC",
+                null
+
+        );
+        rowCount[1] = cursorMW.getCount();
+        list_mw = new String[4][rowCount[1]];
+        cursorMW.moveToFirst();
+        for ( int i=0; i < rowCount[1]; i++ ) {
+            list_mw[0][i] = cursorMW.getString(1);
+            list_mw[1][i] = cursorMW.getString(2);
+            list_ww[2][i] = printNAN ( cursorMW.getString(3), cursorMW.getString(4), cursorMW.getString(5), cursorMW.getString(6) );
+            list_ww[3][i] = cursorMW.getString(0);
+            cursorMW.moveToNext();
         }
-        int t2 = (rowCount-t1)/2;
-        int t3 = rowCount-t2-t1;
+        cursorMW.close();
 
-        key_list_final = new Integer[3][t1]; // too many lines
-        key_list = new Integer[3][t1];
-        words_list = new String[3][t1];
-        translations_list = new String[3][t1];
-        tags_list = new String[3][t1];
+        //// Best Words /////////////////////////////////////////////////////
+        Cursor cursorBW = CDB.query(
+                /*"t_"+lang,*/"t_Mot",
+                null,
+                "Langue LIKE '"+language+"' AND CoefAppr IN ('5')",
+                null,
+                null,
+                null,
+                "CoefAppr ASC, Word ASC",
+                null
 
-        cursor.moveToFirst();
-
-        for ( int i=0; i < rowCount; i++ ) {
-
-
-            double dK = i / (rowCount / 3.0);
-            int k = (int) dK;
-
-            double dJ = i % (rowCount / 3.0);
-            int j = (int) dJ;
-
-            //key_list_final[i/(rowCount/3)][j] = cursor.getInt(0);
-            //key_list[i/(rowCount/3)][j] = cursor.getInt(0);
-            words_list[k][j] = cursor.getString(1);
-            translations_list[k][j] = cursor.getString(2);
-            tags_list[k][j] = printNAN ( cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6) );
-            cursor.moveToNext();
-
+        );
+        rowCount[2] = cursorBW.getCount();
+        list_bw = new String[4][rowCount[2]];
+        cursorBW.moveToFirst();
+        for ( int i=0; i < rowCount[2]; i++ ) {
+            list_bw[0][i] = cursorBW.getString(1);
+            list_bw[1][i] = cursorBW.getString(2);
+            list_bw[2][i] = printNAN ( cursorBW.getString(3), cursorBW.getString(4), cursorBW.getString(5), cursorBW.getString(6) );
+            list_bw[3][i] = cursorBW.getString(0);
+            cursorBW.moveToNext();
         }
-        cursor.close();
+        cursorBW.close();
 
 
 
@@ -179,16 +204,16 @@ public class StatsDisplay extends AppCompatActivity {
         m_words_listview = (ListView) findViewById(R.id.medium_words);
         b_words_listview = (ListView) findViewById(R.id.best_words);
 
-        CustomAdapter customAdapter_w = new CustomAdapter(getApplicationContext(), words_list[0], translations_list[0], tags_list[0]);
-        CustomAdapter customAdapter_m = new CustomAdapter(getApplicationContext(), Arrays.copyOfRange(words_list[1],0, t3), Arrays.copyOfRange(translations_list[1],0,t3), Arrays.copyOfRange(tags_list[1],0,t3));
-        CustomAdapter customAdapter_b = new CustomAdapter(getApplicationContext(), Arrays.copyOfRange(words_list[2],0, t2), Arrays.copyOfRange(translations_list[1],0,t2), Arrays.copyOfRange(tags_list[2],0,t2));
+        CustomAdapter customAdapter_w = new CustomAdapter(getApplicationContext(), list_ww[0], list_ww[1], list_ww[2]);
+        CustomAdapter customAdapter_m = new CustomAdapter(getApplicationContext(), list_mw[0], list_mw[1], list_mw[2]);
+        CustomAdapter customAdapter_b = new CustomAdapter(getApplicationContext(), list_bw[0], list_bw[1], list_bw[2]);
 
         w_words_listview.setAdapter(customAdapter_w);
         m_words_listview.setAdapter(customAdapter_m);
         b_words_listview.setAdapter(customAdapter_b);
 
 
-        /*words_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        w_words_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int pos, long id) {
                 if ( key != -1 ) {
@@ -196,9 +221,31 @@ public class StatsDisplay extends AppCompatActivity {
                 }
                 key_view = v;
                 key_view.setBackgroundResource(R.drawable.border);
-                key = key_list[pos];
+                key = Integer.parseInt(list_ww[3][pos]);
             }
-        });*/
+        });
+        m_words_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int pos, long id) {
+                if ( key != -1 ) {
+                    key_view.setBackgroundResource(0);
+                }
+                key_view = v;
+                key_view.setBackgroundResource(R.drawable.border);
+                key = Integer.parseInt(list_mw[3][pos]);
+            }
+        });
+        b_words_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int pos, long id) {
+                if ( key != -1 ) {
+                    key_view.setBackgroundResource(0);
+                }
+                key_view = v;
+                key_view.setBackgroundResource(R.drawable.border);
+                key = Integer.parseInt(list_bw[3][pos]);
+            }
+        });
     }
 
     public void resetTests(View view) {
@@ -228,11 +275,14 @@ public class StatsDisplay extends AppCompatActivity {
     }
 
     public void toGraphs(View view) {
-        /*Intent i = new Intent ( this, ChoixMultiTagsDisplay.class );
-        i.putExtra("Language",language);
-        startActivity( i );*/
+        if(key!=-1){
+            Intent i = new Intent ( this, GraphMemDisplay.class );
+            i.putExtra("Language",language);
+            i.putExtra("Key",key);
+
+            startActivity( i );
+        }
     }
 
 
-
-    }
+}
