@@ -75,7 +75,6 @@ public class CahierAdapter extends BaseAdapter {
             case 1:
                 tag1.setText(tagsSplit[0]);
                 tag1.setTextColor(Color.parseColor(tagColMap.get(tagsSplit[0])));
-                // 25 54 92 52 55
                 break;
             case 2:
                 tag1.setText(tagsSplit[0]+"  -  ");

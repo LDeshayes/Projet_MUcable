@@ -1,6 +1,6 @@
 package com.example.projet_mucable.Display;
 
-// Menu de partage de voc, 4.3 cdc
+// Share word list
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.projet_mucable.R;
@@ -29,7 +28,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import android.app.Activity;
 
 
@@ -68,10 +66,10 @@ public class PartageDisplay extends AppCompatActivity {
             }
         });
 
-        // Recupération des spinners
+        // Get spinners
         final Spinner spinnerL = findViewById(R.id.spinnerL);
 
-        // Création de la liste des différentes langues
+        // Create language array
         /*ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Anglais");
         arrayList.add("Allemand");
@@ -83,7 +81,7 @@ public class PartageDisplay extends AppCompatActivity {
         spinnerL.setAdapter(arrayAdapter);
         spinnerL.setSelection(0);
 
-        // Definition des comportements des spinners
+        // Define spinners behavior
         spinnerL.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -229,12 +227,10 @@ public class PartageDisplay extends AppCompatActivity {
 
                 //String SQL_exist = "SELECT COUNT(*) FROM t_"+langue+" WHERE Word='"+parts[0]+"' AND Translation='"+parts[1]+"'";
                 String SQL_exist = "SELECT * FROM t_Mot WHERE Langue='"+langue+"' AND Word='"+parts[0]+"' AND Translation='"+parts[1]+"'";
-                //Toast.makeText(getApplicationContext(),"T: "+SQL_exist,Toast.LENGTH_LONG).show();
 
                 // Count nn rows with each CoefAppr
                 Cursor mCount= CDB.rawQuery(SQL_exist, null);
                 int count = mCount.getCount();
-                //Toast.makeText(getApplicationContext(),"# : "+count,Toast.LENGTH_LONG).show();
                 if(!(count > 0)){
                     //String insert = "INSERT INTO t_"+langue+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+parts[6]+"')";
                     String insert = "INSERT INTO t_Mot (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr, Langue) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+parts[6]+"', '"+langue+"')";

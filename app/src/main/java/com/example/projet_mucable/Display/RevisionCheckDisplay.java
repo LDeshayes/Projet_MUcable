@@ -2,33 +2,21 @@ package com.example.projet_mucable.Display;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.projet_mucable.CustomAdapter;
-import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.StringEqualityPercentCheckLevenshteinDistance;
 import com.example.projet_mucable.R;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
-
-
-
 
 
 public class RevisionCheckDisplay extends AppCompatActivity {
@@ -178,7 +166,6 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listViewMessages);
         listView.setAdapter(itemsAdapter);
 
-        //Toast.makeText(getApplicationContext(),"TEST: "+nb_left+" !",Toast.LENGTH_LONG).show();
     }
 
     public void goToNext(View view) {

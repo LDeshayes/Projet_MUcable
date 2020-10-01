@@ -75,7 +75,7 @@ public class ParChoixActivity extends AppCompatActivity {
         indTab = new Integer[nb_left];
 
 
-        // Si c'est pas la premiere fois qu'on passe dans revisionParCoeur
+        // if it's not the first time we go in revisionParCoeur
         if(this_i.getBooleanExtra("Not_First", true)){
 
             ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
@@ -301,7 +301,6 @@ public class ParChoixActivity extends AppCompatActivity {
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
     }
 
-    // FUTURE : ADD FILTER HERE
     void loadDB() {
 
         Cursor cursor;

@@ -61,7 +61,7 @@ public class GraphMemDisplay extends AppCompatActivity {
 
 
         /////////////////////////////////////////////////////
-        ////////////////// Gestion spinner //////////////////
+        /////////////////// Manage spinner //////////////////
         /////////////////////////////////////////////////////
         final Spinner spinnerP = findViewById(R.id.spinnerPeriode);
         ArrayList<String> listPeriode = new ArrayList<String>();
@@ -95,7 +95,7 @@ public class GraphMemDisplay extends AppCompatActivity {
     }
 
 
-    // Recupere les infos du mots
+    // Get infos about current word
     void getKeyRow() {
 
         Cursor cursor = CDB.query(
@@ -119,7 +119,7 @@ public class GraphMemDisplay extends AppCompatActivity {
         cursor.close();
     }
 
-    // Recupere la date d'il ya X semaines
+    // Get date from X weeks
     public Date getDateBeforeXWeeks(Date date, int x) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -184,17 +184,19 @@ public class GraphMemDisplay extends AppCompatActivity {
     }
 
 
-    // Regrouper les stats en sessions et les sessions en groupes de sessions
-    // exemple: deux sessions le meme jour
+    // Regroup stats in sessions and session in group of sessions
+    // example: two session the same day
     public void separateSession(){
 
-        Log.d("testtest","Day: "+getDateBeforeXDays(dateNow, 2));
-
+        int size = periodeSpinner*7;
+        String[] regroupedSessh = new String[size];
         Map<String,String> sesshDays = new HashMap<>();
 
+
+        int i = 0;
         for(String id_sess: mapSession.keySet()){
 
-
+            // if current sessin and previous session are the same day, regoup them
 
 
         }

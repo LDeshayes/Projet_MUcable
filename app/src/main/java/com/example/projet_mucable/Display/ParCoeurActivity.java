@@ -11,21 +11,13 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.R;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -72,7 +64,7 @@ public class ParCoeurActivity extends AppCompatActivity {
     String indiceMot = "";
     String newIndiceMot = "";
 
-    //runs without a timer by reposting this handler at the end of the runnable
+    // Runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
 
@@ -85,7 +77,7 @@ public class ParCoeurActivity extends AppCompatActivity {
             indiceTextView.setText(5-seconds+"");
 
             if(seconds>5 && !showyet){
-                //mettre bouton indice disponible
+                // Set button visible
                 indiceTextView.setCompoundDrawablesWithIntrinsicBounds(0, android.R.drawable.ic_dialog_info, 0, 0);
                 indiceTextView.setVisibility(View.VISIBLE);
                 showyet = true;
@@ -133,8 +125,6 @@ public class ParCoeurActivity extends AppCompatActivity {
         editor.putLong("TIMER", startTime);
         editor.commit();
 
-        //Log.d("testtest","create: "+startTime+" / "+System.currentTimeMillis());
-
         if (savedInstanceState != null){
             //Log.d("testtest","savedinstance: "+startTime+" / "+savedInstanceState.getLong("TIMER"));
             startTime = savedInstanceState.getLong("TIMER");
@@ -158,7 +148,7 @@ public class ParCoeurActivity extends AppCompatActivity {
         timerHandler.postDelayed(timerRunnable, 0);
 
 
-        // Si c'est pas la premiere fois qu'on passe dans revisionParCoeur
+        // If it isnt the first time we go in revisionParCoeur
         if(this_i.getBooleanExtra("Not_First", true)){
 
             ArrayList<Integer> intList = this_i.getIntegerArrayListExtra("IndTab");
@@ -414,7 +404,6 @@ public class ParCoeurActivity extends AppCompatActivity {
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
     }
 
-    // FUTURE : ADD FILTER HERE
     void loadDB() {
 
         Cursor cursor;
@@ -511,7 +500,7 @@ public class ParCoeurActivity extends AppCompatActivity {
         TextView t = (TextView) findViewById(R.id.editTextReponse);
         String repo = t.getText().toString();
 
-        // Fin timer
+        // Stop timer
         finTimer = new Date();
         Double chrono = (double)(finTimer.getTime()-debutTimer.getTime())/1000;
 

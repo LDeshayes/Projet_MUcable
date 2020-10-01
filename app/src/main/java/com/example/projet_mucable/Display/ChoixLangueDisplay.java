@@ -1,6 +1,6 @@
 package com.example.projet_mucable.Display;
 
-// Activité entre menu pcp et cahier pour choisir la langue du cahier
+// Acitivity between main menu and cahierdisplay
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -28,7 +28,7 @@ public class ChoixLangueDisplay extends AppCompatActivity {
         setupSpinner();
     }
 
-    // Setup du spinner pour les langues
+    // Setting up the language spinner
     void setupSpinner() {
 
         Spinner spinner = (Spinner) findViewById(R.id.language_spinner);
@@ -51,7 +51,7 @@ public class ChoixLangueDisplay extends AppCompatActivity {
 
     }
 
-    // Full clean de la DB & de la valeur FST_LAUNCH en SharedPreferences
+    // Full clean  DB & FST_LAUNCH value in SharedPreferences
     @SuppressLint("WrongConstant")
     public void cleanDB(View view) {
 

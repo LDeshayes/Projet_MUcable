@@ -1,33 +1,21 @@
 package com.example.projet_mucable.Display;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.projet_mucable.CustomAdapter;
-import com.example.projet_mucable.DicoSeri;
 import com.example.projet_mucable.R;
 import com.example.projet_mucable.ResultatsAdapter;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class ResultatRevisionDisplay extends AppCompatActivity {
 
@@ -95,7 +83,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             tot+=1;
         }
 
-        // Assertion de la nouvelle session
+        // Insert new session
         //String newSession = "INSERT INTO t_Session (date, score, temps) VALUES ('"+date.getTime()+"','"+(goodRep/tot)*20.0+"','"+tpsTot+"');";
         ContentValues valuesSess = new ContentValues();
         valuesSess.put("Date",date.getTime());
@@ -246,11 +234,9 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
 
         }
 
-        // TO do
         // Recupérer la derniere stats de chaques mots
         // si session de stat du mot < sessionActu-4
         //      => coefAppr
-
         final Cursor cursorStats = CDB.rawQuery("" +
                 " SELECT st.*" +
                 " FROM t_Stat st" +

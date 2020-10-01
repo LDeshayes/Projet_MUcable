@@ -55,16 +55,6 @@ public class ColorPicker extends AppCompatActivity implements SeekBar.OnSeekBarC
         //Reference the value changing
         int id=seekBar.getId();
 
-        //Get the changed value
-        /*if(id == com.example.projet_mucable.R.id.seekA)
-            A=progress;
-        else if(id == com.example.projet_mucable.R.id.seekR)
-            R=progress;
-        else if(id == com.example.projet_mucable.R.id.seekA)
-            G=progress;
-        else if(id == com.example.projet_mucable.R.id.seekA)
-            B=progress;*/
-
         //Build and show the new color
         ShowColor.setBackgroundColor(Color.argb(A,R,G,B));
 

@@ -67,19 +67,19 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
 
         Map<String,String> tagColMap = new HashMap<>();
 
-        // on prends toutes les lignes de tags
+        // On every tag lines
         for(String tl : tag_listDB){
-            // on recupere les tags de chaque lignes
+            // We get every tag of the line
             String[] tmpTags = tl.split(" - ");
             for(String t : tmpTags){
-                // on verifier qu'ils sont pas nuls
+                // We check they arent null
                 if(t != null && !t.equals("") && !t.equals("NAN") && !t.equals("NAN_NULL")){
                     tagColMap.put(t,"");
                 }
             }
         }
 
-        // de tout les tags recupérés on récupere la couleur
+        // Of all the tag, we get the corresponding color
         for(String tag: tagColMap.keySet()){
             Cursor c = CDB.rawQuery("SELECT Couleur FROM t_TagColor WHERE Nom LIKE '"+tag+"'", null);
             c.moveToFirst();
@@ -99,10 +99,10 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
         if ( !tag_list[0].equals("EMPTY_NULL") ) {
 
 
-            // création de l'objet TagAdapter...
+            // Creating TagAdapter object
             TagAdapter adapter = new TagAdapter(getApplicationContext(), tag_listDB, getTagsColor());
 
-            // ...qui va remplir l'objet ListView
+            // ...which will fill the ListView
             final ListView tags_listview = (ListView) findViewById(R.id.tags_listview);
             tags_listview.setAdapter(adapter);
 

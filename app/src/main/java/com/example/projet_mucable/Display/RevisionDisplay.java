@@ -1,7 +1,6 @@
 package com.example.projet_mucable.Display;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,23 +8,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-/*import android.util.Log;
-import android.widget.Button;
-import android.app.Activity;*/
-
 import com.example.projet_mucable.R;
-
 import java.util.ArrayList;
-
-
 
 
 public class RevisionDisplay extends AppCompatActivity {
@@ -48,11 +38,11 @@ public class RevisionDisplay extends AppCompatActivity {
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
 
 
-        // Recupération des spinners
+        // Get spinners
         final Spinner spinnerLD = findViewById(R.id.spinnerLDep);
         final Spinner spinnerLF = findViewById(R.id.spinnerLEnd);
 
-        // Créaqtion de la liste des différentes langues
+        // Create language list
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Francais");
         arrayList.add("Anglais");
@@ -67,14 +57,13 @@ public class RevisionDisplay extends AppCompatActivity {
 
         spinnerLF.setSelection(1);
 
-        // Definition des comportements des spinners
+        // Define sppinners behaviors
         spinnerLD.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 if(position>0){
                     langue = parent.getItemAtPosition(position).toString();
-                    //Toast.makeText(parent.getContext(), "Selected: " + itemName, Toast.LENGTH_LONG).show();
                     spinnerLF.setSelection(0);
                     quel_sens = true;
                 }
@@ -94,7 +83,6 @@ public class RevisionDisplay extends AppCompatActivity {
 
                 if(position>0){
                     langue = parent.getItemAtPosition(position).toString();
-                    //Toast.makeText(parent.getContext(), "Selected: " + itemName, Toast.LENGTH_LONG).show();
                     spinnerLD.setSelection(0);
                     quel_sens = false;
                 }
@@ -259,8 +247,6 @@ public class RevisionDisplay extends AppCompatActivity {
                 listeTags.setText(tags.replaceAll("'","").replaceAll(",",", "));
             }
         }
-
-
 
         /*Button button_Tag_1 = findViewById(R.id.buttonTagsSelec);
         if(tags!=null && !tags.isEmpty()){

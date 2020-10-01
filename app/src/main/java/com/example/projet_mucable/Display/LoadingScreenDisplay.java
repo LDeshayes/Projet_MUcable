@@ -109,13 +109,11 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                 CDB.execSQL(Insert_Data);
             }
 
-            // Ajout des tags par défaut
+            // Add tags by default
 
             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
             NEW_TAGLIST.putString("TAG_LIST", tag_list);
             NEW_TAGLIST.commit();
-
-            // CLOSE THE DB BETWEEN ACTIVITIES ?
 
             SharedPreferences.Editor DB_EXIST_EDIT = preferences.edit();
             DB_EXIST_EDIT.putBoolean("FST_LAUNCH", false);
@@ -309,7 +307,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
             String delete, insert, lowered;
             Cursor cursor;
 
-            // Remplissage des tables de mots
+            // Fill t_word table
 
             cursor = CDB.query(
                     "t_Anglais",
@@ -368,7 +366,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                 cursor.moveToNext();
             }
 
-            // Remplissage table des tags
+            // Fill t_TagColor table
             String[] tags = preferences.getString("TAG_LIST", "EMPTY_NULL").split(";");
             for(String tag: tags){
                 insert = "INSERT INTO t_TagColor (Nom) VALUES ('"+tag+"')";

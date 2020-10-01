@@ -1,6 +1,6 @@
 package com.example.projet_mucable.Display;
 
-// Affiche une liste de vocabulaire d'une langue choisie, 4.2
+// Display a list of vocabulary, 4.2
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -154,12 +154,12 @@ public class CahierDisplay extends AppCompatActivity {
 
         Map<String,String> tagColMap = new HashMap<>();
 
-        // on prends toutes les lignes de tags
+        // On every tag lines
         for(String tl : tags_list){
-            // on recupere les tags de chaque lignes
+            // We get every tag of the line
             String[] tmpTags = tl.split(" - ");
             for(String t : tmpTags){
-                // on verifier qu'ils sont pas nuls
+                // We check they arent null
                 if(t != null && !t.equals("") && !t.equals("NAN") && !t.equals("NAN_NULL")){
                     tagColMap.put(t,"");
                 }
@@ -167,11 +167,11 @@ public class CahierDisplay extends AppCompatActivity {
         }
 
 
-        // de tout les tags recupérés on récupere la couleur
+        // Of all the tag, we get the corresponding color
         for(String tag: tagColMap.keySet()){
             Cursor c = CDB.rawQuery("SELECT Couleur FROM t_TagColor WHERE Nom LIKE '"+tag+"'", null);
             c.moveToFirst();
-            Log.d("testtest",c.getString(0));
+            //Log.d("testtest",c.getString(0));
             tagColMap.put(tag,c.getString(0));
         }
 

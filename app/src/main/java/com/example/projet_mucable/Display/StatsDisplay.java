@@ -6,8 +6,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,10 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.projet_mucable.CustomAdapter;
 import com.example.projet_mucable.R;
 
@@ -40,7 +35,7 @@ public class StatsDisplay extends AppCompatActivity {
     String[][] list_mw;
     String[][] list_bw;
     int[] rowCount = new int[3];
-    int key = -1; // future key pour repérer le word à modifier
+    int key = -1; // id of word of interest
     View key_view;
     SQLiteDatabase CDB;
 
@@ -56,10 +51,10 @@ public class StatsDisplay extends AppCompatActivity {
 
     void getLanguage() {
 
-        // Recupération des spinners
+        // Get spinners
         final Spinner spinnerL = findViewById(R.id.spinnerLang);
 
-        // Créaqtion de la liste des différentes langues
+        // Create language list
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Choisissez une langue");
         arrayList.add("Anglais");
@@ -73,7 +68,7 @@ public class StatsDisplay extends AppCompatActivity {
         spinnerL.setAdapter(arrayAdapter);
         spinnerL.setSelection(0);
 
-        // Definition des comportements des spinners
+        // Define spinners behavior
         spinnerL.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -89,7 +84,6 @@ public class StatsDisplay extends AppCompatActivity {
             }
         });
 
-
     }
 
     void setupDB() {
@@ -102,7 +96,6 @@ public class StatsDisplay extends AppCompatActivity {
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
     }
 
-    // FUTURE : ADD FILTER HERE
     String printNAN ( String tag1, String tag2, String tag3, String tag4 ) {
 
         String[] tabTag = { tag1, tag2, tag3, tag4 };
@@ -123,8 +116,6 @@ public class StatsDisplay extends AppCompatActivity {
     }
 
     void loadDB(String lang) {
-
-
 
         //// Worst Words /////////////////////////////////////////////////////
         Cursor cursorWW = CDB.query(
