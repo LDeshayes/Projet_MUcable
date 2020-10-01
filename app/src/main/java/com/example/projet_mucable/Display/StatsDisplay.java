@@ -251,9 +251,13 @@ public class StatsDisplay extends AppCompatActivity {
                         @SuppressLint("WrongConstant") SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
                         ContentValues cv = new ContentValues();
                         cv.put("CoefAppr",0);
-                        CDB.update("t_Anglais", cv, "", null);
-                        CDB.update("t_Allemand", cv, "", null);
-                        CDB.update("t_Espagnol", cv, "", null);
+                        //CDB.update("t_Anglais", cv, "", null);
+                        //CDB.update("t_Allemand", cv, "", null);
+                        CDB.update("t_Mot", cv, "Langue='"+language+"'", null);
+                        finish();
+                        overridePendingTransition(0, 0);
+                        startActivity(getIntent());
+                        overridePendingTransition(0, 0);
                     }
                 })
                 .setNegativeButton("Non", new DialogInterface.OnClickListener() {

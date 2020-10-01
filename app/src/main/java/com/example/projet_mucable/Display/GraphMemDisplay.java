@@ -15,14 +15,19 @@ import android.widget.Spinner;
 
 import com.example.projet_mucable.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class GraphMemDisplay extends AppCompatActivity {
 
+    // Values of the word we want the stats of
     SQLiteDatabase CDB;
     int key;
     String word;
@@ -34,9 +39,13 @@ public class GraphMemDisplay extends AppCompatActivity {
     int CoefAppr_Word ;
 
 
+    // dictio id_session:date_session
     Map<String,String> mapSession = new HashMap<>();
+    // Regrouped all session in a day interval
+    String[] regroupedSessh;
 
 
+    // All stats gathered in the specified period
     int[] id_session;
     Double[] Temps;
     int[] CoefAppr;
@@ -44,10 +53,11 @@ public class GraphMemDisplay extends AppCompatActivity {
     int[] nbIndice;
 
 
+    // We gather stats from session that are between now and the end date
     Date dateNow = new Date();
-    int periodeSpinner;
     Date dateLimite;
-
+    // Number of weeks of the interval
+    int periodeSpinner;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -58,11 +68,11 @@ public class GraphMemDisplay extends AppCompatActivity {
         Intent i = getIntent();
         key = i.getIntExtra("Key", -1);
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
+        getKeyRow();
 
 
         /////////////////////////////////////////////////////
         /////////////////// Manage spinner //////////////////
-        /////////////////////////////////////////////////////
         final Spinner spinnerP = findViewById(R.id.spinnerPeriode);
         ArrayList<String> listPeriode = new ArrayList<String>();
         listPeriode.add("2 semaines");
@@ -88,8 +98,8 @@ public class GraphMemDisplay extends AppCompatActivity {
             }
         });
         spinnerP.setSelection(0);
-
-        getKeyRow();
+        ///////////////////// end spinner ///////////////////
+        /////////////////////////////////////////////////////
 
 
     }
@@ -142,11 +152,12 @@ public class GraphMemDisplay extends AppCompatActivity {
         Cursor sessh = CDB.rawQuery("" +
                         " SELECT Id_Session, Date" +
                         " FROM t_Session " +
-                        " WHERE Date<"+dateLimite.getTime()+" ORDER BY Date ASC"
+                        " WHERE Date>"+dateLimite.getTime()+" ORDER BY Date ASC"
                 ,null);
         sessh.moveToFirst();
         while(!sessh.isAfterLast()){
             mapSession.put(sessh.getInt(0)+"", sessh.getString(1));
+            Log.d("testtest","-");
             sessh.moveToNext();
         }
         sessh.close();
@@ -189,16 +200,38 @@ public class GraphMemDisplay extends AppCompatActivity {
     public void separateSession(){
 
         int size = periodeSpinner*7;
-        String[] regroupedSessh = new String[size];
+        regroupedSessh = new String[size];
         Map<String,String> sesshDays = new HashMap<>();
 
 
         int i = 0;
+        Date tmp = dateNow;
+
         for(String id_sess: mapSession.keySet()){
 
-            // if current sessin and previous session are the same day, regoup them
+            Date current = new Date(Long.parseLong(mapSession.get(id_sess)));
 
+            // if current session and previous session are the same day, regroup them
+            if(i>0 && current.getTime()-tmp.getTime()<current.getTime()-getDateBeforeXDays(current, 1).getTime()){
+                regroupedSessh[i]=regroupedSessh[i]+id_sess;
+            }
+            else{
+                tmp = current;
+            }
+            i++;
+        }
 
+    }
+
+    public  void prepareGraphs(){
+
+        int i = 0;
+        while (regroupedSessh[i]!= null){
+
+            // Link stats with grouped sessions
+            // get all stats i's together
+
+            i++;
         }
 
 
