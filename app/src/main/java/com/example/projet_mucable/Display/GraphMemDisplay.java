@@ -43,6 +43,8 @@ public class GraphMemDisplay extends AppCompatActivity {
     Map<String,String> mapSession = new HashMap<>();
     // Regrouped all session in a day interval
     String[] regroupedSessh;
+    String[] regroupedStats;
+    String[] sesshDates;
 
 
     // All stats gathered in the specified period
@@ -91,6 +93,7 @@ public class GraphMemDisplay extends AppCompatActivity {
                 periodeSpinner = (position+1)*2;
                 generateStuff();
                 separateSession();
+                separateStats();
             }
             @Override
             public void onNothingSelected(AdapterView <?> parent) {
@@ -157,7 +160,7 @@ public class GraphMemDisplay extends AppCompatActivity {
         sessh.moveToFirst();
         while(!sessh.isAfterLast()){
             mapSession.put(sessh.getInt(0)+"", sessh.getString(1));
-            Log.d("testtest","-");
+            //Log.d("testtest","-");
             sessh.moveToNext();
         }
         sessh.close();
@@ -183,6 +186,7 @@ public class GraphMemDisplay extends AppCompatActivity {
         int i = 0;
         while(!stats.isAfterLast()){
             id_session[i] = stats.getInt(4);
+            Log.d("testtest", "allsessh: "+stats.getInt(4));
             Temps[i] = stats.getDouble(1);
             CoefAppr[i] = stats.getInt(2);
             Resultat[i] = stats.getInt(3);
@@ -201,10 +205,12 @@ public class GraphMemDisplay extends AppCompatActivity {
 
         int size = periodeSpinner*7;
         regroupedSessh = new String[size];
+        sesshDates = new String[size];
         Map<String,String> sesshDays = new HashMap<>();
 
 
         int i = 0;
+        int j = 0;
         Date tmp = dateNow;
 
         for(String id_sess: mapSession.keySet()){
@@ -212,28 +218,86 @@ public class GraphMemDisplay extends AppCompatActivity {
             Date current = new Date(Long.parseLong(mapSession.get(id_sess)));
 
             // if current session and previous session are the same day, regroup them
-            if(i>0 && current.getTime()-tmp.getTime()<current.getTime()-getDateBeforeXDays(current, 1).getTime()){
-                regroupedSessh[i]=regroupedSessh[i]+id_sess;
+            if(j>0 && current.getTime()-tmp.getTime()<current.getTime()-getDateBeforeXDays(current, 1).getTime()){
+                if(regroupedSessh[i]==null || regroupedSessh[i]=="" || regroupedSessh[i].isEmpty()){
+                    regroupedSessh[i]=id_sess;
+                    //Log.d("testtest","if: "+regroupedSessh[i]);
+
+                }
+                else{
+                    regroupedSessh[i]=regroupedSessh[i]+","+id_sess;
+                    //Log.d("testtest","else: "+regroupedSessh[i]);
+
+                }
             }
             else{
+                if(j==0){
+                    regroupedSessh[i]=id_sess;
+                    sesshDates[i]=current.getTime()+"";
+                    //Log.d("testtest","i0: "+regroupedSessh[i]);
+                    j++;
+                }
+                else{
+                    i++;
+                }
                 tmp = current;
+                sesshDates[i]=current.getTime()+"";
             }
-            i++;
         }
 
     }
 
-    public  void prepareGraphs(){
+    public  void separateStats(){
 
         int i = 0;
+        regroupedStats = new String[regroupedSessh.length];
+
+        //Log.d("testtest",""+regroupedSessh[0]);
+
         while (regroupedSessh[i]!= null){
 
             // Link stats with grouped sessions
             // get all stats i's together
 
+            //String[] sessh_Ids = regroupedSessh[i].split(";");
+
+            Log.d("testtest","Id_Word="+key+" AND Id_Session IN ('"+regroupedSessh[i].replaceAll(",","','")+"')");
+            Cursor cursorStats = CDB.query(
+                    "t_Stat",
+                    null,
+                    "Id_Word="+key+" AND Id_Session IN ('"+regroupedSessh[i].replaceAll(",","','")+"')",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+
+            );
+
+            cursorStats.moveToFirst();
+            while(!cursorStats.isAfterLast()){
+
+                // Build stats in groups
+                if(regroupedStats[i]==null || regroupedStats[i]=="" || regroupedStats[i].isEmpty()){
+                    regroupedStats[i]=cursorStats.getInt(0)+"";;
+                    //Log.d("testtest","if: "+regroupedSessh[i]);
+                }
+                else{
+                    regroupedStats[i]=regroupedStats[i]+","+cursorStats.getInt(0);;
+                    //Log.d("testtest","else: "+regroupedSessh[i]);
+                }
+
+                cursorStats.moveToNext()
+;            }
+
             i++;
         }
+        //Log.d("testtest",""+regroupedStats[0]);
+    }
 
+    public void dosomething(){
+
+        int size = regroupedSessh.length;
 
     }
 

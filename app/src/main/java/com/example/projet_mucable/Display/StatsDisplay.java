@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
@@ -159,8 +160,8 @@ public class StatsDisplay extends AppCompatActivity {
         for ( int i=0; i < rowCount[1]; i++ ) {
             list_mw[0][i] = cursorMW.getString(1);
             list_mw[1][i] = cursorMW.getString(2);
-            list_ww[2][i] = printNAN ( cursorMW.getString(3), cursorMW.getString(4), cursorMW.getString(5), cursorMW.getString(6) );
-            list_ww[3][i] = cursorMW.getString(0);
+            list_mw[2][i] = printNAN ( cursorMW.getString(3), cursorMW.getString(4), cursorMW.getString(5), cursorMW.getString(6) );
+            list_mw[3][i] = cursorMW.getString(0);
             cursorMW.moveToNext();
         }
         cursorMW.close();
