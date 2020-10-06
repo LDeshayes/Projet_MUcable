@@ -55,12 +55,16 @@ public class ParCoeurActivity extends AppCompatActivity {
     Date finTimer;
 
     long startTime;
+    long secondTime;
 
     TextView indiceTextView;
     EditText editMot;
+
     boolean showyet = false;
+    boolean showyet2 = false;
     int clickedIndice = 0;
     boolean edited = true;
+
     String indiceMot = "";
     String newIndiceMot = "";
 
@@ -76,15 +80,32 @@ public class ParCoeurActivity extends AppCompatActivity {
 
             indiceTextView.setText(5-seconds+"");
 
-            if(seconds>5 && !showyet){
+            if(seconds>5 && clickedIndice==0 && !showyet){
                 // Set button visible
                 indiceTextView.setCompoundDrawablesWithIntrinsicBounds(0, android.R.drawable.ic_dialog_info, 0, 0);
                 indiceTextView.setVisibility(View.VISIBLE);
                 showyet = true;
-                Toast.makeText(getApplicationContext(), "Indice disponible", Toast.LENGTH_SHORT).show();
-
                 timerHandler.removeCallbacks(timerRunnable);
+
+                Toast.makeText(getApplicationContext(), "Indice disponible", Toast.LENGTH_SHORT).show();
             }
+            else if(clickedIndice==0 && seconds<5){
+                //indiceTextView.setText(5-seconds+"");
+            }
+
+            else if(clickedIndice==1 && (int)((System.currentTimeMillis()-secondTime)/1000)>5 && !showyet2){
+                // Set button visible
+                indiceTextView.setCompoundDrawablesWithIntrinsicBounds(0, android.R.drawable.ic_dialog_info, 0, 0);
+                indiceTextView.setVisibility(View.VISIBLE);
+                showyet2 = true;
+                timerHandler.removeCallbacks(timerRunnable);
+
+                Toast.makeText(getApplicationContext(), "Indice disponible", Toast.LENGTH_SHORT).show();
+            }
+            else if(clickedIndice==1 && (int)((System.currentTimeMillis()-secondTime)/1000)<3){
+                //indiceTextView.setText(3-(int)((System.currentTimeMillis()-secondTime)/1000)+"");
+            }
+
 
             timerHandler.postDelayed(this, 100);
         }
@@ -304,14 +325,24 @@ public class ParCoeurActivity extends AppCompatActivity {
         indiceTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editMot.setHint(indiceMot);
 
-                if(tagsFilter!=null && !tagsFilter.isEmpty() && clickedIndice==1){
+                if((tagsFilter==null || tagsFilter.isEmpty()) && clickedIndice==1){
+
+                    secondTime = System.currentTimeMillis();
+                    startTime = secondTime;
+
                     TextView indiceTag = findViewById(R.id.textViewIndiceTag);
-                    indiceTag.setText("Tags du mots :  "+tagsFilter.replaceAll("'",""));
+                    indiceTag.setText("Tags du mots :  "+tags_list[indTab[word_number]]);
+                    clickedIndice++;
+                }
+                else if(clickedIndice==0){
+                    editMot.setHint(indiceMot);
+                    indiceTextView.setText("-");
+                    indiceTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    clickedIndice++;
+
                 }
 
-                    clickedIndice++;
             }
         });
 
@@ -465,14 +496,13 @@ public class ParCoeurActivity extends AppCompatActivity {
         tags_list = new String[rowCount];
 
         cursor.moveToFirst();
-        for ( int i = 0; i < rowCount; i++ ) {
+        for( int i = 0; i < rowCount; i++ ) {
             key_list[i] = cursor.getInt(0);
             words_list[i] = cursor.getString(1);
             translations_list[i] = cursor.getString(2);
             tags_list[i] = printNAN ( cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6) );
             cursor.moveToNext();
         }
-
     }
 
     String printNAN ( String tag1, String tag2, String tag3, String tag4 ) {

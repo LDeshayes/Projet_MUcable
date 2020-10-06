@@ -49,4 +49,12 @@
         app:layout_constraintBottom_toBottomOf="@+id/buttonSelectMot"
         app:layout_constraintStart_toEndOf="@+id/buttonSelectMot"
         app:layout_constraintTop_toTopOf="@+id/guideline34" />
+
+    <Spinner
+        android:id="@+id/spinnerStatType"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerPeriode"
+        app:layout_constraintStart_toEndOf="@+id/spinnerPeriode"
+        app:layout_constraintTop_toTopOf="@+id/guideline34" />
 </androidx.constraintlayout.widget.ConstraintLayout>
