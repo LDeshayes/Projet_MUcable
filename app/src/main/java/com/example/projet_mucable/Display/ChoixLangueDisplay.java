@@ -3,7 +3,6 @@ package com.example.projet_mucable.Display;
 // Acitivity between main menu and cahierdisplay
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -31,7 +30,7 @@ public class ChoixLangueDisplay extends AppCompatActivity {
     // Setting up the language spinner
     void setupSpinner() {
 
-        Spinner spinner = (Spinner) findViewById(R.id.language_spinner);
+        Spinner spinner = findViewById(R.id.language_spinner);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -70,7 +69,7 @@ public class ChoixLangueDisplay extends AppCompatActivity {
         EDITOR.putBoolean("FST_LAUNCH", true);
         EDITOR.putString("TAG_LIST", "EMPTY_NULL");
         EDITOR.putBoolean("NEED_UPD_01", true);
-        EDITOR.commit();
+        EDITOR.apply();
 
         Intent i = new Intent ( this, LoadingScreenDisplay.class );
         startActivity( i );

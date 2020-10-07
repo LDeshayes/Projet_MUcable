@@ -3,33 +3,25 @@ package com.example.projet_mucable.Display;
 // Display a list of vocabulary, 4.2
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+//import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.projet_mucable.CahierAdapter;
-import com.example.projet_mucable.CustomAdapter;
+//import com.example.projet_mucable.CustomAdapter;
 import com.example.projet_mucable.R;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CahierDisplay extends AppCompatActivity {
@@ -137,6 +129,7 @@ public class CahierDisplay extends AppCompatActivity {
             tags_list[i] = printNAN ( cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6) );
             cursor.moveToNext();
         }
+        cursor.close();
 
     }
 
@@ -173,6 +166,7 @@ public class CahierDisplay extends AppCompatActivity {
             c.moveToFirst();
             //Log.d("testtest",c.getString(0));
             tagColMap.put(tag,c.getString(0));
+            c.close();
         }
 
         return tagColMap;
@@ -184,7 +178,7 @@ public class CahierDisplay extends AppCompatActivity {
         words_listview.setAdapter(customAdapter);*/
 
 
-        words_listview = (ListView) findViewById(R.id.words_listview);
+        words_listview = findViewById(R.id.words_listview);
         CahierAdapter customAdapter = new CahierAdapter(getApplicationContext(), words_list, translations_list, tags_list, getTagsColor());
         words_listview.setAdapter(customAdapter);
 
@@ -240,7 +234,7 @@ public class CahierDisplay extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 String search = s.toString().toLowerCase();
-                CustomAdapter customAdapter;
+                //CustomAdapter customAdapter;
                 CahierAdapter cahierAdapter;
 
                 if (search.length() != 0) {
@@ -325,7 +319,7 @@ public class CahierDisplay extends AppCompatActivity {
         //CustomAdapter customAdapter;
         CahierAdapter cahierAdapter;
         switchCol = !switchCol;
-        words_listview = (ListView) findViewById(R.id.words_listview);
+        words_listview = findViewById(R.id.words_listview);
 
         if(!switchCol){
 

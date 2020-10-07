@@ -86,8 +86,6 @@ public class ParChoixActivity extends AppCompatActivity {
         }
         else{
 
-            boolean testEq;
-
             if(taille_bd>=nb_left){
 
                 for(int i=0; i<nb_left; i++){
@@ -103,7 +101,7 @@ public class ParChoixActivity extends AppCompatActivity {
 
                 if(nbCoef0>(nb_left*0.6)){
                 // Use 60% coef0
-                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    ArrayList<Integer> list = new ArrayList<>();
                     for (j=0; j<nbCoef0; j++) {
                         list.add(j);
                     }
@@ -114,7 +112,7 @@ public class ParChoixActivity extends AppCompatActivity {
                 }
                 else{
                 // Use all coef 0
-                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    //ArrayList<Integer> list = new ArrayList<>();
                     for (i=0; i<nbCoef0; i++) {
                         indTab[i]=i;
                     }
@@ -127,14 +125,14 @@ public class ParChoixActivity extends AppCompatActivity {
 
                 if(nbCoef1<(nb_left-resume)/2){
                 // Use all coef1 possible
-                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    //ArrayList<Integer> list = new ArrayList<>();
                     for (i=resume; i<resume+nbCoef1; i++) {
                         indTab[i]=i;
                     }
                 }
                 else{
                 // Use rdm amount of Coef1 and Coef2
-                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    ArrayList<Integer> list = new ArrayList<>();
                     for (j=nbCoef0-1; j<nbCoef0+nbCoef1; j++) {
                         list.add(i);
                     }
@@ -147,7 +145,7 @@ public class ParChoixActivity extends AppCompatActivity {
                 resume = i;
 
                 ///////////////////////////////////////////////////////// Rest in Coef2 /////////////////////////////////////////////////////////
-                ArrayList<Integer> list = new ArrayList<Integer>();
+                ArrayList<Integer> list = new ArrayList<>();
                 for (j=nbCoef1-1; j<nbCoef1+nbCoef2; j++) {
                     list.add(i);
                 }
@@ -190,7 +188,7 @@ public class ParChoixActivity extends AppCompatActivity {
             }
         }*/
 
-        ArrayList<Integer> listAns = new ArrayList<Integer>();
+        ArrayList<Integer> listAns = new ArrayList<>();
         for (int k=0; k<words_list.length; k++) {
             if(k!=word_number)
                 listAns.add(k);
@@ -222,7 +220,7 @@ public class ParChoixActivity extends AppCompatActivity {
             a4 = words_list[iAnswers[3]];
         }
 
-        TextView t = (TextView) findViewById(R.id.textViewQuestion);
+        TextView t = findViewById(R.id.textViewQuestion);
         t.setText(word);
 
         final Button tq1 =  findViewById(R.id.buttonQ1);
@@ -369,6 +367,7 @@ public class ParChoixActivity extends AppCompatActivity {
             tags_list[i] = printNAN ( cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6) );
             cursor.moveToNext();
         }
+        cursor.close();
 
     }
 
@@ -377,9 +376,9 @@ public class ParChoixActivity extends AppCompatActivity {
         String[] tabTag = { tag1, tag2, tag3, tag4 };
         String tempTag = "";
 
-        for ( int i = 0; i < tabTag.length; i++ ) {
-            if ( !( tabTag[i].equals("NAN") ) ) {
-                tempTag = tempTag + " - " + tabTag[i];
+        for (String s : tabTag) {
+            if (!(s.equals("NAN"))) {
+                tempTag = tempTag + " - " + s;
             }
         }
 
@@ -421,8 +420,8 @@ public class ParChoixActivity extends AppCompatActivity {
         i.putExtra("ReponseUser", repo);
         i.putExtra("Reponse", word_translation);
 
-        ArrayList<Integer> intList = new ArrayList<Integer>(50);
-        for (int k : indTab) intList.add(k);
+        ArrayList<Integer> intList = new ArrayList<>(50);
+        intList.addAll(Arrays.asList(indTab));
         i.putIntegerArrayListExtra("IndTab",intList);
 
         startActivity( i );

@@ -481,11 +481,91 @@ public class GraphMemDisplay extends AppCompatActivity {
     }
 
 
-    public void dosomethingelse(){
+    public int[][] amountOfKnowWords(){
+
+        int size = regroupedSessh.length;
+        int[][] amounts = new int[2][size];
+
+        // Run through every session 'day'
+        for(int i = 0; i<size; i++){
+
+            int nbLearned = 0;
+            int nbUnLeanred = 0;
 
 
+            for( String s : regroupedStats[i].split(",")){
+                if((mapResultat.get(Integer.parseInt(s)))!=100 && mapCoefAppr.get(Integer.parseInt(s))==3){
+                    nbUnLeanred++;
+                }
+                if((mapResultat.get(Integer.parseInt(s)))==100 && mapCoefAppr.get(Integer.parseInt(s))==2){
+                    nbUnLeanred++;
+                }
+
+            }
+            amounts[0][i]=nbUnLeanred;
+            amounts[1][i]=nbLearned;
+        }
+
+        return amounts;
+
+    }
 
 
+    public void dothebigthing(){
+
+        int size = regroupedSessh.length;
+        int[][] thething = new int[2][size];
+
+
+        int a1, a2;
+        double t1, t2;
+        a1 = 1;
+        a2 = 1;
+        t1 = 1.15;
+        t2 = 27.55;
+
+
+        // note:    pentes: -( 1.5 - 0.25 * (Coef-1) )
+        // ou       a1*exp(-t / T1) + a2*exp(-T/T2)   -   (T1=1.15, T2=27.55)
+
+        // ax + b
+        // default
+        //      a:
+        //      b:
+
+        // si bonne réponse
+        //      a ->
+        //      b ->
+
+        // Run through every session 'day'
+        for(int i = 0; i<size; i++){
+
+            boolean wrong = false;
+            int counter = 0;
+
+            // We check every stats of the 'day'
+            for( String s : regroupedStats[i].split(",")){
+
+                // if a word is wronged once we consider it wrong for the whole day
+                if(mapResultat.get(Integer.parseInt(s)) < 100){
+                    wrong = true;
+                    counter++;
+                }
+
+                // If the word has not be wronged then it is bump
+                if(!wrong){
+                    thething[0][i] = 1;
+                    thething[1][i] = 1 + 1-(1/(1+(counter-1)));
+                    // 1 + 1/(1+counter)
+                }
+                else{
+                    thething[0][i] = 0;
+                    thething[1][i] = 0;
+                }
+
+            }
+
+        }
 
     }
 

@@ -1,9 +1,6 @@
 package com.example.projet_mucable;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.annotation.SuppressLint;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +13,15 @@ import java.util.Map;
 
 public class CahierAdapter extends BaseAdapter {
 
-    Context context;
+    //Context context;
     String[] words_list;
     String translations_list[];
     String[] tags_list;
     LayoutInflater inflter;
-    Map<String,String> tagColMap = new HashMap<>();
+    Map<String,String> tagColMap;
 
 
     public CahierAdapter(Context applicationContext, String[] words_list, String[] translations_list, String[] tags_list, Map<String, String> tagCol) {
-        this.context = context;
         this.words_list = words_list;
         this.translations_list = translations_list;
         this.tags_list = tags_list;
@@ -61,7 +57,7 @@ public class CahierAdapter extends BaseAdapter {
 
         TextView trad = view.findViewById(R.id.trad);
         String[] tagsSplit = tags_list[i].split(" - ");
-        String[] tagColor = new String[tagsSplit.length];
+        //String[] tagColor = new String[tagsSplit.length];
         int nbTag = 0;
 
         for(String t : tagsSplit){

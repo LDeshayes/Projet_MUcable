@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class ResultatRevisionDisplay extends AppCompatActivity {
 
-    ArrayList list_msgs = new ArrayList();
+    //ArrayList list_msgs = new ArrayList();
     //DicoSeri monDico = new DicoSeri();
     String language;
     String tagsFilter = "...";
@@ -52,7 +52,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         String[] rep_list = new String[size];
         String[] attendu_list = new String[size];
         String[] mark_list = new String[size];
-        String[] requests = new String[size];
+        //String[] requests = new String[size];
 
         String wordTmp;
         String translaTmp;
@@ -65,11 +65,11 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
         CDB.execSQL("PRAGMA foreign_keys = ON;");
 
         // textViewLangue
-        TextView tLangue = (TextView) findViewById(R.id.textViewLangue);
+        TextView tLangue = findViewById(R.id.textViewLangue);
         tLangue.setText("Révision en "+language);
 
         // textViewTag
-        TextView tTag = (TextView) findViewById(R.id.textViewTags);
+        TextView tTag = findViewById(R.id.textViewTags);
         if(tagsFilter==null || tagsFilter.isEmpty()){
             tagsFilter = "...";
         }
@@ -98,7 +98,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
 
 
         // Counting t/f answers to order words in cahier
-        Map<String,String> adjustWords =  new HashMap<String,String>();
+        Map<String,String> adjustWords = new HashMap<>();
 
         for(String line : list_test_res){
             String[] values = line.split(XX);
@@ -176,10 +176,10 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
 
 
         // textViewScore
-        TextView tScore = (TextView) findViewById(R.id.textViewScore);
+        TextView tScore = findViewById(R.id.textViewScore);
         tScore.setText("Score : "+goodRep+"/"+tot);
 
-        ListView listView = (ListView) findViewById(R.id.words_listview_res);
+        ListView listView = findViewById(R.id.words_listview_res);
         ResultatsAdapter itemsAdapter = new ResultatsAdapter(this, question_list, rep_list, attendu_list, mark_list);
         listView.setAdapter(itemsAdapter);
 
@@ -255,6 +255,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             final Cursor cursorSess = CDB.rawQuery("SELECT Date FROM t_Session WHERE Id_session="+cursorStats.getInt(4),null);
             cursorSess.moveToFirst();
             int dateFormerSession = cursorSess.getInt(0);
+            cursorSess.close();
 
             if( (cursorStats.getInt(4)<=id_session-3 || dateFormerSession<date2sem.getTime()) && cursorStats.getInt(4)==5){
                 cvStat.put("CoefAppr",4);
@@ -263,6 +264,7 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             }
             cursorStats.moveToNext();
         }
+        cursorStats.close();
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,13 +12,11 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
-
+/*import android.widget.SimpleCursorAdapter;
+import android.database.MatrixCursor;*/
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.projet_mucable.R;
 import com.example.projet_mucable.TagAdapter;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +24,7 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
 
     View tag_view;
     String tagsChosen = "";
-    Map<String,String> tagsSelected =  new HashMap<String,String>();
+    Map<String,String> tagsSelected = new HashMap<>();
     SQLiteDatabase CDB;
     String[] tag_listDB;
 
@@ -92,8 +89,8 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
     }
 
     void setupListView() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
+        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
         final String[] tag_list = tag_listDB;
 
         if ( !tag_list[0].equals("EMPTY_NULL") ) {
@@ -103,7 +100,7 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
             TagAdapter adapter = new TagAdapter(getApplicationContext(), tag_listDB, getTagsColor());
 
             // ...which will fill the ListView
-            final ListView tags_listview = (ListView) findViewById(R.id.tags_listview);
+            final ListView tags_listview = findViewById(R.id.tags_listview);
             tags_listview.setAdapter(adapter);
 
             tags_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -167,8 +164,7 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
                     })
                     .setNegativeButton("Non", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences.Editor NEW_TAGSLIST = preferences.edit();
-                            NEW_TAGSLIST.putString("TAGS_CHOSEN", "");
+                            //NEW_TAGSLIST.putString("TAGS_CHOSEN", "");
                         }
                     });
             AlertDialog alert = builder.create();

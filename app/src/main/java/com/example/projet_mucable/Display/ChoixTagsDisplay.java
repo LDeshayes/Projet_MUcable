@@ -109,8 +109,8 @@ public class ChoixTagsDisplay extends AppCompatActivity {
     }
 
     void setupListView() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
+        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //String tags = preferences.getString("TAG_LIST", "EMPTY_NULL");
         final String[] tag_list = tag_listDB;
 
         if ( !tag_list[0].equals("EMPTY_NULL") ) {
@@ -119,7 +119,7 @@ public class ChoixTagsDisplay extends AppCompatActivity {
             TagAdapter adapter = new TagAdapter(getApplicationContext(), tag_listDB, getTagsColor());
 
             // ...which will fill ListView
-            final ListView tags_listview = (ListView) findViewById(R.id.tags_listview);
+            final ListView tags_listview = findViewById(R.id.tags_listview);
             tags_listview.setAdapter(adapter);
 
             tags_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -140,16 +140,16 @@ public class ChoixTagsDisplay extends AppCompatActivity {
 
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
         if ( !tagChosen.equals("NAN") ) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Êtes vous sur(e) de vouloir choisir le tag "+tagChosen+" ?")
                     .setCancelable(true)
                     .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
                             NEW_TAGLIST.putString("TAG_CHOSEN", tagChosen);
-                            NEW_TAGLIST.commit();
+                            NEW_TAGLIST.apply();
                             finish();
                         }
                     })
@@ -159,7 +159,6 @@ public class ChoixTagsDisplay extends AppCompatActivity {
 
         } else {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Vous n'avez choisit aucun tag !")
                     .setCancelable(true)
                     .setPositiveButton("Ok", null);

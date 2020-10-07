@@ -89,9 +89,7 @@ public class ParCoeurActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Indice disponible", Toast.LENGTH_SHORT).show();
             }
-            else if(clickedIndice==0 && seconds<5){
-                //indiceTextView.setText(5-seconds+"");
-            }
+
 
             else if(clickedIndice==1 && (int)((System.currentTimeMillis()-secondTime)/1000)>5 && !showyet2){
                 // Set button visible
@@ -102,9 +100,7 @@ public class ParCoeurActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Indice disponible", Toast.LENGTH_SHORT).show();
             }
-            else if(clickedIndice==1 && (int)((System.currentTimeMillis()-secondTime)/1000)<3){
-                //indiceTextView.setText(3-(int)((System.currentTimeMillis()-secondTime)/1000)+"");
-            }
+
 
 
             timerHandler.postDelayed(this, 100);
@@ -180,7 +176,7 @@ public class ParCoeurActivity extends AppCompatActivity {
         }
         else{
 
-            boolean testEq;
+            //boolean testEq;
 
             if(taille_bd>=nb_left){
 
@@ -214,7 +210,7 @@ public class ParCoeurActivity extends AppCompatActivity {
 
                 if(nbCoef0>(nb_left*0.6) /*&& nbCoef1+nbCoef2>=nb_left*0.6*/){
                 // Use 60% coef0
-                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    ArrayList<Integer> list = new ArrayList<>();
                     for (j=0; j<nbCoef0; j++) {
                         list.add(j);
                     }
@@ -225,7 +221,7 @@ public class ParCoeurActivity extends AppCompatActivity {
                 }
                 else{
                 // Use all coef 0
-                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    //ArrayList<Integer> list = new ArrayList<Integer>();
                     for (i=0; i<nbCoef0; i++) {
                         indTab[i]=i;
                     }
@@ -238,14 +234,14 @@ public class ParCoeurActivity extends AppCompatActivity {
 
                 if(nbCoef1<(nb_left-resume)/2){
                 // Use all coef1 possible
-                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    //ArrayList<Integer> list = new ArrayList<Integer>();
                     for (i=resume; i<resume+nbCoef1; i++) {
                         indTab[i]=i;
                     }
                 }
                 else{
                 // Use rdm amount of Coef1 and Coef2
-                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    ArrayList<Integer> list = new ArrayList<>();
                     for (j=nbCoef0-1; j<nbCoef0+nbCoef1; j++) {
                         list.add(i);
                     }
@@ -258,7 +254,7 @@ public class ParCoeurActivity extends AppCompatActivity {
                 resume = i;
 
                 ///////////////////////////////////////////////////////// Rest in Coef2 /////////////////////////////////////////////////////////
-                ArrayList<Integer> list = new ArrayList<Integer>();
+                ArrayList<Integer> list = new ArrayList<>();
                 for (j=nbCoef1-1; j<nbCoef1+nbCoef2; j++) {
                     list.add(i);
                 }
@@ -357,20 +353,18 @@ public class ParCoeurActivity extends AppCompatActivity {
                 String textFromEditView = e.toString();
                 String textFromEditClean = textFromEditView.replaceAll("_ ","").replaceAll("  ","").replaceAll("_","").replaceAll(" ","");
                 boolean antiTitouan = (textFromEditView.replaceAll("_","").replaceAll(" ","")).isEmpty();
-                boolean antiMartin = (position>editMot.length());
+                //boolean antiMartin = (position>editMot.length());
                 String newText = textFromEditClean;
                 //String newText = textFromEditView.split("_")[0];
 
 
                 if(edited){
+                    edited=false;
                     if(antiTitouan){
-                        edited=false;
                         editMot.setText("");
-                        edited=true;
                     }
                     else{
 
-                        edited=false;
                         if (clickedIndice>0) {
                             if (textFromEditClean.length() < indiceMot.length()/2) {
                                 for(int i = (textFromEditClean.length()); i<newIndiceMot.length(); i++){
@@ -387,16 +381,10 @@ public class ParCoeurActivity extends AppCompatActivity {
                             // is only executed if the EditText was directly changed by the user
                             editMot.setText(newText);
                             //Log.d("fuckspace","pos: "+position+" - "+editMot.length());
-                            if(position>editMot.length()){
-                                editMot.setSelection(editMot.length());
-                            }
-                            else{
-                                editMot.setSelection(position);
-                            }
-
+                            editMot.setSelection(Math.min(position, editMot.length()));
                         }
-                        edited=true;
                     }
+                    edited=true;
                 }
 
             }
@@ -503,6 +491,7 @@ public class ParCoeurActivity extends AppCompatActivity {
             tags_list[i] = printNAN ( cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6) );
             cursor.moveToNext();
         }
+        cursor.close();
     }
 
     String printNAN ( String tag1, String tag2, String tag3, String tag4 ) {
@@ -510,9 +499,9 @@ public class ParCoeurActivity extends AppCompatActivity {
         String[] tabTag = { tag1, tag2, tag3, tag4 };
         String tempTag = "";
 
-        for ( int i = 0; i < tabTag.length; i++ ) {
-            if ( !( tabTag[i].equals("NAN") ) ) {
-                tempTag = tempTag + " - " + tabTag[i];
+        for (String s : tabTag) {
+            if (!(s.equals("NAN"))) {
+                tempTag = tempTag + " - " + s;
             }
         }
 
@@ -527,7 +516,7 @@ public class ParCoeurActivity extends AppCompatActivity {
 
     public void goToParCoeur(View view) {
 
-        TextView t = (TextView) findViewById(R.id.editTextReponse);
+        TextView t = findViewById(R.id.editTextReponse);
         String repo = t.getText().toString();
 
         // Stop timer
@@ -555,7 +544,7 @@ public class ParCoeurActivity extends AppCompatActivity {
         i.putExtra("NbIndice", clickedIndice);
 
         ArrayList<Integer> intList = new ArrayList<Integer>(50);
-        for (int k : indTab) intList.add(k);
+        intList.addAll(Arrays.asList(indTab));
         i.putIntegerArrayListExtra("IndTab",intList);
 
 

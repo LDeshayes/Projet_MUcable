@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 
@@ -35,7 +36,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
     String reponseUser;
     String reponse;
 
-    ArrayList list_msgs = new ArrayList();
+    ArrayList<String> list_msgs = new ArrayList<>();
     //DicoSeri monDico = new DicoSeri();
     String test_res;
     Integer[] indTab;
@@ -79,7 +80,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         chrono = this_i.getDoubleExtra("Temps", 0.0);
         nbIndices = this_i.getIntExtra("NbIndice", 0);
 
-        if(language!="Allemands" && language!="allemands"){
+        if(!language.equals("Allemands") && !language.equals("allemands")){
             reponseUser = reponseUser.toLowerCase();
         }
 
@@ -87,9 +88,9 @@ public class RevisionCheckDisplay extends AppCompatActivity {
             reponseUser=" ";
 
 
-        TextView tVF = (TextView) findViewById(R.id.textViewVF);
-        TextView tMP = (TextView) findViewById(R.id.textViewMotP);
-        TextView tRU = (TextView) findViewById(R.id.textViewRU);
+        TextView tVF = findViewById(R.id.textViewVF);
+        TextView tMP = findViewById(R.id.textViewMotP);
+        TextView tRU = findViewById(R.id.textViewRU);
 
         tMP.setText("Le mot à traduire : "+question);
         tRU.setText("Votre traduction  : "+reponseUser);
@@ -113,6 +114,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
             Cursor mCount= CDB.rawQuery(SQL_EXI, null);
             mCount.moveToFirst();
             int nbExi = mCount.getInt(0);
+            mCount.close();
 
             if(nbExi>0){
                 tVF.setText("Bonne réponse !");
@@ -162,15 +164,15 @@ public class RevisionCheckDisplay extends AppCompatActivity {
 
         //monDico.put(question, String.join(", ", list_msgs));
 
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list_msgs);
-        ListView listView = (ListView) findViewById(R.id.listViewMessages);
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list_msgs);
+        ListView listView = findViewById(R.id.listViewMessages);
         listView.setAdapter(itemsAdapter);
 
     }
 
     public void goToNext(View view) {
 
-        final int random = new Random().nextInt(taille_bd);
+        //final int random = new Random().nextInt(taille_bd);
         Intent i;
 
         if(type){
@@ -191,23 +193,20 @@ public class RevisionCheckDisplay extends AppCompatActivity {
         //i.putExtra("Dico", monDico);
         i.putExtra("String_res", test_res);
 
-        ArrayList<Integer> intList = new ArrayList<Integer>(50);
-        for (int k : indTab) intList.add(k);
+        ArrayList<Integer> intList = new ArrayList<>(50);
+        intList.addAll(Arrays.asList(indTab));
         i.putIntegerArrayListExtra("IndTab",intList);
 
 
-        if(nb_left>0){
-            startActivity( i );
-        }
-        else{
-            i = new Intent ( this, ResultatRevisionDisplay.class );
+        if (nb_left <= 0) {
+            i = new Intent(this, ResultatRevisionDisplay.class);
             //i.putExtra("Dico", monDico);
             i.putExtra("String_res", test_res);
             i.putExtra("Sens", sens);
             i.putExtra("Langue", language);
             i.putExtra("TagsFilter", tagsFilter);
-            startActivity( i );
         }
+        startActivity( i );
         finish();
 
     }

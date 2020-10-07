@@ -131,6 +131,7 @@ public class GestionMotDisplay extends AppCompatActivity {
             );
             cursor.moveToFirst();
             information_values = (cursor.getString(0) + ";" + cursor.getString(1) + ";" + cursor.getString(2) + ";" + cursor.getString(3) + ";" + cursor.getString(4) + ";" + cursor.getString(5)).split(";");
+            cursor.close();
         }
     }
 
@@ -352,6 +353,7 @@ public class GestionMotDisplay extends AppCompatActivity {
         Button button_Tag_4 = findViewById(R.id.button_Tag_4);
         String tag_4 = button_Tag_4.getText().toString();
 
+        assert tag != null;
         if ( tag.equals(tag_1) || tag.equals(tag_2) || tag.equals(tag_3) || tag.equals(tag_4) ) {
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
             builder.setMessage("Ce tag est déjà sélectionné pour ce mot !")

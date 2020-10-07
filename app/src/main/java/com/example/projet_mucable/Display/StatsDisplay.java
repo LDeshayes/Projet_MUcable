@@ -62,7 +62,7 @@ public class StatsDisplay extends AppCompatActivity {
         arrayList.add("Allemand");
         arrayList.add("Espagnol");
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
         //ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_item);
 
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -122,7 +122,7 @@ public class StatsDisplay extends AppCompatActivity {
         Cursor cursorWW = CDB.query(
                 /*"t_"+lang,*/"t_Mot",
                 null,
-                "Langue LIKE '"+language+"' AND CoefAppr IN ('0','1','2')",
+                "Langue LIKE '"+lang+"' AND CoefAppr IN ('0','1','2')",
                 null,
                 null,
                 null,
@@ -192,9 +192,9 @@ public class StatsDisplay extends AppCompatActivity {
 
 
 
-        w_words_listview = (ListView) findViewById(R.id.worst_words);
-        m_words_listview = (ListView) findViewById(R.id.medium_words);
-        b_words_listview = (ListView) findViewById(R.id.best_words);
+        w_words_listview = findViewById(R.id.worst_words);
+        m_words_listview = findViewById(R.id.medium_words);
+        b_words_listview = findViewById(R.id.best_words);
 
         CustomAdapter customAdapter_w = new CustomAdapter(getApplicationContext(), list_ww[0], list_ww[1], list_ww[2]);
         CustomAdapter customAdapter_m = new CustomAdapter(getApplicationContext(), list_mw[0], list_mw[1], list_mw[2]);

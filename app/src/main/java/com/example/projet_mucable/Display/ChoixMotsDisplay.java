@@ -6,24 +6,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+/*import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.projet_mucable.CahierAdapter;
+import android.database.MatrixCursor;
 import com.example.projet_mucable.CustomAdapter;
+import android.util.Log;*/
+import androidx.appcompat.app.AppCompatActivity;
+import com.example.projet_mucable.CahierAdapter;
 import com.example.projet_mucable.R;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,8 +33,8 @@ public class ChoixMotsDisplay extends AppCompatActivity {
     String language;
     int[] key_list;
     String[] words_list, translations_list, tags_list;
-    Map<String,String> motsSelected =  new HashMap<String,String>();
-    Map<String,String> mots =  new HashMap<String,String>();
+    Map<String,String> motsSelected = new HashMap<>();
+    Map<String,String> mots = new HashMap<>();
     SQLiteDatabase CDB;
 
     @SuppressLint("WrongConstant")
@@ -110,6 +107,7 @@ public class ChoixMotsDisplay extends AppCompatActivity {
             c.moveToFirst();
             //Log.d("testtest",c.getString(0));
             tagColMap.put(tag,c.getString(0));
+            c.close();
         }
 
         return tagColMap;
@@ -120,9 +118,9 @@ public class ChoixMotsDisplay extends AppCompatActivity {
         String[] tabTag = { tag1, tag2, tag3, tag4 };
         String tempTag = "";
 
-        for ( int i = 0; i < tabTag.length; i++ ) {
-            if ( !( tabTag[i].equals("NAN") ) ) {
-                tempTag = tempTag + " - " + tabTag[i];
+        for (String s : tabTag) {
+            if (!(s.equals("NAN"))) {
+                tempTag = tempTag + " - " + s;
             }
         }
 
@@ -140,7 +138,7 @@ public class ChoixMotsDisplay extends AppCompatActivity {
         CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), words_list, translations_list, tags_list);
         words_listview.setAdapter(customAdapter);*/
 
-        words_listview = (ListView) findViewById(R.id.mots_listview);
+        words_listview = findViewById(R.id.mots_listview);
         CahierAdapter customAdapter = new CahierAdapter(getApplicationContext(), words_list, translations_list, tags_list, getTagsColor());
         words_listview.setAdapter(customAdapter);
 
@@ -209,15 +207,15 @@ public class ChoixMotsDisplay extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             NEW_MOTSLIST.putString("WORDS_CHOSEN", wordsChosen);
                             NEW_MOTSLIST.putString("WORDS_CHOSEN2", wordsChosen2);
-                            NEW_MOTSLIST.commit();
+                            NEW_MOTSLIST.apply();
                             finish();
                         }
                     })
                     .setNegativeButton("Non", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences.Editor NEW_MOTSLIST = preferences.edit();
+                            /*SharedPreferences.Editor NEW_MOTSLIST = preferences.edit();
                             NEW_MOTSLIST.putString("WORDS_CHOSEN", "");
-                            NEW_MOTSLIST.putString("WORDS_CHOSEN2", "");
+                            NEW_MOTSLIST.putString("WORDS_CHOSEN2", "");*/
                         }
                     });
             AlertDialog alert = builder.create();
@@ -231,7 +229,7 @@ public class ChoixMotsDisplay extends AppCompatActivity {
                             SharedPreferences.Editor NEW_MOTSLIST = preferences.edit();
                             NEW_MOTSLIST.putString("WORDS_CHOSEN", "");
                             NEW_MOTSLIST.putString("WORDS_CHOSEN2", "");
-                            NEW_MOTSLIST.commit();
+                            NEW_MOTSLIST.apply();
                             finish();
                         }
                     });

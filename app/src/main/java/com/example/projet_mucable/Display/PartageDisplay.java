@@ -96,6 +96,7 @@ public class PartageDisplay extends AppCompatActivity {
         SharedPreferences.Editor prefEdit = preferences.edit();
         prefEdit.putString("WORDS_CHOSEN", "");
         prefEdit.putString("TAGS_CHOSEN", "");
+        prefEdit.apply();
 
         /*if(tagsChosen!=null && !tagsChosen.equals("")){
             TextView listeTags = findViewById(R.id.textViewListeTags);
@@ -200,6 +201,7 @@ public class PartageDisplay extends AppCompatActivity {
                         cursor.getString(5)+","+cursor.getString(6)+","+cursor.getInt(7)+"\n";
             cursor.moveToNext();
         }
+        cursor.close();
 
         try {
             outputStream = getContentResolver().openOutputStream(uri);
@@ -231,6 +233,7 @@ public class PartageDisplay extends AppCompatActivity {
                 // Count nn rows with each CoefAppr
                 Cursor mCount= CDB.rawQuery(SQL_exist, null);
                 int count = mCount.getCount();
+                mCount.close();
                 if(!(count > 0)){
                     //String insert = "INSERT INTO t_"+langue+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+parts[6]+"')";
                     String insert = "INSERT INTO t_Mot (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr, Langue) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+parts[6]+"', '"+langue+"')";

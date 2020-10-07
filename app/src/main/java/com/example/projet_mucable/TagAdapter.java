@@ -1,9 +1,6 @@
 package com.example.projet_mucable;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.annotation.SuppressLint;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +16,10 @@ public class TagAdapter extends BaseAdapter {
     Context context;
     String[] tags_list;
     LayoutInflater inflter;
-    Map<String,String> tagColMap = new HashMap<>();
+    Map<String,String> tagColMap;
 
 
     public TagAdapter(Context applicationContext, String[] tags_list, Map<String, String> tagCol) {
-        this.context = context;
         this.tags_list = tags_list;
         this.tagColMap = tagCol;
         inflter = (LayoutInflater.from(applicationContext));

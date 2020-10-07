@@ -1,26 +1,25 @@
 package com.example.projet_mucable.Display;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
-
+/*import android.util.Log;
+import android.os.Build;
+import android.app.Activity;*/
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projet_mucable.R;
 
 public class LoadingScreenDisplay extends AppCompatActivity {
 
-    String data_anglais[];
-    String data_allemand[];
-    String data_espagnol[];
+    String[] data_anglais;
+    String[] data_allemand;
+    String[] data_espagnol;
     String tag_list = "Nombre;Chiffre";
 
     {
@@ -113,11 +112,11 @@ public class LoadingScreenDisplay extends AppCompatActivity {
 
             SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
             NEW_TAGLIST.putString("TAG_LIST", tag_list);
-            NEW_TAGLIST.commit();
+            NEW_TAGLIST.apply();
 
             SharedPreferences.Editor DB_EXIST_EDIT = preferences.edit();
             DB_EXIST_EDIT.putBoolean("FST_LAUNCH", false);
-            DB_EXIST_EDIT.commit();
+            DB_EXIST_EDIT.apply();
 
         }
 
@@ -129,7 +128,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor NEW_TAGLIST = preferences.edit();
         NEW_TAGLIST.putString("TAG_LIST", tag_list);
-        NEW_TAGLIST.commit();
+        NEW_TAGLIST.apply();
 
     }
 
@@ -217,10 +216,11 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                 CDB.execSQL(insert);
                 cursor.moveToNext();
             }
+            cursor.close();
 
             SharedPreferences.Editor DB_NEED_UPD = preferences.edit();
             DB_NEED_UPD.putBoolean("NEED_UPD_01", false);
-            DB_NEED_UPD.commit();
+            DB_NEED_UPD.apply();
 
         }
 
@@ -240,7 +240,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
 
             SharedPreferences.Editor DB_NEED_UPD = preferences.edit();
             DB_NEED_UPD.putBoolean("NEED_UPD_02", false);
-            DB_NEED_UPD.commit();
+            DB_NEED_UPD.apply();
 
         }
         boolean need_upd_03 = preferences.getBoolean("NEED_UPD_03", true);
@@ -365,6 +365,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
                 CDB.execSQL(insert);
                 cursor.moveToNext();
             }
+            cursor.close();
 
             // Fill t_TagColor table
             String[] tags = preferences.getString("TAG_LIST", "EMPTY_NULL").split(";");
@@ -385,7 +386,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
 
             SharedPreferences.Editor DB_NEED_UPD = preferences.edit();
             DB_NEED_UPD.putBoolean("NEED_UPD_03", false);
-            DB_NEED_UPD.commit();
+            DB_NEED_UPD.apply();
 
         }
 
@@ -398,7 +399,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
         SharedPreferences.Editor screenSize = preferences.edit();
         screenSize.putInt("screenHeight", Resources.getSystem().getDisplayMetrics().heightPixels);
         screenSize.putInt("screenWidth", Resources.getSystem().getDisplayMetrics().widthPixels);
-        screenSize.commit();
+        screenSize.apply();
 
     }
 

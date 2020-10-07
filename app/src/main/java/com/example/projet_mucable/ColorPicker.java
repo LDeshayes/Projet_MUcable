@@ -28,13 +28,13 @@ public class ColorPicker extends AppCompatActivity implements SeekBar.OnSeekBarC
         setContentView(R.layout.activity_color_picker);
 
         //Get a reference to the seekbars
-        SeekA=(SeekBar)findViewById(R.id.seekA);
-        SeekR=(SeekBar)findViewById(R.id.seekR);
-        SeekG=(SeekBar)findViewById(R.id.seekG);
-        SeekB=(SeekBar)findViewById(R.id.seekB);
+        SeekA= findViewById(R.id.seekA);
+        SeekR= findViewById(R.id.seekR);
+        SeekG= findViewById(R.id.seekG);
+        SeekB= findViewById(R.id.seekB);
 
         //Reference the TextView
-        ShowColor=(TextView)findViewById(R.id.textView);
+        ShowColor= findViewById(R.id.textView);
 
         //This activity implements SeekBar OnSeekBarChangeListener
         SeekA.setOnSeekBarChangeListener(this);
@@ -53,7 +53,7 @@ public class ColorPicker extends AppCompatActivity implements SeekBar.OnSeekBarC
         int B=SeekB.getProgress();
 
         //Reference the value changing
-        int id=seekBar.getId();
+        //int id=seekBar.getId();
 
         //Build and show the new color
         ShowColor.setBackgroundColor(Color.argb(A,R,G,B));
