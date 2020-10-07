@@ -511,7 +511,7 @@ public class GraphMemDisplay extends AppCompatActivity {
     }
 
 
-    public void dothebigthing(){
+    public void dothebigthingornot(){
 
         int size = regroupedSessh.length;
         int[][] thething = new int[2][size];
@@ -567,6 +567,41 @@ public class GraphMemDisplay extends AppCompatActivity {
 
         }
 
+    }
+
+
+    // pourcentage bonne réponse
+    public double maybysomepie(){
+
+        int size = regroupedSessh.length;
+        double modifier = 0.0;
+
+        // Run through every session 'day'
+        for(int i = 0; i<size; i++){
+
+            for( String s : regroupedStats[i].split(",")){
+
+                // if the result is close to 0 then global accuracy is diminished furthermore
+                if(mapResultat.get(Integer.parseInt(s)) == 100){
+                    modifier+=100;
+                }
+                else{
+                    // if <20% then the fail count as 1.4 more
+                    if (mapResultat.get(Integer.parseInt(s)) < 20) {
+                        modifier-=140;
+                    }
+
+                    // if >80 && <100 then the fail counts as 0.8 less
+                    if (mapResultat.get(Integer.parseInt(s)) < 100 && mapResultat.get(Integer.parseInt(s)) > 80) {
+                        modifier-=80;
+                    }
+
+                }
+
+            }
+
+        }
+        return modifier;
     }
 
 
