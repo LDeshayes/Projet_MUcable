@@ -6,17 +6,31 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import com.example.projet_mucable.R;
+import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GraphMemDisplay extends AppCompatActivity {
@@ -76,7 +90,6 @@ public class GraphMemDisplay extends AppCompatActivity {
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
         getKeyRow();
 
-
         /////////////////////////////////////////////////////
         /////////////////// Manage spinner //////////////////
         final Spinner spinnerP = findViewById(R.id.spinnerPeriode);
@@ -111,8 +124,8 @@ public class GraphMemDisplay extends AppCompatActivity {
 
         final Spinner spinnerStatType = findViewById(R.id.spinnerStatType);
         ArrayList<String> listStatType = new ArrayList<>();
-        listStatType.add("Temps de réponse");
-        listStatType.add("X");
+        listStatType.add("Type de stats");
+        listStatType.add("Précision");
         listStatType.add("Y");
         listStatType.add("Z");
         ArrayAdapter<String> arrayAdapterType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listStatType);
@@ -122,8 +135,10 @@ public class GraphMemDisplay extends AppCompatActivity {
         spinnerStatType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-
+                if(position==1)
+                {
+                    testPieChart();
+                }
             }
             @Override
             public void onNothingSelected(AdapterView <?> parent) {
@@ -571,37 +586,81 @@ public class GraphMemDisplay extends AppCompatActivity {
 
 
     // pourcentage bonne réponse
-    public double maybysomepie(){
+    public double maybesomepie(){
 
-        int size = regroupedSessh.length;
+        int size = regroupedStats.length;
         double modifier = 0.0;
+        int count = 0;
 
         // Run through every session 'day'
         for(int i = 0; i<size; i++){
 
-            for( String s : regroupedStats[i].split(",")){
+            if(regroupedStats[i]!=null){
 
-                // if the result is close to 0 then global accuracy is diminished furthermore
-                if(mapResultat.get(Integer.parseInt(s)) == 100){
-                    modifier+=100;
-                }
-                else{
-                    // if <20% then the fail count as 1.4 more
-                    if (mapResultat.get(Integer.parseInt(s)) < 20) {
-                        modifier-=140;
+                for( String s : regroupedStats[i].split(",")){
+
+                    // if the result is close to 0 then global accuracy is diminished furthermore
+                    if(mapResultat.get(Integer.parseInt(s)) == 100){
+                        modifier+=100;
                     }
+                    else{
+                        // if <20% then the fail count as 1.4 more
+                        /*if (mapResultat.get(Integer.parseInt(s)) < 20) {
+                            modifier+=mapResultat.get(Integer.parseInt(s));
+                        }
 
-                    // if >80 && <100 then the fail counts as 0.8 less
-                    if (mapResultat.get(Integer.parseInt(s)) < 100 && mapResultat.get(Integer.parseInt(s)) > 80) {
-                        modifier-=80;
+                        // if >80 && <100 then the fail counts as 0.8 less
+                        if (mapResultat.get(Integer.parseInt(s)) < 100 && mapResultat.get(Integer.parseInt(s)) > 80) {
+                            modifier-=mapResultat.get(Integer.parseInt(s));
+                        }*/
+                        modifier-=mapResultat.get(Integer.parseInt(s));
+
                     }
-
+                    count++;
                 }
-
             }
 
         }
-        return modifier;
+        //modifier = 50;
+        return modifier/count;
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////// CHARTS MANAGEMENT ///////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void testPieChart(){
+
+        PieChart chart = new PieChart(getApplicationContext());
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.relativeGraphLayout);
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        rl.addView(chart, params); // add the programmatically created chart
+
+        ////////////////////////////////////////////////////////////////
+
+        List<PieEntry> pieEntries = new ArrayList<>();
+        pieEntries.add(new PieEntry(100-(float)maybesomepie(), ""));
+        pieEntries.add(new PieEntry((float)maybesomepie(), "Précision"));
+
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, ""); // Add entries to dataset
+        pieDataSet.setValueFormatter(new PercentFormatter());
+        pieDataSet.setColors(Color.rgb(230, 92, 92),Color.rgb(119, 230, 92));
+
+        PieData myPieData = new PieData(pieDataSet);
+
+
+        chart.setData(myPieData);
+        chart.setUsePercentValues(true);
+        // Description
+        Description desc = chart.getDescription();
+        desc.setText("Précision moyenne de la réponse");
+
+
+        chart.invalidate();
+
+
+
     }
 
 

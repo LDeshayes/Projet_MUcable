@@ -57,4 +57,29 @@
         app:layout_constraintBottom_toBottomOf="@+id/spinnerPeriode"
         app:layout_constraintStart_toEndOf="@+id/spinnerPeriode"
         app:layout_constraintTop_toTopOf="@+id/guideline34" />
+
+    <RelativeLayout
+        android:id="@+id/relativeGraphLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_horizontal|center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/guideline33"
+        app:layout_constraintEnd_toStartOf="@+id/guideline31"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline32"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSelectMot"
+        app:layout_constraintVertical_bias="1.0">
+
+
+            <!--<com.github.mikephil.charting.charts.Chart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+            </com.github.mikephil.charting.charts.Chart>-->
+
+
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
