@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,7 +26,6 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -257,7 +257,7 @@ public class GraphMemDisplay extends AppCompatActivity {
         stats.moveToFirst();
         //int i = 0;
         while(!stats.isAfterLast()){
-            Log.d("testtest", "allsessh: "+stats.getInt(4));
+            //Log.d("testtest", "allsessh: "+stats.getInt(4));
 
             mapId_session.put(stats.getInt(0), stats.getInt(4));
             //id_session[i] = stats.getInt(4);
@@ -586,10 +586,12 @@ public class GraphMemDisplay extends AppCompatActivity {
 
 
     // pourcentage bonne réponse
-    public double maybesomepie(){
+    public double[] maybesomepie(){
 
         int size = regroupedStats.length;
-        double modifier = 0.0;
+        double preciGlob = 0.0;
+        double preciWrong = 0.0;
+        double countRight = 0.0;
         int count = 0;
 
         // Run through every session 'day'
@@ -599,9 +601,11 @@ public class GraphMemDisplay extends AppCompatActivity {
 
                 for( String s : regroupedStats[i].split(",")){
 
-                    // if the result is close to 0 then global accuracy is diminished furthermore
+                    preciGlob+=mapResultat.get(Integer.parseInt(s));
+                    count++;
+
                     if(mapResultat.get(Integer.parseInt(s)) == 100){
-                        modifier+=100;
+                        countRight++;
                     }
                     else{
                         // if <20% then the fail count as 1.4 more
@@ -613,53 +617,112 @@ public class GraphMemDisplay extends AppCompatActivity {
                         if (mapResultat.get(Integer.parseInt(s)) < 100 && mapResultat.get(Integer.parseInt(s)) > 80) {
                             modifier-=mapResultat.get(Integer.parseInt(s));
                         }*/
-                        modifier-=mapResultat.get(Integer.parseInt(s));
+                        preciWrong+=mapResultat.get(Integer.parseInt(s));
 
                     }
-                    count++;
+
                 }
             }
 
         }
         //modifier = 50;
-        return modifier/count;
+        return new double[]{preciGlob/count, preciWrong/count, (countRight/count)*100};
     }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////// CHARTS MANAGEMENT ///////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void testPieChart(){
 
-        PieChart chart = new PieChart(getApplicationContext());
+        Log.d("testtest", ""+(maybesomepie())[0]+", "+(maybesomepie())[1]+", "+(maybesomepie())[2]);
+
+        // Global precision
+        PieChart chartPreciGlob = new PieChart(getApplicationContext());
+        // Right/Wrong percent
+        PieChart chartPercentRight = new PieChart(getApplicationContext());
+        // Precision when wrong
+        PieChart chartPreciWrong = new PieChart(getApplicationContext());
+        // Layout
         RelativeLayout rl = (RelativeLayout) findViewById(R.id.relativeGraphLayout);
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        rl.addView(chart, params); // add the programmatically created chart
 
-        ////////////////////////////////////////////////////////////////
+        // Layout params
 
-        List<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(100-(float)maybesomepie(), ""));
-        pieEntries.add(new PieEntry((float)maybesomepie(), "Précision"));
+        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
+        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params2.addRule(RelativeLayout.RIGHT_OF, chartPreciGlob.getId());
+        params2.addRule(RelativeLayout.LEFT_OF, chartPreciWrong.getId());
+        params2.addRule(RelativeLayout.CENTER_HORIZONTAL, chartPreciWrong.getId());
 
-        PieDataSet pieDataSet = new PieDataSet(pieEntries, ""); // Add entries to dataset
-        pieDataSet.setValueFormatter(new PercentFormatter());
-        pieDataSet.setColors(Color.rgb(230, 92, 92),Color.rgb(119, 230, 92));
-
-        PieData myPieData = new PieData(pieDataSet);
+        RelativeLayout.LayoutParams params3 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params3.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
 
-        chart.setData(myPieData);
-        chart.setUsePercentValues(true);
+        // Add the charts to the layout
+        rl.addView(chartPreciGlob, params1); // add the programmatically created chart
+        rl.addView(chartPercentRight, params2);
+        rl.addView(chartPreciWrong, params3);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Global precision
+        List<PieEntry> pieEntriesGP = new ArrayList<>();
+        pieEntriesGP.add(new PieEntry(100-(float)(maybesomepie())[0], ""));
+        pieEntriesGP.add(new PieEntry((float)(maybesomepie())[0], "Précision"));
+
+        // Right/Wrong percent
+        List<PieEntry> pieEntriesRW = new ArrayList<>();
+        pieEntriesRW.add(new PieEntry(100-(float)(maybesomepie())[2], ""));
+        pieEntriesRW.add(new PieEntry((float)(maybesomepie())[2], "Pourcentage réussite"));
+
+        // Precision when wrong
+        List<PieEntry> pieEntriesPW = new ArrayList<>();
+        pieEntriesPW.add(new PieEntry(100-(float)(maybesomepie())[1], ""));
+        pieEntriesPW.add(new PieEntry((float)(maybesomepie())[1], "Précision"));
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+        PieDataSet pieDataSetGP;
+        PieDataSet pieDataSetRW;
+        PieDataSet pieDataSetPW;
+
+
+        // Global precision
+        pieDataSetGP = new PieDataSet(pieEntriesGP, ""); // Add entries to dataset
+        pieDataSetGP.setValueFormatter(new PercentFormatter());
+        pieDataSetGP.setColors(Color.rgb(230, 92, 92),Color.rgb(119, 230, 92));
+        chartPreciGlob.setData(new PieData(pieDataSetGP));
+
+        // Percent R/W
+        pieDataSetRW = new PieDataSet(pieEntriesRW, ""); // Add entries to dataset
+        pieDataSetRW.setValueFormatter(new PercentFormatter());
+        pieDataSetRW.setColors(Color.rgb(230, 92, 92),Color.rgb(119, 230, 92));
+        chartPercentRight.setData(new PieData(pieDataSetRW));
+
+        // Preci when wrong
+        pieDataSetPW = new PieDataSet(pieEntriesPW, ""); // Add entries to dataset
+        pieDataSetPW.setValueFormatter(new PercentFormatter());
+        pieDataSetPW.setColors(Color.rgb(230, 92, 92),Color.rgb(119, 230, 92));
+        chartPreciWrong.setData(new PieData(pieDataSetPW));
+
+
+        ////////////////////////////////////////////// Styling /////////////////////////////////////
+        chartPreciGlob.setUsePercentValues(true);
+        chartPercentRight.setUsePercentValues(true);
+        chartPreciWrong.setUsePercentValues(true);
         // Description
-        Description desc = chart.getDescription();
-        desc.setText("Précision moyenne de la réponse");
+        chartPreciGlob.getDescription().setText("Précision moyenne de la réponse");
+        chartPercentRight.getDescription().setText("Pourcentage de réussite");
+        chartPreciWrong.getDescription().setText("Précision des réposne fausses");
 
 
-        chart.invalidate();
 
-
+        //chartPreciGlob.invalidate();
+        chartPercentRight.invalidate();
+        chartPreciWrong.invalidate();
 
     }
 
