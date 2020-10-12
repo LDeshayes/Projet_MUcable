@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -17,9 +18,14 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import com.example.projet_mucable.R;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -38,6 +44,7 @@ public class GraphMemDisplay extends AppCompatActivity {
     // Values of the word we want the stats of
     SQLiteDatabase CDB;
     int key;
+    String langue;
     String word;
     String translation;
     String tag_1;
@@ -45,6 +52,7 @@ public class GraphMemDisplay extends AppCompatActivity {
     String tag_3;
     String tag_4;
     int CoefAppr_Word ;
+    boolean first = true;
 
 
     // dictio id_session:date_session
@@ -87,6 +95,7 @@ public class GraphMemDisplay extends AppCompatActivity {
 
         Intent i = getIntent();
         key = i.getIntExtra("Key", -1);
+        langue = i.getStringExtra("Language");
         CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
         getKeyRow();
 
@@ -127,7 +136,9 @@ public class GraphMemDisplay extends AppCompatActivity {
         listStatType.add("Type de stats");
         listStatType.add("Précision");
         listStatType.add("Y");
-        listStatType.add("Z");
+        if(key==-1)
+            listStatType.add("Z");
+
         ArrayAdapter<String> arrayAdapterType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listStatType);
         arrayAdapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStatType.setAdapter(arrayAdapterType);
@@ -135,10 +146,19 @@ public class GraphMemDisplay extends AppCompatActivity {
         spinnerStatType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==1)
-                {
-                    testPieChart();
+
+                if (first){
+                    first=false;
                 }
+                else{
+                    clearLayout();
+                }
+
+                if(position==1)
+                    drawPieChart();
+                if(position==3 && key==-1)
+                    drawLineChart();
+
             }
             @Override
             public void onNothingSelected(AdapterView <?> parent) {
@@ -153,6 +173,11 @@ public class GraphMemDisplay extends AppCompatActivity {
         /////////////////////////////////////////////////////
 
 
+    }
+
+    public void clearLayout(){
+        RelativeLayout rgl = (RelativeLayout) findViewById(R.id.relativeGraphLayout);
+        rgl.removeAllViews();
     }
 
 
@@ -526,62 +551,63 @@ public class GraphMemDisplay extends AppCompatActivity {
     }
 
 
-    public void dothebigthingornot(){
+    // note:    pentes: -( 1.5 - 0.25 * (Coef-1) )
+    // ou       a1*exp(-t / T1) + a2*exp(-T/T2)   -   (T1=1.15, T2=27.55)
+
+    // ax + b
+    // default
+    //      a:
+    //      b:
+
+    // si bonne réponse
+    //      a ->
+    //      b ->
+
+
+
+    public int[][] dothebigthingornot(){
 
         int size = regroupedSessh.length;
         int[][] thething = new int[2][size];
 
 
-        int a1, a2;
+        /*int a1, a2;
         double t1, t2;
         a1 = 1;
         a2 = 1;
         t1 = 1.15;
-        t2 = 27.55;
-
-
-        // note:    pentes: -( 1.5 - 0.25 * (Coef-1) )
-        // ou       a1*exp(-t / T1) + a2*exp(-T/T2)   -   (T1=1.15, T2=27.55)
-
-        // ax + b
-        // default
-        //      a:
-        //      b:
-
-        // si bonne réponse
-        //      a ->
-        //      b ->
+        t2 = 27.55;*/
 
         // Run through every session 'day'
-        for(int i = 0; i<size; i++){
+        for(int i = 0; i<size; i++) {
 
             boolean wrong = false;
             int counter = 0;
 
-            // We check every stats of the 'day'
-            for( String s : regroupedStats[i].split(",")){
+            if (regroupedStats[i] != null) {
 
-                // if a word is wronged once we consider it wrong for the whole day
-                if(mapResultat.get(Integer.parseInt(s)) < 100){
-                    wrong = true;
+                // We check every stats of the 'day'
+                for (String s : regroupedStats[i].split(",")) {
+
                     counter++;
-                }
+                    // if a word is wronged once we consider it wrong for the whole day/group of sessions
+                    if (mapResultat.get(Integer.parseInt(s)) < 100) {
+                        wrong = true;
+                    }
 
-                // If the word has not be wronged then it is bump
-                if(!wrong){
-                    thething[0][i] = 1;
-                    thething[1][i] = 1 + 1-(1/(1+(counter-1)));
-                    // 1 + 1/(1+counter)
+                    // If the word has not be wronged then it is bump
+                    if (!wrong) {
+                        thething[0][i] = 1;
+                        thething[1][i] = 2 - (1 / (1 + (counter - 1)));
+                        // 1 + 1/(1+counter)
+                    } else {
+                        thething[0][i] = 0;
+                        thething[1][i] = 0;
+                    }
                 }
-                else{
-                    thething[0][i] = 0;
-                    thething[1][i] = 0;
-                }
-
             }
-
         }
-
+        return thething;
     }
 
 
@@ -633,7 +659,7 @@ public class GraphMemDisplay extends AppCompatActivity {
     //////////////////////////////////////////////////////////////// CHARTS MANAGEMENT ///////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void testPieChart(){
+    public void drawPieChart(){
 
         Log.d("testtest", ""+(maybesomepie())[0]+", "+(maybesomepie())[1]+", "+(maybesomepie())[2]);
 
@@ -648,23 +674,28 @@ public class GraphMemDisplay extends AppCompatActivity {
 
 
         // Layout params
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        //int width = displayMetrics.widthPixels;
 
-        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams((int)(height/1.75), ViewGroup.LayoutParams.MATCH_PARENT);
         params1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
-        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams((int)(height/1.75), ViewGroup.LayoutParams.MATCH_PARENT);
         params2.addRule(RelativeLayout.RIGHT_OF, chartPreciGlob.getId());
         params2.addRule(RelativeLayout.LEFT_OF, chartPreciWrong.getId());
         params2.addRule(RelativeLayout.CENTER_HORIZONTAL, chartPreciWrong.getId());
 
-        RelativeLayout.LayoutParams params3 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params3 = new RelativeLayout.LayoutParams((int)(height/1.75), ViewGroup.LayoutParams.MATCH_PARENT);
         params3.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
 
         // Add the charts to the layout
         rl.addView(chartPreciGlob, params1); // add the programmatically created chart
         rl.addView(chartPercentRight, params2);
-        rl.addView(chartPreciWrong, params3);
+        if((maybesomepie())[2] < 100.0)
+            rl.addView(chartPreciWrong, params3);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -676,7 +707,7 @@ public class GraphMemDisplay extends AppCompatActivity {
         // Right/Wrong percent
         List<PieEntry> pieEntriesRW = new ArrayList<>();
         pieEntriesRW.add(new PieEntry(100-(float)(maybesomepie())[2], ""));
-        pieEntriesRW.add(new PieEntry((float)(maybesomepie())[2], "Pourcentage réussite"));
+        pieEntriesRW.add(new PieEntry((float)(maybesomepie())[2], "Réussite"));
 
         // Precision when wrong
         List<PieEntry> pieEntriesPW = new ArrayList<>();
@@ -716,13 +747,41 @@ public class GraphMemDisplay extends AppCompatActivity {
         // Description
         chartPreciGlob.getDescription().setText("Précision moyenne de la réponse");
         chartPercentRight.getDescription().setText("Pourcentage de réussite");
-        chartPreciWrong.getDescription().setText("Précision des réposne fausses");
+        chartPreciWrong.getDescription().setText("Précision des réponse fausses");
 
 
-
-        //chartPreciGlob.invalidate();
+        chartPreciGlob.invalidate();
         chartPercentRight.invalidate();
-        chartPreciWrong.invalidate();
+        if((maybesomepie())[2] < 100.0)
+            chartPreciWrong.invalidate();
+
+    }
+
+    public void drawLineChart(){
+
+        Chart chart = new BarChart(getApplicationContext());
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.relativeGraphLayout);
+
+        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        rl.addView(chart, params1);
+
+        // Get data
+        List<BarEntry> barEntries = new ArrayList<>();
+
+        int[][] recordKnown = dothebigthingornot();
+
+        for(int i = 0; i<recordKnown.length; i++){
+            barEntries.add(new BarEntry(i, recordKnown[0][i]));
+            barEntries.add(new BarEntry(i, recordKnown[1][i]));
+        }
+
+        BarDataSet dataset;
+        dataset = new BarDataSet(barEntries, ""); // Add entries to dataset
+        dataset.setColors(Color.rgb(230, 92, 92),Color.rgb(119, 230, 92));
+        chart.setData(new BarData(dataset));
+
+        chart.invalidate();
+
 
     }
 

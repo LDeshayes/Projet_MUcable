@@ -27,7 +27,7 @@ import com.example.projet_mucable.R;
 
 public class StatsDisplay extends AppCompatActivity {
 
-    String language = "Anglais";
+    String language = "";
     ListView w_words_listview;
     ListView m_words_listview;
     ListView b_words_listview;
@@ -271,7 +271,7 @@ public class StatsDisplay extends AppCompatActivity {
     }
 
     public void toGraphs(View view) {
-        if(key!=-1){
+        if(!language.equals("")){
             Intent i = new Intent ( this, GraphMemDisplay.class );
             i.putExtra("Language",language);
             i.putExtra("Key",key);
