@@ -135,9 +135,9 @@ public class GraphMemDisplay extends AppCompatActivity {
         ArrayList<String> listStatType = new ArrayList<>();
         listStatType.add("Type de stats");
         listStatType.add("Précision");
-        listStatType.add("Y");
-        if(key==-1)
-            listStatType.add("Z");
+        //listStatType.add("Y");
+        //if(key==-1)
+            //listStatType.add("Z");
 
         ArrayAdapter<String> arrayAdapterType = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listStatType);
         arrayAdapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -156,8 +156,8 @@ public class GraphMemDisplay extends AppCompatActivity {
 
                 if(position==1)
                     drawPieChart();
-                if(position==3 && key==-1)
-                    drawLineChart();
+                //if(position==3 && key==-1)
+                    //drawLineChart();
 
             }
             @Override
@@ -724,19 +724,19 @@ public class GraphMemDisplay extends AppCompatActivity {
         // Global precision
         pieDataSetGP = new PieDataSet(pieEntriesGP, ""); // Add entries to dataset
         pieDataSetGP.setValueFormatter(new PercentFormatter());
-        pieDataSetGP.setColors(Color.rgb(230, 92, 92),Color.rgb(119, 230, 92));
+        pieDataSetGP.setColors(Color.rgb(230, 92, 92), Color.rgb(119, 230, 92));
         chartPreciGlob.setData(new PieData(pieDataSetGP));
 
         // Percent R/W
         pieDataSetRW = new PieDataSet(pieEntriesRW, ""); // Add entries to dataset
         pieDataSetRW.setValueFormatter(new PercentFormatter());
-        pieDataSetRW.setColors(Color.rgb(230, 92, 92),Color.rgb(119, 230, 92));
+        pieDataSetRW.setColors(Color.rgb(230, 92, 92), Color.rgb(119, 230, 92));
         chartPercentRight.setData(new PieData(pieDataSetRW));
 
         // Preci when wrong
         pieDataSetPW = new PieDataSet(pieEntriesPW, ""); // Add entries to dataset
         pieDataSetPW.setValueFormatter(new PercentFormatter());
-        pieDataSetPW.setColors(Color.rgb(230, 92, 92),Color.rgb(119, 230, 92));
+        pieDataSetPW.setColors(Color.rgb(230, 92, 92), Color.rgb(119, 230, 92));
         chartPreciWrong.setData(new PieData(pieDataSetPW));
 
 
@@ -745,9 +745,17 @@ public class GraphMemDisplay extends AppCompatActivity {
         chartPercentRight.setUsePercentValues(true);
         chartPreciWrong.setUsePercentValues(true);
         // Description
-        chartPreciGlob.getDescription().setText("Précision moyenne de la réponse");
-        chartPercentRight.getDescription().setText("Pourcentage de réussite");
-        chartPreciWrong.getDescription().setText("Précision des réponse fausses");
+        if(key==-1){
+            chartPreciGlob.getDescription().setText("Précision moyenne des réponses");
+            chartPercentRight.getDescription().setText("Pourcentage de réussite");
+            chartPreciWrong.getDescription().setText("Précision des réponses fausses");
+        }
+        else{
+            chartPreciGlob.getDescription().setText("Précision moyenne de la réponse");
+            chartPercentRight.getDescription().setText("Pourcentage de réussite");
+            chartPreciWrong.getDescription().setText("Précision des réponse fausses");
+        }
+
 
 
         chartPreciGlob.invalidate();
@@ -777,7 +785,7 @@ public class GraphMemDisplay extends AppCompatActivity {
 
         BarDataSet dataset;
         dataset = new BarDataSet(barEntries, ""); // Add entries to dataset
-        dataset.setColors(Color.rgb(230, 92, 92),Color.rgb(119, 230, 92));
+        dataset.setColors(Color.rgb(230, 92, 92), Color.rgb(119, 230, 92));
         chart.setData(new BarData(dataset));
 
         chart.invalidate();

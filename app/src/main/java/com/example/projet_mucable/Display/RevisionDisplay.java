@@ -220,6 +220,32 @@ public class RevisionDisplay extends AppCompatActivity {
 
     }
 
+    public void goToParLiens(View view) {
+
+        Intent i = new Intent ( this, LiensDisplay.class );
+        Cursor cursor;
+
+        cursor = CDB.query(
+                /*"t_"+langue,*/"t_Mot",
+                null,
+                "Langue LIKE '"+langue+"' AND CoefAppr IN (0,1,2,3,4)",
+                null,
+                null,
+                null,
+                "CoefAppr ASC"
+        );
+        taille_bd =  cursor.getCount();
+        cursor.close();
+
+        i.putExtra("Langue", langue);
+        if(taille_bd<4){
+            Toast.makeText(getApplicationContext(),"Il faut plus de mots pour ces conditions.",Toast.LENGTH_LONG).show();
+        }
+        else{
+            startActivity( i );
+        }
+    }
+
 
     public void onClicTag(View view) {
         //Intent i = new Intent ( this, ChoixTagsDisplay.class );
