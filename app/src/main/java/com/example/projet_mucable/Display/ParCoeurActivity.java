@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -202,13 +203,70 @@ public class ParCoeurActivity extends AppCompatActivity {
                 }
                 */
 
-                int i;
+
+                ArrayList<Integer> list1 = new ArrayList<>();
+                for (int k=0; k<nbCoef0; k++) {
+                    list1.add(k);
+                }
+
+                ArrayList<Integer> list2 = new ArrayList<>();
+                for (int k=nbCoef0; k<nbCoef0+nbCoef1; k++) {
+                    list2.add(k);
+                }
+
+                ArrayList<Integer> list3 = new ArrayList<>();
+                for (int k=nbCoef0+nbCoef1; k<nbCoef0+nbCoef1+nbCoef2; k++) {
+                    list3.add(k);
+                }
+
+                Collections.shuffle(list1);
+                Collections.shuffle(list2);
+                Collections.shuffle(list3);
+
+                int doesitall = 0;
+
+                int get0s = 0;
+                int get1s = 0;
+                int get2s = 0;
+
+
+                // i<nb_left-(nbCoef1+nbCoef2) && (nb_left*0.4>=nbCoef2+nbCoef1)
+
+                //    ( (doesitall<=nbleft*0.6 || doesitall!=nboco0 )&& nbco1+nbco2>nbleft*0.4 ) || ()
+
+                while(  (   (doesitall<nb_left*0.6  && doesitall!=nbCoef0)  && nbCoef1+nbCoef2>=nb_left*0.4)
+                        ||
+                        (   doesitall!=(nb_left-(nbCoef1+nbCoef2))        && nbCoef1+nbCoef2<nb_left*0.4)  ){
+
+                    indTab[doesitall]=list1.get(get0s);
+                    get0s++;
+                    doesitall++;
+                }
+
+                while(  (   doesitall<get0s+((nb_left-get0s)/2)             && nbCoef2>((nb_left-get0s)/2) )
+                        ||
+                        (   (doesitall<(nb_left-nbCoef2))                   && nbCoef2<=(nb_left-get0s)/2)  ){
+
+                    indTab[doesitall]=list2.get(get1s);
+                    get1s++;
+                    doesitall++;
+                }
+
+                while(doesitall<nb_left){
+                    indTab[doesitall]=list3.get(get2s);
+                    get2s++;
+                    doesitall++;
+                }
+
+
+
+                /*int i;
                 int j;
                 int resume;
 
                 ///////////////////////////////////////////////////////// Coef0 /////////////////////////////////////////////////////////////////
 
-                if(nbCoef0>(nb_left*0.6) /*&& nbCoef1+nbCoef2>=nb_left*0.6*/){
+                if(nbCoef0>(nb_left*0.6) ){
                 // Use 60% coef0
                     ArrayList<Integer> list = new ArrayList<>();
                     for (j=0; j<nbCoef0; j++) {
@@ -242,8 +300,8 @@ public class ParCoeurActivity extends AppCompatActivity {
                 else{
                 // Use rdm amount of Coef1 and Coef2
                     ArrayList<Integer> list = new ArrayList<>();
-                    for (j=nbCoef0-1; j<nbCoef0+nbCoef1; j++) {
-                        list.add(i);
+                    for (j=nbCoef0; j<nbCoef0+nbCoef1; j++) {
+                        list.add(j);
                     }
                     Collections.shuffle(list);
                     for (i=resume, j=0; i<resume+(nb_left-resume)/2 && nbCoef2>(nb_left-resume)/2 || i<(nb_left-nbCoef2) && nbCoef2<=(nb_left-resume)/2; i++, j++) {
@@ -261,7 +319,8 @@ public class ParCoeurActivity extends AppCompatActivity {
                 Collections.shuffle(list);
                 for (i=resume, j=0; i<nb_left; i++, j++) {
                     indTab[i]=list.get(j);
-                }
+                    Log.d("testtest","whytho");
+                }*/
 
                 List<Integer> intList = Arrays.asList(indTab);
                 //indTab = new Integer[nb_left];
@@ -434,15 +493,15 @@ public class ParCoeurActivity extends AppCompatActivity {
             cursor = CDB.query(
                     /*"t_"+language,*/"t_Mot",
                     null,
-                    "Langue LIKE '"+language+"' AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+") AND CoefAppr IN (0,1,2,3,4)",
+                    "Langue LIKE '"+language+"' AND (Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")) AND CoefAppr IN (0,1,2,3,4)",
                     null,
                     null,
                     null,
                     "CoefAppr ASC"
             );
-            SQL_COEF0 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr IN (0,1,2) AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
-            SQL_COEF1 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=3 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
-            SQL_COEF2 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=4 AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")";
+            SQL_COEF0 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr IN (0,1,2) AND (Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+"))";
+            SQL_COEF1 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=3 AND (Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+"))";
+            SQL_COEF2 = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND CoefAppr=4 AND (Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+"))";
         }
         else{
             cursor = CDB.query(
@@ -474,6 +533,8 @@ public class ParCoeurActivity extends AppCompatActivity {
         nbCoef2= mCount.getInt(0);
 
         mCount.close();
+
+        Log.d("testtest","coef: "+nbCoef0+"-"+nbCoef1+"-"+nbCoef2);
 
         // Count total rows
         int rowCount = cursor.getCount();

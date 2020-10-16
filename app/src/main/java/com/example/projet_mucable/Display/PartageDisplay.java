@@ -37,8 +37,8 @@ public class PartageDisplay extends AppCompatActivity {
     private static final int CREATE_FILE = 1;
     private static final int PICK_FILE = 2;
     String langue;
-    String tagsChosen;
-    String wordsChosen;
+    String tagsChosen = "";
+    String wordsChosen = "";
     String wordsChosen2;
 
 
@@ -167,11 +167,11 @@ public class PartageDisplay extends AppCompatActivity {
 
         Cursor cursor;
 
-        if(tagsChosen.equals("") && wordsChosen.equals("")){
+        if((tagsChosen==null || tagsChosen.equals("")) && (wordsChosen==null || wordsChosen.equals(""))){
             cursor = CDB.query(
                     /*"t_"+langue,*/"t_Mot",
                     null,
-                    null,
+                    "Langue LIKE '"+langue+"'",
                     null,
                     null,
                     null,
@@ -184,7 +184,7 @@ public class PartageDisplay extends AppCompatActivity {
             cursor = CDB.query(
                     /*"t_" + langue,*/"t_Mot",
                     null,
-                    "Langue LIKE '"+langue+"' AND Tag_1 IN ("+tagsChosen+") OR Tag_2 IN ("+tagsChosen+") OR Tag_3 IN ("+tagsChosen+") OR Tag_4 IN ("+tagsChosen+") OR Id_Word IN ("+wordsChosen2+")",
+                    "Langue LIKE '"+langue+"' AND (Tag_1 IN ("+tagsChosen+") OR Tag_2 IN ("+tagsChosen+") OR Tag_3 IN ("+tagsChosen+") OR Tag_4 IN ("+tagsChosen+")) OR Id_Word IN ("+wordsChosen2+")",
                     null,
                     null,
                     null,
@@ -225,13 +225,15 @@ public class PartageDisplay extends AppCompatActivity {
             String line;
             while ((line = br.readLine()) != null) {
                 System.out.println(line);
+                line = line.replaceAll("'","''");
                 String[] parts = line.split(",");
 
                 //String SQL_exist = "SELECT COUNT(*) FROM t_"+langue+" WHERE Word='"+parts[0]+"' AND Translation='"+parts[1]+"'";
                 String SQL_exist = "SELECT * FROM t_Mot WHERE Langue='"+langue+"' AND Word='"+parts[0]+"' AND Translation='"+parts[1]+"'";
 
+
                 // Count nn rows with each CoefAppr
-                Cursor mCount= CDB.rawQuery(SQL_exist, null);
+                Cursor mCount = CDB.rawQuery(SQL_exist, null);
                 int count = mCount.getCount();
                 mCount.close();
                 if(!(count > 0)){

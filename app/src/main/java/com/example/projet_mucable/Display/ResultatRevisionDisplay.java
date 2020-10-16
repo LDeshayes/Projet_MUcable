@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -257,7 +258,9 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             int dateFormerSession = cursorSess.getInt(0);
             cursorSess.close();
 
-            if( (cursorStats.getInt(4)<=id_session-3 || dateFormerSession<date2sem.getTime()) && cursorStats.getInt(4)==5){
+            //Log.d("testtest","session mot:"+cursorStats.getInt(4)+"  Last session:"+id_session +"   coef:"+cursorStats.getInt(2)+"   id:"+cursorStats.getInt(5));
+
+            if( (cursorStats.getInt(4)<=id_session-3  || dateFormerSession<date2sem.getTime()) && cursorStats.getInt(2)==5){
                 cvStat.put("CoefAppr",4);
                 CDB.update("t_Mot", cvStat, "Langue LIKE '"+language+"' AND Id_word="+cursorStats.getInt(5), null);
 

@@ -108,7 +108,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
 
             CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
             //String SQL_EXI = "SELECT COUNT(*) FROM t_"+language+" WHERE Word='"+question+"' AND Translation='"+reponseUser+"'";
-            String SQL_EXI = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND Word='"+question+"' AND Translation='"+reponseUser.replaceAll("'","''")+"'";
+            String SQL_EXI = "SELECT COUNT(*) FROM t_Mot WHERE Langue LIKE '"+language+"' AND Word='"+question.replaceAll("'","''")+"' AND Translation='"+reponseUser.replaceAll("'","''")+"'";
 
 
             Cursor mCount= CDB.rawQuery(SQL_EXI, null);

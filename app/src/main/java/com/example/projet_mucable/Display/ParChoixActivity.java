@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -93,7 +94,64 @@ public class ParChoixActivity extends AppCompatActivity {
                 }
 
 
-                int i;
+
+                ArrayList<Integer> list1 = new ArrayList<>();
+                for (int k=0; k<nbCoef0; k++) {
+                    list1.add(k);
+                }
+
+                ArrayList<Integer> list2 = new ArrayList<>();
+                for (int k=nbCoef0; k<nbCoef0+nbCoef1; k++) {
+                    list2.add(k);
+                }
+
+                ArrayList<Integer> list3 = new ArrayList<>();
+                for (int k=nbCoef0+nbCoef1; k<nbCoef0+nbCoef1+nbCoef2; k++) {
+                    list3.add(k);
+                }
+
+                Collections.shuffle(list1);
+                Collections.shuffle(list2);
+                Collections.shuffle(list3);
+
+                int doesitall = 0;
+
+                int get0s = 0;
+                int get1s = 0;
+                int get2s = 0;
+
+
+                // i<nb_left-(nbCoef1+nbCoef2) && (nb_left*0.4>=nbCoef2+nbCoef1)
+
+                //    ( (doesitall<=nbleft*0.6 || doesitall!=nboco0 )&& nbco1+nbco2>nbleft*0.4 ) || ()
+
+                while(  (   (doesitall<nb_left*0.6  && doesitall!=nbCoef0)  && nbCoef1+nbCoef2>=nb_left*0.4)
+                        ||
+                        (   doesitall!=(nb_left-(nbCoef1+nbCoef2))        && nbCoef1+nbCoef2<nb_left*0.4)  ){
+
+                    indTab[doesitall]=list1.get(get0s);
+                    get0s++;
+                    doesitall++;
+                }
+
+                while(  (   doesitall<get0s+((nb_left-get0s)/2)             && nbCoef2>((nb_left-get0s)/2) )
+                        ||
+                        (   (doesitall<(nb_left-nbCoef2))                   && nbCoef2<=(nb_left-get0s)/2)  ){
+
+                    indTab[doesitall]=list2.get(get1s);
+                    get1s++;
+                    doesitall++;
+                }
+
+                while(doesitall<nb_left){
+                    indTab[doesitall]=list3.get(get2s);
+                    get2s++;
+                    doesitall++;
+                }
+
+
+
+                /*int i;
                 int j;
                 int resume;
 
@@ -152,7 +210,7 @@ public class ParChoixActivity extends AppCompatActivity {
                 Collections.shuffle(list);
                 for (i=resume, j=0; i<nb_left; i++, j++) {
                     indTab[i]=list.get(j);
-                }
+                }*/
 
                 List<Integer> intList = Arrays.asList(indTab);
                 //indTab = new Integer[nb_left];
@@ -180,7 +238,7 @@ public class ParChoixActivity extends AppCompatActivity {
 
         }
 
-        Integer[] iAnswers = {word_number, 0, 0, 0};
+        Integer[] iAnswers = {indTab[word_number], 0, 0, 0};
 
         /*while (iAnswers[0]==iAnswers[1] || iAnswers[0]==iAnswers[2] || iAnswers[0]==iAnswers[3] || iAnswers[1]==iAnswers[2] || iAnswers[1]==iAnswers[3] || iAnswers[2]==iAnswers[3]){
             for(int i=1; i<4; i++){
@@ -190,7 +248,7 @@ public class ParChoixActivity extends AppCompatActivity {
 
         ArrayList<Integer> listAns = new ArrayList<>();
         for (int k=0; k<words_list.length; k++) {
-            if(k!=word_number)
+            if(k!=indTab[word_number])
                 listAns.add(k);
         }
         Collections.shuffle(listAns);
@@ -310,7 +368,7 @@ public class ParChoixActivity extends AppCompatActivity {
             cursor = CDB.query(
                     /*"t_"+language,*/"t_Mot",
                     null,
-                    "Langue LIKE '"+language+"' AND Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+") AND CoefAppr IN (0,1,2,3,4)",
+                    "Langue LIKE '"+language+"' AND CoefAppr IN (0,1,2,3,4) AND (Tag_1 IN ("+tagsFilter+") OR Tag_2 IN ("+tagsFilter+") OR Tag_3 IN ("+tagsFilter+") OR Tag_4 IN ("+tagsFilter+")) ",
                     null,
                     null,
                     null,

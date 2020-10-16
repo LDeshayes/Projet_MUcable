@@ -55,10 +55,10 @@ public class ResultatsAdapter extends BaseAdapter {
         attendu.setText(attendu_list[i]);
         symbol.setText(mark_list[i]);
         if(mark_list[i].charAt(0) == '✓'){
-            rep.setTextColor(Color.GREEN);
+            rep.setTextColor(Color.rgb(29, 128, 56));
         }
         else{
-            rep.setTextColor(Color.RED);
+            rep.setTextColor(Color.rgb(230, 92, 92));
         }
 
         return view;

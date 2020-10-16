@@ -108,7 +108,7 @@ public class RevisionDisplay extends AppCompatActivity {
             cursor = CDB.query(
                     /*"t_"+langue,*/"t_Mot",
                     null,
-                    "Langue LIKE '"+langue+"' AND Tag_1 IN ("+tags+") OR Tag_2 IN ("+tags+") OR Tag_3 IN ("+tags+") OR Tag_4 IN ("+tags+") AND CoefAppr IN (0,1,2,3,4)",
+                    "Langue LIKE '"+langue+"' AND (Tag_1 IN ("+tags+") OR Tag_2 IN ("+tags+") OR Tag_3 IN ("+tags+") OR Tag_4 IN ("+tags+")) AND CoefAppr IN (0,1,2,3,4)",
                     null,
                     null,
                     null,
@@ -168,7 +168,7 @@ public class RevisionDisplay extends AppCompatActivity {
             cursor = CDB.query(
                     /*"t_"+langue,*/"t_Mot",
                     null,
-                    "Langue LIKE '"+langue+"' AND Tag_1 IN ("+tags+") OR Tag_2 IN ("+tags+") OR Tag_3 IN ("+tags+") OR Tag_4 IN ("+tags+") AND CoefAppr IN (0,1,2,3,4)",
+                    "Langue LIKE '"+langue+"' AND (Tag_1 IN ("+tags+") OR Tag_2 IN ("+tags+") OR Tag_3 IN ("+tags+") OR Tag_4 IN ("+tags+")) AND CoefAppr IN (0,1,2,3,4)",
                     null,
                     null,
                     null,

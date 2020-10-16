@@ -242,8 +242,6 @@ public class StatsDisplay extends AppCompatActivity {
 
     public void resetTests(View view) {
 
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
         builder.setMessage("Êtes vous sur(e) de vouloir réinitialiser les tests ?")
                 .setCancelable(true)

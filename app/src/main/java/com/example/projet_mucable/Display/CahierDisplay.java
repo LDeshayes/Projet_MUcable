@@ -116,12 +116,16 @@ public class CahierDisplay extends AppCompatActivity {
         cursor.moveToFirst();
         for ( int i = 0; i < rowCount; i++ ) {
             // put in comment here
-            /*AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
-            builder.setMessage("TEST: "+cursor.getString(1)+" - "+cursor.getInt(7)+" !")
-                    .setCancelable(true)
-                    .setPositiveButton("Ok", null);
-            AlertDialog alert = builder.create();
-            alert.show();*/
+            /*if(cursor.getInt(0)==19){
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
+                builder.setMessage("TEST: "+cursor.getString(1)+" - "+cursor.getInt(7)+" !")
+                        .setCancelable(true)
+                        .setPositiveButton("Ok", null);
+                AlertDialog alert = builder.create();
+                alert.show();
+            }*/
+
+
             key_list_final[i] = cursor.getInt(0);
             key_list[i] = cursor.getInt(0);
             words_list[i] = cursor.getString(1);
