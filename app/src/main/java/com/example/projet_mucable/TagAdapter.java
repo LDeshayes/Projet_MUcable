@@ -2,6 +2,7 @@ package com.example.projet_mucable;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import java.util.Map;
 
 public class TagAdapter extends BaseAdapter {
 
-    Context context;
     String[] tags_list;
     LayoutInflater inflter;
     Map<String,String> tagColMap;
@@ -50,6 +50,7 @@ public class TagAdapter extends BaseAdapter {
 
         // Set elements
         tag.setText(tags_list[i]);
+        Log.d("testtest", ""+tags_list[i]+"-> "+tagColMap.get(tags_list[i]));
         tag.setTextColor(Color.parseColor(tagColMap.get(tags_list[i])));
 
         return view;

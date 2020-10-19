@@ -78,7 +78,7 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
 
         // Of all the tag, we get the corresponding color
         for(String tag: tagColMap.keySet()){
-            Cursor c = CDB.rawQuery("SELECT Couleur FROM t_TagColor WHERE Nom LIKE '"+tag+"'", null);
+            Cursor c = CDB.rawQuery("SELECT Couleur FROM t_TagColor WHERE Nom LIKE '"+tag.replaceAll("'","''")+"'", null);
             c.moveToFirst();
             //Log.d("testtest",c.getString(0));
             tagColMap.put(tag,c.getString(0));
@@ -141,7 +141,7 @@ public class ChoixMultiTagsDisplay extends AppCompatActivity {
             if(entry.getValue().equals("true")){
                 if(i>0)
                     tagsChosen = tagsChosen+",";
-                tagsChosen = tagsChosen +"'"+entry.getKey()+"'";
+                tagsChosen = tagsChosen +"'"+entry.getKey().replaceAll("'","''")+"'";
                 i+=1;
             }
         }

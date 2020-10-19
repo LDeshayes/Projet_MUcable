@@ -98,12 +98,15 @@ public class GestionTagsDisplay extends AppCompatActivity {
 
         // Of all the tag, we get the corresponding color
         for(String tag: tagColMap.keySet()){
-            Cursor c = CDB.rawQuery("SELECT Couleur FROM t_TagColor WHERE Nom LIKE '"+tag+"'", null);
+            Cursor c = CDB.rawQuery("SELECT Couleur FROM t_TagColor WHERE Nom LIKE '"+tag.replaceAll("'","''")+"'", null);
             c.moveToFirst();
             //Log.d("testtest",c.getString(0));
             tagColMap.put(tag,c.getString(0));
             c.close();
         }
+
+        //tagColMap.put("NAN","#ff000000");
+        //tagColMap.put("NAN_NULL","#ff000000");
 
         return tagColMap;
     }
@@ -199,7 +202,7 @@ public class GestionTagsDisplay extends AppCompatActivity {
         final ContentValues valTag = new ContentValues();
         valTag.put("Nom",newTag);
         valTag.put("Couleur",hexaColor);
-        final Cursor cExist = CDB.rawQuery("SELECT count(*) FROM t_TagColor WHERE Nom='"+newTag+"';", null);
+        final Cursor cExist = CDB.rawQuery("SELECT count(*) FROM t_TagColor WHERE Nom='"+newTag.replaceAll("'","''")+"';", null);
 
         if ( newTag.length() != 0 ) {
 
@@ -272,6 +275,8 @@ public class GestionTagsDisplay extends AppCompatActivity {
                 NEW_TAGLIST.putString("TAG_LIST", new_TAGLIST.substring(1));
             }
             NEW_TAGLIST.commit();*/
+
+            delTag = delTag.replaceAll("'","''");
 
             // Suppression des occurrences du tag dans la DB
             SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
@@ -377,9 +382,10 @@ public class GestionTagsDisplay extends AppCompatActivity {
                             if(!input.getText().toString().isEmpty()  && !(input.getText().toString()).replaceAll(" ","").equals("") ){
                                 ContentValues newTag = new ContentValues();
                                 newTag.put("Nom",input.getText().toString());
-                                CDB.update("t_TagColor",newTag,"Nom='"+tagChosen+"'",null);
+                                String modifTag = tagChosen.replaceAll("'","''");
+                                CDB.update("t_TagColor",newTag,"Nom='"+modifTag+"'",null);
                                 for ( int j = 1; j <= 4; j++ ) {
-                                    CDB.execSQL("UPDATE t_Mot SET Tag_"+j+"='"+input.getText().toString()+"' WHERE Tag_"+j+"='"+tagChosen+"' ");
+                                    CDB.execSQL("UPDATE t_Mot SET Tag_"+j+"='"+input.getText().toString().replaceAll("'","''")+"' WHERE Tag_"+j+"='"+modifTag+"' ");
                                 }
 
 

@@ -146,14 +146,22 @@ public class GestionMotDisplay extends AppCompatActivity {
     void clear() {
         EditText tempEditText;
         Button tempButton;
+        String[] inf_shown = information_values;
+
+        int i=0;
+        for(String s : inf_shown){
+            inf_shown[i] = s.replaceAll("''", "'");
+            i++;
+        }
+
 
         tempEditText = findViewById(R.id.editText_word);
         tempEditText.setText("");
-        tempEditText.setHint(information_values[0]);
+        tempEditText.setHint(inf_shown[0]);
 
         tempEditText = findViewById(R.id.editText_translation);
         tempEditText.setText("");
-        tempEditText.setHint(information_values[1]);
+        tempEditText.setHint(inf_shown[1]);
 
         tempButton = findViewById(R.id.button_Tag_1);
         if ( information_values[2].equals("NAN") ) {

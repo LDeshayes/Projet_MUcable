@@ -270,14 +270,10 @@ public class RevisionDisplay extends AppCompatActivity {
                 listeTags.setText("aucuns");
             }
             else{
-                listeTags.setText(tags.replaceAll("'","").replaceAll(",",", "));
+                listeTags.setText(tags.replaceAll("'"," "));
             }
         }
 
-        /*Button button_Tag_1 = findViewById(R.id.buttonTagsSelec);
-        if(tags!=null && !tags.isEmpty()){
-            button_Tag_1.setText(tags);
-        }*/
 
     }
 

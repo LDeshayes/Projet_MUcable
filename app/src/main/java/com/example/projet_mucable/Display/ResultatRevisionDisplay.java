@@ -112,15 +112,15 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             double percen = Double.parseDouble(values[5]);
             int nbIndice = Integer.parseInt(values[6]);
 
-            String que = values[0];
+            String que = values[0].replaceAll("'","''");
             //String rep = values[1];
-            String attendu = values[2];
+            String attendu = values[2].replaceAll("'","''");
             String mark = values[3];
 
 
             if(sens){
                 wordTmp = que;
-                translaTmp =attendu;
+                translaTmp = attendu;
             }
             else{
                 wordTmp = attendu;

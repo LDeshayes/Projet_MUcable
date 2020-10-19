@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,6 +29,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 
 
@@ -223,14 +227,17 @@ public class PartageDisplay extends AppCompatActivity {
             inputStream = getContentResolver().openInputStream(uri);
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             String line;
+            Map<String, String> mapTags = new HashMap<>();
+
             while ((line = br.readLine()) != null) {
                 System.out.println(line);
+                String line2 = line;
                 line = line.replaceAll("'","''");
                 String[] parts = line.split(",");
+                String[] parts2 = line2.split(",");
 
                 //String SQL_exist = "SELECT COUNT(*) FROM t_"+langue+" WHERE Word='"+parts[0]+"' AND Translation='"+parts[1]+"'";
                 String SQL_exist = "SELECT * FROM t_Mot WHERE Langue='"+langue+"' AND Word='"+parts[0]+"' AND Translation='"+parts[1]+"'";
-
 
                 // Count nn rows with each CoefAppr
                 Cursor mCount = CDB.rawQuery(SQL_exist, null);
@@ -242,7 +249,35 @@ public class PartageDisplay extends AppCompatActivity {
                     CDB.execSQL(insert);
                 }
 
+                // Add corresponding tag
+                for(int i=2; i<6; i++ ){
+
+                    if(!parts[i].equals("NAN") && !parts[i].equals("NAN_NULL")) {
+
+                            //String insert = "INSERT INTO t_"+langue+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+parts[6]+"')";
+                            mapTags.put(parts[i], "");
+
+                    }
+                }
+
             }
+            for(String t : mapTags.keySet()){
+
+                String SQL_exist_T = "SELECT * FROM t_TagColor WHERE Nom='"+t+"'";
+
+                Cursor mCount_t = CDB.rawQuery(SQL_exist_T, null);
+                int count_t = mCount_t.getCount();
+                mCount_t.close();
+
+                if(!(count_t > 0)){
+                    String insert = "INSERT INTO t_TagColor (nom) VALUES ('"+t+"')";
+                    Log.d("testtest",""+t);
+                    CDB.execSQL(insert);
+                }
+
+
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

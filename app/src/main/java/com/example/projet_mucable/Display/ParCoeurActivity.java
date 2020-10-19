@@ -230,10 +230,6 @@ public class ParCoeurActivity extends AppCompatActivity {
                 int get2s = 0;
 
 
-                // i<nb_left-(nbCoef1+nbCoef2) && (nb_left*0.4>=nbCoef2+nbCoef1)
-
-                //    ( (doesitall<=nbleft*0.6 || doesitall!=nboco0 )&& nbco1+nbco2>nbleft*0.4 ) || ()
-
                 while(  (   (doesitall<nb_left*0.6  && doesitall!=nbCoef0)  && nbCoef1+nbCoef2>=nb_left*0.4)
                         ||
                         (   doesitall!=(nb_left-(nbCoef1+nbCoef2))        && nbCoef1+nbCoef2<nb_left*0.4)  ){
