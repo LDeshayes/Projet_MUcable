@@ -29,10 +29,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.widget.Toast;
 
 
 public class PartageDisplay extends AppCompatActivity {
@@ -44,6 +48,10 @@ public class PartageDisplay extends AppCompatActivity {
     String tagsChosen = "";
     String wordsChosen = "";
     String wordsChosen2;
+
+    List<String> listLangues = new ArrayList<>();
+    String prefLangues;
+    SharedPreferences preferences;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +81,20 @@ public class PartageDisplay extends AppCompatActivity {
         // Get spinners
         final Spinner spinnerL = findViewById(R.id.spinnerL);
 
-        // Create language array
-        /*ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Anglais");
-        arrayList.add("Allemand");
-        arrayList.add("Espagnol");*/
+        // Get lang
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // We get all the languages used
+        prefLangues = preferences.getString("Langues", "Anglais;Allemand;Espagnol;");
+        // we get them ready to be used in adapter
+        String[] langues = Arrays.copyOfRange(prefLangues.split(";"), 0, ((prefLangues.split(";")).length)); // -1 ?
+        listLangues = Arrays.asList(langues);
 
-        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
-        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_item);
+        // Create language list
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.addAll(listLangues);
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
+        //ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerL.setAdapter(arrayAdapter);
         spinnerL.setSelection(0);
@@ -281,6 +295,9 @@ public class PartageDisplay extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Toast.makeText(getApplicationContext(), "Importation effectuée", Toast.LENGTH_SHORT).show();
+
 
     }
 

@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 /*import android.util.Log;
 import android.os.Build;
 import android.app.Activity;*/
@@ -33,6 +34,7 @@ public class LoadingScreenDisplay extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loadingscreen_display);
+
 
         createAndLoadDBAndsaveTags();
         //saveTags();
@@ -384,10 +386,18 @@ public class LoadingScreenDisplay extends AppCompatActivity {
             CDB.execSQL(drop_allemand);
 
 
+
             SharedPreferences.Editor DB_NEED_UPD = preferences.edit();
             DB_NEED_UPD.putBoolean("NEED_UPD_03", false);
             DB_NEED_UPD.apply();
 
+        }
+        boolean need_upd_04 = preferences.getBoolean("NEED_UPD_04", true);
+        if ( need_upd_04 ) {
+            SharedPreferences.Editor DB_NEED_UPD = preferences.edit();
+            DB_NEED_UPD.putString("Langues", "Anglais;Allemand;Espagnol;");
+            DB_NEED_UPD.putBoolean("NEED_UPD_04", false);
+            DB_NEED_UPD.apply();
         }
 
     }

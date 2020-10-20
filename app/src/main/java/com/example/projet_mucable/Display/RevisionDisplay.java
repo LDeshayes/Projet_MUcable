@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.projet_mucable.R;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class RevisionDisplay extends AppCompatActivity {
@@ -24,6 +26,9 @@ public class RevisionDisplay extends AppCompatActivity {
     Boolean quel_sens = false;
     //String tag;
     String tags;
+    SharedPreferences preferences;
+    List<String> listLangues = new ArrayList<>();
+    String prefLangues;
 
     int taille_bd=0;
 
@@ -42,12 +47,19 @@ public class RevisionDisplay extends AppCompatActivity {
         final Spinner spinnerLD = findViewById(R.id.spinnerLDep);
         final Spinner spinnerLF = findViewById(R.id.spinnerLEnd);
 
+
+        // Get lang
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // We get all the languages used
+        prefLangues = preferences.getString("Langues", "Anglais;Allemand;Espagnol;");
+        // we get them ready to be used in adapter
+        String[] langues = Arrays.copyOfRange(prefLangues.split(";"), 0, ((prefLangues.split(";")).length)); // -1 ?
+        listLangues = Arrays.asList(langues);
+
         // Create language list
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Francais");
-        arrayList.add("Anglais");
-        arrayList.add("Allemand");
-        arrayList.add("Espagnol");
+        arrayList.addAll(listLangues);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -10,35 +10,31 @@
         android:id="@+id/message_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="115dp"
         android:text="Langue du cahier"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline49"
+        app:layout_constraintStart_toStartOf="@+id/guideline48"
+        app:layout_constraintTop_toTopOf="@+id/guideline50" />
 
     <Spinner
         android:id="@+id/language_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/message_one"
+        app:layout_constraintStart_toStartOf="@+id/message_one"
         app:layout_constraintTop_toBottomOf="@+id/message_one" />
 
     <Button
         android:id="@+id/button_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="64dp"
         android:onClick="activityToCahierDisplay"
         android:text="Suivant"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLang" />
 
     <Button
         android:id="@+id/button_cleanDB"
@@ -56,5 +52,72 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="invisible" />
+
+    <Button
+        android:id="@+id/bAddLang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:onClick="addLangue"
+        android:text="Ajouter"
+        app:layout_constraintStart_toStartOf="@+id/guideline48"
+        app:layout_constraintTop_toBottomOf="@+id/language_spinner" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline48"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline49"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline51"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <Button
+        android:id="@+id/bModifLang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="modifLangue"
+        android:text="Modifier"
+        app:layout_constraintStart_toEndOf="@+id/bAddLang"
+        app:layout_constraintTop_toTopOf="@+id/bAddLang" />
+
+    <Button
+        android:id="@+id/bSuppLang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="removeLangue"
+        android:text="Supprimer"
+        app:layout_constraintEnd_toStartOf="@+id/guideline49"
+        app:layout_constraintTop_toTopOf="@+id/bModifLang" />
+
+    <EditText
+        android:id="@+id/editTextLang"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nouvelle langue"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/bModifLang"
+        app:layout_constraintStart_toStartOf="@+id/guideline48"
+        app:layout_constraintTop_toBottomOf="@+id/bAddLang" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

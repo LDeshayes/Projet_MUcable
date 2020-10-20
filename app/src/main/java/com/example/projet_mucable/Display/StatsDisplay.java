@@ -6,10 +6,14 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Layout;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -40,6 +44,10 @@ public class StatsDisplay extends AppCompatActivity {
     View key_view;
     SQLiteDatabase CDB;
 
+    List<String> listLangues = new ArrayList<>();
+    String prefLangues;
+    SharedPreferences preferences;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +63,18 @@ public class StatsDisplay extends AppCompatActivity {
         // Get spinners
         final Spinner spinnerL = findViewById(R.id.spinnerLang);
 
+        // Get lang
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // We get all the languages used
+        prefLangues = preferences.getString("Langues", "Anglais;Allemand;Espagnol;");
+        // we get them ready to be used in adapter
+        String[] langues = Arrays.copyOfRange(prefLangues.split(";"), 0, ((prefLangues.split(";")).length)); // -1 ?
+        listLangues = Arrays.asList(langues);
+
         // Create language list
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Choisissez une langue");
-        arrayList.add("Anglais");
-        arrayList.add("Allemand");
-        arrayList.add("Espagnol");
+        arrayList.add("Francais");
+        arrayList.addAll(listLangues);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
         //ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_item);
