@@ -183,8 +183,24 @@ public class PartageDisplay extends AppCompatActivity {
         OutputStream outputStream;
         @SuppressLint("WrongConstant") SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
 
-        Cursor cursor;
 
+        // Adding the color corresponding to the tag that will be exported
+        HashMap<String, String> mapColor = new HashMap<>();
+        // Run trough CDB, fill the map
+        Cursor cursorTag = CDB.query(
+                "t_TagColor", null, null, null, null, null, "Nom ASC", null);
+        cursorTag.moveToFirst();
+        while(!cursorTag.isAfterLast()){
+            if(!cursorTag.getString(1).equals("NAN") && !cursorTag.getString(1).equals("NAN_NULL"))
+                mapColor.put(cursorTag.getString(1), cursorTag.getString(2));
+            Log.d("testtest", cursorTag.getString(1)+"-"+cursorTag.getString(2));
+
+            cursorTag.moveToNext();
+
+        }
+        cursorTag.close();
+
+        Cursor cursor;
         if((tagsChosen==null || tagsChosen.equals("")) && (wordsChosen==null || wordsChosen.equals(""))){
             cursor = CDB.query(
                     /*"t_"+langue,*/"t_Mot",
@@ -212,11 +228,15 @@ public class PartageDisplay extends AppCompatActivity {
             );
         }
 
+
         cursor.moveToFirst();
         for ( int i = 0; i < cursor.getCount(); i++ ) {
-            text =text+ cursor.getString(1)+","+ cursor.getString(2)+","+
-                        cursor.getString(3)+","+cursor.getString(4)+","+
-                        cursor.getString(5)+","+cursor.getString(6)+","+cursor.getInt(7)+"\n";
+            text =text+ cursor.getString(1)+";"+cursor.getString(2)+";"+
+                        cursor.getString(3)+";"+cursor.getString(4)+";"+
+                        cursor.getString(5)+";"+cursor.getString(6)+";"+
+                        mapColor.get(cursor.getString(3))+";"+mapColor.get(cursor.getString(4))+";"+
+                        mapColor.get(cursor.getString(5))+";"+mapColor.get(cursor.getString(6))+";"+
+                        "\n";
             cursor.moveToNext();
         }
         cursor.close();
@@ -237,6 +257,8 @@ public class PartageDisplay extends AppCompatActivity {
         InputStream inputStream;
         @SuppressLint("WrongConstant") SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null );
 
+        HashMap<String, String> mapColor = new HashMap<>();
+
         try {
             inputStream = getContentResolver().openInputStream(uri);
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
@@ -247,8 +269,7 @@ public class PartageDisplay extends AppCompatActivity {
                 System.out.println(line);
                 String line2 = line;
                 line = line.replaceAll("'","''");
-                String[] parts = line.split(",");
-                String[] parts2 = line2.split(",");
+                String[] parts = line.split(";");
 
                 //String SQL_exist = "SELECT COUNT(*) FROM t_"+langue+" WHERE Word='"+parts[0]+"' AND Translation='"+parts[1]+"'";
                 String SQL_exist = "SELECT * FROM t_Mot WHERE Langue='"+langue+"' AND Word='"+parts[0]+"' AND Translation='"+parts[1]+"'";
@@ -259,7 +280,7 @@ public class PartageDisplay extends AppCompatActivity {
                 mCount.close();
                 if(!(count > 0)){
                     //String insert = "INSERT INTO t_"+langue+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+parts[6]+"')";
-                    String insert = "INSERT INTO t_Mot (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr, Langue) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+parts[6]+"', '"+langue+"')";
+                    String insert = "INSERT INTO t_Mot (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr, Langue) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+0+"', '"+langue+"')";
                     CDB.execSQL(insert);
                 }
 
@@ -267,10 +288,9 @@ public class PartageDisplay extends AppCompatActivity {
                 for(int i=2; i<6; i++ ){
 
                     if(!parts[i].equals("NAN") && !parts[i].equals("NAN_NULL")) {
-
                             //String insert = "INSERT INTO t_"+langue+" (Word, Translation, Tag_1, Tag_2, Tag_3, Tag_4, CoefAppr) VALUES ('"+parts[0]+"', '"+parts[1]+"', '"+parts[2]+"', '"+parts[3]+"', '"+parts[4]+"', '"+parts[5]+"', '"+parts[6]+"')";
                             mapTags.put(parts[i], "");
-
+                            mapColor.put(parts[i], parts[i+4]);
                     }
                 }
 
@@ -284,8 +304,8 @@ public class PartageDisplay extends AppCompatActivity {
                 mCount_t.close();
 
                 if(!(count_t > 0)){
-                    String insert = "INSERT INTO t_TagColor (nom) VALUES ('"+t+"')";
-                    Log.d("testtest",""+t);
+                    String insert = "INSERT INTO t_TagColor (Nom, Couleur) VALUES ('"+t+"', '"+mapColor.get(t)+"')";
+                    //Log.d("testtest",""+t);
                     CDB.execSQL(insert);
                 }
 
@@ -296,7 +316,7 @@ public class PartageDisplay extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Toast.makeText(getApplicationContext(), "Importation effectuée", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Importation effectuée ", Toast.LENGTH_SHORT).show();
 
 
     }
