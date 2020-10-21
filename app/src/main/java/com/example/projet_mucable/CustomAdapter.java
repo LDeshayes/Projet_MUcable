@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 public class CustomAdapter extends BaseAdapter {
     Context context;
-    String words_list[];
-    String translations_list[];
-    String tags_list[];
+    String[] words_list;
+    String[] translations_list;
+    String[] tags_list;
     LayoutInflater inflter;
 
     public CustomAdapter(Context applicationContext, String[] words_list, String[] translations_list, String[] tags_list) {

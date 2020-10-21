@@ -207,7 +207,7 @@ public class DrawView extends View {
             Line current = lines.get(lines.size() - 1);
 
             current.stopX = event.getX();
-            current.stopY = event.getY();;
+            current.stopY = event.getY();
             invalidate();
 
             return true;

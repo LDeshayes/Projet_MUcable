@@ -15,7 +15,7 @@ public class CahierAdapter extends BaseAdapter {
 
     //Context context;
     String[] words_list;
-    String translations_list[];
+    String[] translations_list;
     String[] tags_list;
     LayoutInflater inflter;
     Map<String,String> tagColMap;

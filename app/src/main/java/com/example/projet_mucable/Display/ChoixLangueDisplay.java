@@ -28,15 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 
-/*
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor langueEdit = preferences.edit();
-        langueEdit.putString("Langues", "Anglais;Allemand;Espagnol;");
-        langueEdit.apply();
-
-*/
-
 @SuppressWarnings({"ALL", "unused"})
 public class ChoixLangueDisplay extends AppCompatActivity {
 

@@ -128,7 +128,7 @@ public class RevisionCheckDisplay extends AppCompatActivity {
             else{
 
                 StringEqualityPercentCheckLevenshteinDistance howClose = new StringEqualityPercentCheckLevenshteinDistance();
-                percen = howClose.similarity(reponseUser, reponse)*100;
+                percen = StringEqualityPercentCheckLevenshteinDistance.similarity(reponseUser, reponse)*100;
 
                 tVF.setText("Mauvaise réponse !");
                 //monDico.put(reponse,question+" : "+reponseUser+"("+reponse+") Mauvaise réponse");
