@@ -37,6 +37,7 @@ import java.util.List;
 
 */
 
+@SuppressWarnings({"ALL", "unused"})
 public class ChoixLangueDisplay extends AppCompatActivity {
 
     List<String> listLangues = new ArrayList<>();
@@ -44,7 +45,6 @@ public class ChoixLangueDisplay extends AppCompatActivity {
     String prefLangues;
     SharedPreferences preferences;
 
-    boolean supp = false;
     String langSupp;
 
     @Override
@@ -278,7 +278,6 @@ public class ChoixLangueDisplay extends AppCompatActivity {
         //////////////////////////
 
 
-        supp = false;
         final Spinner spinner = findViewById(R.id.language_spinner);
         String language = spinner.getSelectedItem().toString();
         // We do not delete archive
@@ -369,6 +368,7 @@ public class ChoixLangueDisplay extends AppCompatActivity {
     }
 
     // Full clean  DB & FST_LAUNCH value in SharedPreferences
+    @SuppressWarnings("unused")
     @SuppressLint("WrongConstant")
     public void cleanDB(View view) {
 

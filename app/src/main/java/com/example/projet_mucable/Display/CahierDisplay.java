@@ -26,6 +26,7 @@ import com.example.projet_mucable.R;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class CahierDisplay extends AppCompatActivity {
 
     String language;

@@ -15,7 +15,6 @@ public class CustomAdapter extends BaseAdapter {
     LayoutInflater inflter;
 
     public CustomAdapter(Context applicationContext, String[] words_list, String[] translations_list, String[] tags_list) {
-        this.context = context;
         this.words_list = words_list;
         this.translations_list = translations_list;
         this.tags_list = tags_list;

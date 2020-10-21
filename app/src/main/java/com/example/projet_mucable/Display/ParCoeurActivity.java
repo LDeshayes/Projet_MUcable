@@ -554,13 +554,14 @@ public class ParCoeurActivity extends AppCompatActivity {
     String printNAN ( String tag1, String tag2, String tag3, String tag4 ) {
 
         String[] tabTag = { tag1, tag2, tag3, tag4 };
-        String tempTag = "";
 
+        StringBuilder tempTagBuilder = new StringBuilder();
         for (String s : tabTag) {
             if (!(s.equals("NAN"))) {
-                tempTag = tempTag + " - " + s;
+                tempTagBuilder.append(" - ").append(s);
             }
         }
+        String tempTag = tempTagBuilder.toString();
 
         if ( tempTag.length() == 0 ) {
             return ( tempTag );

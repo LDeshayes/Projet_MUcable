@@ -24,6 +24,7 @@ import com.example.projet_mucable.R;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class ChoixMotsDisplay extends AppCompatActivity {
 
     View word_view;

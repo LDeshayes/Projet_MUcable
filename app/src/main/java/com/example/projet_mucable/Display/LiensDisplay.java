@@ -120,7 +120,7 @@ public class LiensDisplay extends AppCompatActivity  /*implements View.OnTouchLi
             leftSide.addView(allTextViews[i], test);
         }
 
-        for(int i=0+4; i<4+4; i++){
+        for(int i = 4; i<4+4; i++){
             allTextViews[i] = new TextView(getApplicationContext());
             allTextViews[i].setText("• "+textsR.get(i-4));
 

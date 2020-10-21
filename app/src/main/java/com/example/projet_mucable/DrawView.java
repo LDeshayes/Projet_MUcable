@@ -122,10 +122,7 @@ public class DrawView extends View {
                 lines.add(new Line(newX, newY));
 
             }
-            else{
-                //Line current = lines.get(lines.size() - 1);
-                //lines.remove(current);
-            }
+
 
             return true;
         }

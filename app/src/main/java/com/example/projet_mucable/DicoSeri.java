@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class DicoSeri implements Serializable {
 
     private Map<String,String> map;

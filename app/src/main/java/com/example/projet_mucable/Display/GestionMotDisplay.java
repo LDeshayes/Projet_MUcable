@@ -120,7 +120,7 @@ public class GestionMotDisplay extends AppCompatActivity {
             Cursor cursor;
             if(language.equals("Archives")){
 
-                String allNonArch = "";
+                StringBuilder allNonArch = new StringBuilder();
 
                 // We get all the languages used
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -130,11 +130,11 @@ public class GestionMotDisplay extends AppCompatActivity {
                 boolean first = true;
                 for(String s : prefLangues){
                     if(!s.equals("Archives") && first){
-                        allNonArch+= "'"+s+"'";
+                        allNonArch.append("'").append(s).append("'");
                         first = false;
                     }
                     else{
-                        allNonArch+= ",'"+s+"'";
+                        allNonArch.append(",'").append(s).append("'");
                     }
                 }
 
@@ -142,7 +142,7 @@ public class GestionMotDisplay extends AppCompatActivity {
                 cursor = CDB.query(
                         /*"t_"+language,*/"t_Mot",
                         new String[]{"Word", "Translation", "Tag_1", "Tag_2", "Tag_3", "Tag_4", "Langue"},
-                        "Langue NOT IN ("+ allNonArch +") AND Id_Word=" + key,
+                        "Langue NOT IN ("+ allNonArch.toString() +") AND Id_Word=" + key,
                         null,
                         null,
                         null,

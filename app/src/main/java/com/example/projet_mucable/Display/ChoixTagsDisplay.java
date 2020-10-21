@@ -23,6 +23,7 @@ import com.example.projet_mucable.TagAdapter;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class ChoixTagsDisplay extends AppCompatActivity {
 
     View tag_view;
