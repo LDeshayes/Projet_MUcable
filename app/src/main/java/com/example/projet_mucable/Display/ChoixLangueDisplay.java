@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.projet_mucable.R;
@@ -130,7 +129,6 @@ public class ChoixLangueDisplay extends AppCompatActivity {
             spinner.setSelection(adapter.getCount()-1);
 
             // Remove potentiel tag of the language inside the word from prior achiving
-
             @SuppressLint("WrongConstant")
             SQLiteDatabase CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
 
@@ -150,10 +148,131 @@ public class ChoixLangueDisplay extends AppCompatActivity {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // BUILDER SUPP
+        String[] choice = {"Oui, archiver les mots", "Oui, supprimer les mots", "Non"};
+
         builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogDarker));
         builder.setTitle("Etes-vous sûr de vouloir supprimer cette langue ?")
                 .setCancelable(true)
-                .setPositiveButton("Oui, archiver les mots", new DialogInterface.OnClickListener() {
+                .setItems(choice, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        @SuppressLint("WrongConstant")
+                        SQLiteDatabase CDB;
+                        Spinner spinner;
+                        SharedPreferences.Editor langueEdit;
+                        ArrayAdapter<String> adapter;
+
+                        switch (which) {
+
+                            case 0: //
+
+                                spinner = findViewById(R.id.language_spinner);
+                                langSupp = spinner.getSelectedItem().toString();
+
+
+                                CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
+
+                                // Check if exists
+                                String tagExist = "SELECT * FROM t_TagColor WHERE Nom LIKE '"+langSupp+"' ";
+                                Cursor mCount= CDB.rawQuery(tagExist, null);
+                                // Add the tag in the DB
+                                if(!(mCount.getCount()>0)){
+                                    ContentValues cvTagLang = new ContentValues();
+                                    cvTagLang.put("Nom", langSupp);
+                                    CDB.insert("t_TagColor", null, cvTagLang);
+                                }
+                                mCount.close();
+
+                                // Add the language in one of the tag if possible
+                                Cursor cursorToArchive = CDB.query(
+                                        "t_Mot",
+                                        null,
+                                        "Langue LIKE '" + langSupp + "'",
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        null
+
+                                );
+                                cursorToArchive.moveToFirst();
+                                while (!cursorToArchive.isAfterLast()) {
+                                    boolean inserted = false;
+                                    boolean alreadyHere = false;
+
+                                    // Check if tag is already here
+                                    for (int j = 6; j >= 3; j--) {
+                                        if (cursorToArchive.getString(j).equals(langSupp)) {
+                                            alreadyHere = true;
+                                        }
+                                    }
+
+                                    // We insert the tag where we can
+                                    if (!alreadyHere){
+                                        for (int i = 6; i >= 3; i--) {
+                                            if (cursorToArchive.getString(i).equals("NAN") && !inserted) {
+                                                ContentValues cvTag = new ContentValues();
+                                                cvTag.put("Tag_" + (i - 2), langSupp);
+                                                CDB.update("t_Mot", cvTag, "Id_Word=" + cursorToArchive.getInt(0), null);
+                                                inserted = true;
+                                            }
+                                        }
+                                    }
+                                    cursorToArchive.moveToNext();
+                                }
+
+                                // AND we take out the label in the spinner
+
+
+                                // Remove language from the lists
+                                prefLangues = prefLangues.replaceAll(langSupp + ";", "");
+                                tmpListLangue.remove(langSupp);
+
+                                // Edit the preferences
+                                langueEdit = preferences.edit();
+                                langueEdit.putString("Langues", prefLangues);
+                                langueEdit.apply();
+
+                                // Update the spinner
+                                adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, tmpListLangue);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinner.setAdapter(adapter);
+
+                                break;
+
+                            case 1: //
+
+                                // Get language of words to delete
+                                spinner = findViewById(R.id.language_spinner);
+                                langSupp = spinner.getSelectedItem().toString();
+
+                                // Delete words from concerned notebook
+                                CDB = openOrCreateDatabase("CDB.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
+                                CDB.delete("t_Mot", "Langue='" + langSupp + "'", null);
+
+                                // Remove language from the lists
+                                prefLangues = prefLangues.replaceAll(langSupp + ";", "");
+                                tmpListLangue.remove(langSupp);
+
+                                // Edit the preferences
+                                langueEdit = preferences.edit();
+                                langueEdit.putString("Langues", prefLangues);
+                                langueEdit.apply();
+
+                                // Update the spinner
+                                adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, tmpListLangue);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinner.setAdapter(adapter);
+
+                                break;
+
+                            case 2: //
+
+                        }
+                    }
+                });
+                /*.setPositiveButton("Oui, archiver les mots", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                         final Spinner spinner = findViewById(R.id.language_spinner);
@@ -175,7 +294,7 @@ public class ChoixLangueDisplay extends AppCompatActivity {
 
                         // Add the language in one of the tag if possible
                         Cursor cursorToArchive = CDB.query(
-                                /*"t_"+language,*/"t_Mot",
+                                "t_Mot",
                                 null,
                                 "Langue LIKE '" + langSupp + "'",
                                 null,
@@ -262,7 +381,7 @@ public class ChoixLangueDisplay extends AppCompatActivity {
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinner.setAdapter(adapter);
                     }
-                });
+                });*/
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         //// END OF BUILDERS /////
