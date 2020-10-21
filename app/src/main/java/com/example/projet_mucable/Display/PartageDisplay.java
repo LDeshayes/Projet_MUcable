@@ -90,8 +90,10 @@ public class PartageDisplay extends AppCompatActivity {
         listLangues = Arrays.asList(langues);
 
         // Create language list
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.addAll(listLangues);
+        //ArrayList<String> arrayList = new ArrayList<>();
+        //arrayList.addAll(listLangues);
+        ArrayList<String> arrayList = new ArrayList<>(listLangues);
+
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arrayList);
         //ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_item);

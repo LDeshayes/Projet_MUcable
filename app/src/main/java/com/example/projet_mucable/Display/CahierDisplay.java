@@ -5,9 +5,11 @@ package com.example.projet_mucable.Display;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 //import android.util.Log;
@@ -93,17 +95,54 @@ public class CahierDisplay extends AppCompatActivity {
 
     void loadDB() {
 
-        Cursor cursor = CDB.query(
-                /*"t_"+language,*/"t_Mot",
-                null,
-                "Langue LIKE '"+language+"'",
-                null,
-                null,
-                null,
-                "CoefAppr ASC, Word ASC",
-                null
+        Cursor cursor;
 
-        );
+        if(language.equals("Archives")){
+
+            String allNonArch = "";
+
+            // We get all the languages used
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String[] prefLangues = preferences.getString("Langues", "Anglais;Allemand;Espagnol;").split(";");
+
+            // We get a string like: 'Anglais','Espagnol','Allemand'
+            boolean first = true;
+            for(String s : prefLangues){
+                if(!s.equals("Archives") && first){
+                    allNonArch+= "'"+s+"'";
+                    first = false;
+                }
+                else{
+                    allNonArch+= ",'"+s+"'";
+                }
+            }
+
+            // Get all words that are not from non archived languages
+            cursor = CDB.query(
+                    /*"t_"+language,*/"t_Mot",
+                    null,
+                    "Langue NOT IN ("+ allNonArch +")",
+                    null,
+                    null,
+                    null,
+                    "CoefAppr ASC, Word ASC",
+                    null
+
+            );
+        }
+        else {
+            cursor = CDB.query(
+                    /*"t_"+language,*/"t_Mot",
+                    null,
+                    "Langue LIKE '" + language + "'",
+                    null,
+                    null,
+                    null,
+                    "CoefAppr ASC, Word ASC",
+                    null
+
+            );
+        }
 
         rowCount = cursor.getCount();
 

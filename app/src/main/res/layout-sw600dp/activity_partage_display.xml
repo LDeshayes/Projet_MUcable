@@ -57,7 +57,6 @@
         android:id="@+id/buttonDL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="partagerListe"
         android:text="Exporter"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintStart_toStartOf="@+id/guideline9" />

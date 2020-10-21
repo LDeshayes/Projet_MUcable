@@ -3,19 +3,15 @@ package com.example.projet_mucable.Display;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projet_mucable.DrawView;
-import com.example.projet_mucable.Line;
 import com.example.projet_mucable.R;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;

@@ -17,7 +17,6 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 
 public class RevisionCheckDisplay extends AppCompatActivity {

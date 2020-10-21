@@ -14,7 +14,7 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowBackground">@drawable/gradient_background</item>
+        <item name="android:windowBackground">@drawable/gradient_background_tbbg</item>
 
         <item name="buttonStyle">@style/BeautifulButton2</item>
 

@@ -3,7 +3,6 @@ package com.example.projet_mucable.Display;
 // Add a word to cahier or modify it
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,14 +15,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projet_mucable.R;
-
-import java.lang.reflect.Field;
 
 public class GestionMotDisplay extends AppCompatActivity {
 
@@ -120,18 +116,57 @@ public class GestionMotDisplay extends AppCompatActivity {
 
     void getKeyRow() {
         if (mode.equals("Modify")) {
-            Cursor cursor = CDB.query(
-                    /*"t_" + language,*/"t_Mot",
-                    new String[]{"Word", "Translation", "Tag_1", "Tag_2", "Tag_3", "Tag_4"},
-                    "Langue LIKE '"+language+"' AND Id_Word=" + key,
-                    null,
-                    null,
-                    null,
-                    null
-            );
+
+            Cursor cursor;
+            if(language.equals("Archives")){
+
+                String allNonArch = "";
+
+                // We get all the languages used
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                String[] prefLangues = preferences.getString("Langues", "Anglais;Allemand;Espagnol;").split(";");
+
+                // We get a string like: 'Anglais','Espagnol','Allemand'
+                boolean first = true;
+                for(String s : prefLangues){
+                    if(!s.equals("Archives") && first){
+                        allNonArch+= "'"+s+"'";
+                        first = false;
+                    }
+                    else{
+                        allNonArch+= ",'"+s+"'";
+                    }
+                }
+
+                // Get all words that are not from non archived languages
+                cursor = CDB.query(
+                        /*"t_"+language,*/"t_Mot",
+                        new String[]{"Word", "Translation", "Tag_1", "Tag_2", "Tag_3", "Tag_4", "Langue"},
+                        "Langue NOT IN ("+ allNonArch +") AND Id_Word=" + key,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+            }
+            else {
+                cursor = CDB.query(
+                        "t_Mot",
+                        new String[]{"Word", "Translation", "Tag_1", "Tag_2", "Tag_3", "Tag_4", "Langue"},
+                        "Langue LIKE '"+language+"' AND Id_Word=" + key,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+            }
             cursor.moveToFirst();
             information_values = (cursor.getString(0) + ";" + cursor.getString(1) + ";" + cursor.getString(2) + ";" + cursor.getString(3) + ";" + cursor.getString(4) + ";" + cursor.getString(5)).split(";");
+            language = cursor.getString(6);
             cursor.close();
+
+
         }
     }
 
