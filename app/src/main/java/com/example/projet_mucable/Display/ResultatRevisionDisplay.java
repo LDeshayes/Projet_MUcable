@@ -151,6 +151,8 @@ public class ResultatRevisionDisplay extends AppCompatActivity {
             //The insert method returns the id of row just inserted or -1 if there was an error during insertion.
             CDB.insert("t_Stat","",valuesStat);
 
+            // TODO if resultat is very low maybe regress resultat even more
+
             i+=1;
 
             if(adjustWords.get(que)==null){
